@@ -1,0 +1,56 @@
+{% extends "activitytree/base.html" %}
+
+
+
+{% block content %}
+
+
+
+
+    <div class = "row">
+     {{content|safe}}
+
+   </div>
+
+    <div class="row">
+
+         <form id="commentForm1"   role="form" action="{{uri}}" method = "POST">{% csrf_token %}
+
+              <button type="submit" class="btn btn-primary">Siguente</button>
+<div class="form-group">
+    <label for="r10">Comentario:</label>
+    <select id="exit" name="objective_measure" class="form-control" >
+				<option value="70"> Ninguno </option>
+				<option value="100">Si le entendí</option>
+				<option value="50">Más o menos  </option>
+				<option value="20"> Para nada </option>
+			</select>
+
+</div>
+       </form>
+
+    <!--
+          <div class="ratings">
+			<div class="rating-L">
+
+				<form id="rat" action="" method="post">{% csrf_token %}
+					<strong id="rating_title">Califica este material: </strong>
+
+					<select name="rate">
+                        <option value="1"> Muy malo </option>
+				        <option value="2"> Malo    </option>
+				        <option value="3" selected="selected" >Más o menos  </option>
+				        <option value="4"> Bueno </option>
+                        <option value="5"> Excelente </option>
+			        </select>
+            		<input type="submit" value="Califícalo!" />
+
+				</form>
+
+			</div>
+          </div>
+  !-->
+
+
+</div>
+{% endblock content %}

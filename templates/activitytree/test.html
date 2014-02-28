@@ -1,0 +1,12 @@
+{% extends "activitytree/base.html" %}
+
+{% block content %} 
+    
+         
+    <form action="{{uri}}" method = "POST">{% csrf_token %}
+	   <input type="submit" value="Siguiente">
+        {{content|safe}}
+                      
+
+		</form>
+{% endblock content %}

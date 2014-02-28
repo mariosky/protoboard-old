@@ -1,0 +1,523 @@
+/***************************************************************
+ * TITLE: Common Stylesheet for Blue Haze                      * 
+ * URI  : http://www.oswd.org/design/xxx/bluehaze/bluehaze.css *
+ * MODIF: 2003-01-05 1608 +0800                                *
+ ***************************************************************/
+
+
+/* ###### Browser-specific Styles ###### */
+
+/* For IE & Mozilla-based browsers: */
+
+.LHS {
+  margin-left: 2.5mm;
+  float: left;
+  clear: left;
+}
+
+.RHS {
+  margin-right: 2.5mm;
+  float: right;
+  clear: right;
+}
+
+/* For Mozilla-based (CSS2-fully complaint) browsers only: */
+
+[class~="LHS"] {
+  margin-left: 5mm;
+}
+
+[class~="RHS"] {
+  margin-right: 5mm;
+}
+
+
+/* ###### Body Text ###### */
+
+body {
+  background-color: white;
+  color: black;
+  font-family: verdana, tahoma, helvetica, arial, sans-serif;
+  font-size: 95%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}
+
+h1, h2, h3 {
+  font-family: "trebuchet ms", tahoma, sans-serif;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 150%;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  padding-bottom: 0.5ex;
+}
+
+img {
+  border: none;
+}
+
+q {
+  font-family: tahoma, verdana, helvetica, arial, sans-serif;
+  font-weight: bold;
+  border-style: dotted;
+  border-width: 2px;
+  margin: 3em 1ex 1em;
+  padding: 0.5ex 0.5ex 0.5ex 1ex;
+  width: 70em;
+  float: left;
+}
+
+acronym {
+  border-bottom-style: dotted;
+  border-bottom-width: 1px;
+  cursor: help;
+}
+
+
+code {
+  font-family: "lucida console", monospace;
+  font-size: 90%;
+}
+
+code.bloque  {
+  font-family: "lucida console", monospace;
+  font-size: 90%;
+  border-style: dotted;
+  border-width: 1px;
+  margin: 0 4em 2em 4em;
+  padding: 2ex 2ex 2ex 2ex;
+  display:block;
+}
+
+pre {
+  border-width: 1px;
+  margin: 0 4em 0 4em;
+  padding: 2ex 2ex 2ex 2ex;
+  border-style: dotted;
+  
+  }
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  padding-bottom: 1.5em;
+}
+
+select {
+width:600px;
+}
+
+.question p
+{
+  margin-top:4em;
+  margin-bottom:0;
+  padding:0;
+  line-height:1;
+  }
+  
+.question label{
+  margin-top:1em;
+  margin-bottom:0;
+  padding:0;
+  
+  }
+.question .bloque{
+
+}
+#bodyText {
+   
+  line-height: 1.5em;
+  margin: 10mm 15mm 10px 20em;
+  padding: 0 1em 1ex 1em;
+  border-style: solid;
+  border-width: 1px;
+  }
+
+#bodyText p {
+  padding-bottom: 2ex;
+}
+
+#bodyText a {
+  text-decoration: none;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+#bodyText a:hover {
+  border-bottom: none;
+}
+
+#bodyText .topOfPage {
+  font-size: 90%;
+  font-weight: bold;
+  font-variant: small-caps;
+  text-decoration: none;
+  border: none;
+  padding-left: 1ex;
+  padding-right: 1ex;
+  float: right;
+}
+
+.smallCaps {
+  font-variant: small-caps;
+}
+
+
+
+
+/*Login FORM*/
+.exitForm{
+background-color:#E8F0FF;
+border:2px solid #0080FF;
+padding:1em;
+padding-top:0.5em ;
+margin: 2em auto 2em auto;
+width:300px;
+}
+
+.loginForm{
+background-color:#E8F0FF;
+border:2px solid #0080FF;
+padding:6px;
+
+margin: 2em auto 2em auto;
+width:300px;
+}
+
+.exitForm fieldset {
+  margin-bottom: 10px;
+}
+.exitForm select
+{
+  width:100%;
+  margin-bottom:1em;
+  }
+
+.exitForm legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+.exitForm label {
+  display: block;
+  line-height: 1.8;
+  vertical-align: top;
+}
+.exitForm fieldset ol {
+  margin: 0;
+  padding: 0;
+}
+.exitForm fieldset li {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+.exitForm fieldset fieldset {
+  border: none;
+  margin: 3px 0 0;
+}
+.exitForm fieldset fieldset legend {
+  padding: 0 0 5px;
+  font-weight: normal;
+}
+.exitForm fieldset fieldset label {
+  display: block;
+  width: auto;
+}
+
+.exitForm label {
+  width: 100%; /* Width of labels */
+}
+.exitForm fieldset fieldset label {
+  margin-left: 123px; /* Width plus 3 (html space) */
+}
+
+
+.loginForm fieldset input{
+ width:200px;
+}
+
+.loginForm fieldset {
+  margin-bottom: 10px;
+}
+
+.loginForm legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+.loginForm label {
+  display: block;
+  line-height: 1.8;
+  vertical-align: top;
+}
+.loginForm fieldset ol {
+  margin: 0;
+  padding: 0;
+}
+.loginForm fieldset li {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+.loginForm fieldset fieldset {
+  border: none;
+  margin: 3px 0 0;
+}
+.loginForm fieldset fieldset legend {
+  padding: 0 0 5px;
+  font-weight: normal;
+}
+.loginForm fieldset fieldset label {
+  display: block;
+  width: auto;
+}
+
+.loginForm label {
+  width: 100%; /* Width of labels */
+}
+.loginForm fieldset fieldset label {
+  margin-left: 123px; /* Width plus 3 (html space) */
+}
+
+
+
+
+
+
+/* ###### Header ###### */
+
+#header {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  height: 4.5em;
+  margin-bottom: 5mm;
+  padding: 0 2.5mm 1em 5mm;
+  background-repeat: no-repeat;
+}
+
+
+
+
+
+.headerTitle {
+  font-size: 200%;
+  font-weight: bold;
+  line-height: 2em;
+}
+
+.menuBar {
+  float: left;
+}
+
+.locBar {
+  float: right;
+}
+
+.menuBar *, .locBar * {
+  text-decoration: none;
+  font-weight: bold;
+  padding-right: 1ex;
+}
+
+.menuBar a:hover, .locBar a:hover {
+  text-decoration: underline;
+}
+
+
+/* ###### Side Box ###### */
+
+.sideBox {
+  border-style: solid none solid none;
+  border-width: 2px 0 2px 0;
+  width: 16em;
+  margin-top: 5mm;
+  margin-bottom:10px;
+  border-top: 1px dashed black;
+
+}
+
+#navcontainer {
+  margin-left:0em;
+  font-weight: bold;
+}
+
+#navlist
+{
+margin-left: 0;
+padding-left: 0;
+list-style: none;
+}
+
+
+#navlist li
+{
+padding-left: 10px;
+background-repeat: no-repeat;
+font-size: 10px;
+}
+
+.activity_satisfied
+{
+color: red;
+padding-left: 10px;
+background-image: url(images/lullacons/doc-plain-green.png);
+background-position: 0 .5em;
+}
+
+.activity_notSatisfied
+{
+color: red;
+padding-left: 10px;
+background-image: url(images/lullacons/doc-plain-red.png);
+background-position: 0 .5em;
+}
+.activity_disabled 
+{
+padding-left: 10px;
+background-image: url(images/lullacons/folder-option-denied.png);
+background-position: 0 .5em;
+}
+
+.activity_enabled 
+{
+padding-left: 10px;
+background-image: url(images/lullacons/doc-plain-white.png);
+background-position: 0 .5em;
+}
+
+.activity_current 
+{
+padding-left: 10px;
+background-image: url(images/lullacons/arrow-double-right-green.png);
+background-position: 0 .8em;
+}
+
+
+.container_notSatisfied 
+{
+padding-left: 10px;
+background-image: url(images/lullacons/folder-open-blue.png);
+background-position: 0 .4em;
+}
+
+.container_satisfied 
+{
+padding-left: 10px;
+background-image: url(images/lullacons/folder-open-green.png);
+background-position: 0 .4em;
+}
+
+.cont_disabled 
+{
+padding-left: 10px;
+background-image: url(images/lullacons/folder-option-denied.png);
+background-position: 0 .4em;
+}
+
+
+.video
+{
+  margin-top:3em;
+  margin-bottom:3em;
+  margin-left: auto;
+  margin-right: auto;
+  text-align:center;
+}
+
+
+#navlist ul { list-style: none; }
+
+
+.sideBox .sideHeader {
+  font-weight: bold;
+  border-bottom-style: dashed;
+  border-bottom-width: 1px;
+  padding: 0.5ex 0.5em 0.5ex 0.75em;
+}
+
+
+.sideBox a, .sideBox a:hover, .sideBox span {
+  color: black;
+  text-decoration: none;
+  line-height: 1.25em;
+  display: block;
+  padding: 1.25ex 0.5em 1.25ex 0.75em;
+}
+
+.sideBox .thisPage {
+  font-weight: bold;
+}
+
+
+/* ###### Footer ###### */
+
+#footer {
+  margin-top:20px;
+  border-top: 1px dashed black;
+  padding-top: 0.75ex;
+  padding-bottom: 0.75ex;
+  clear: left;
+  
+}
+
+#footer div {
+  font-size: 85%;
+  line-height: 1.25em;
+  text-align: right;
+  padding-right: 3mm;
+  
+}
+
+#footer a:hover {
+  text-decoration: none;
+}
+
+.footerLHS {
+  float: left;
+  clear: left;
+  padding-left: 3mm;
+}
+
+/*Login FORM*/
+.navMenu{
+background-color:#E8F0FF;
+border:2px solid #0080FF;
+padding:0.5em 1em 0;
+position:absolute;
+margin: 1em auto 2em auto;
+width:800px;
+}
+
+.navMenu input
+{
+  width:90px;
+  margin-right:1em;
+   float: left;
+
+  }
+
+.navMenu select
+{
+  width:120px;
+  margin-bottom:1em;
+   float: left;
+  }
+
+.navMenu legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+.navMenu label {
+  display: block;
+  line-height: 1.2;
+  vertical-align: top;
+  float: left;
+}
+.navMenu label {
+  width: 100px; /* Width of labels */
+}

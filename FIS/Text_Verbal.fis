@@ -1,0 +1,37 @@
+[System]
+Name='Text_Verbal'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=1
+NumRules=2
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='Visual'
+Range=[0 25]
+NumMFs=2
+MF1='Mild':'gbellmf',[6 3 2.5]
+MF2='strong':'gbellmf',[13 3 25]
+
+[Input2]
+Name='Verbal'
+Range=[0 25]
+NumMFs=2
+MF1='Mild':'gbellmf',[6 3 2.5]
+MF2='Strong':'gbellmf',[11 3 25]
+
+[Output1]
+Name='Recomended'
+Range=[0 10]
+NumMFs=2
+MF1='Low':'trapmf',[0 0 4 7]
+MF2='high':'trapmf',[6 7 10 10]
+
+[Rules]
+2 1, 1 (1) : 1
+1 2, 2 (1) : 1

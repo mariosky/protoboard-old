@@ -1,0 +1,2 @@
+Porfa registrate tu llave es: {{activation_key}} y se vence en
+{{expiration_days}} para tu {{site}}
