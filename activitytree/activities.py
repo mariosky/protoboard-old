@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 activities = {
-'/activity/POO':u""" <h1 id="welcome">Bienvenidos</h1>
+'/activity/POO':u""" <h3 id="welcome">Bienvenidos</h3>
       <p> En esta clase aprenderas algunos conceptos básicos de la Programación Orientada a Objetos. </p>
       <p> Como primer paso realizarás un pequeño examen para
           evaluar tus conocimientos de Programación. </p>
     """
 ,
-'/activity/Bienvenidos': u""" <h1 id="welcome">Bienvenidos</h1>
+'/activity/Bienvenidos': u""" <h3 id="welcome">Bienvenidos</h3>
       <p> En esta clase aprenderas algunos conceptos básicos de la Programación Orientada a Objetos. </p>
       <p> Como primer paso realizarás un pequeño examen para
           evaluar tus conocimientos de Programación. </p>
     """ ,
 
-'/activity/Comentario_final': u""" <h1 id="welcome">Comentario Final</h1>
+'/activity/Comentario_final': u""" <h3 id="welcome">Comentario Final</h3>
       <p> En esta clase haz visto algunos de los conceptos básicos de la Programación Orientada a Objetos,
      poco a poco, deberas familiarizarte con los téminos y conceptos aquí vistos, ya que son fundamentales
      para entender y explotar al máximo los lenguajes de programación OO.
@@ -22,7 +22,7 @@ activities = {
 
 '/activity/Herencia': u"""
 <a name="notion" class="ancre"></a>
-<h1>El concepto de herencia</h1>
+<h3>El concepto de herencia</h3>
 <p align="justify">La <b>herencia</b> es espec&iacute;fica de la programaci&oacute;n orientada a objetos, donde una clase nueva se crea a partir de una clase existente.
 La <i>herencia</i> (a la que habitualmente se denomina <i>subclases</i>) proviene del hecho de que la subclase (la nueva clase creada) contiene las atributos y m&eacute;todos de la clase primaria.
  La principal ventaja de la herencia es la capacidad para definir atributos y m&eacute;todos nuevos para la subclase, que luego se aplican a los atributos y m&eacute;todos heredados.
@@ -32,7 +32,7 @@ La <i>herencia</i> (a la que habitualmente se denomina <i>subclases</i>) provien
         <a href="Encapsulacion_intro">encapsulaci&oacute;n</a>).
 
 <a name="hierarchie" class="ancre"></a>
-<h1>Jerarqu&iacute;a de clase</h1>
+<h3>Jerarqu&iacute;a de clase</h3>
 <p align="justify">La relaci&oacute;n primaria-secundaria entre clases puede representarse desde un punto de vista jer&aacute;rquico, denominado <i>vista de clases en &aacute;rbol</i>.
  La vista en &aacute;rbol comienza con una clase general llamada superclase (a la que algunas veces se hace referencia como <i>clase primaria</i>, <i>clase padre</i>, <i>clase principal</i>, o <i>clase madre</i>;
  existen muchas met&aacute;foras geneal&oacute;gicas). Las clases derivadas (<i>clase secundaria</i> o <i>subclase</i>) se vuelven cada vez m&aacute;s especializadas a medida que van descendiendo el &aacute;rbol.
@@ -41,7 +41,7 @@ La <i>herencia</i> (a la que habitualmente se denomina <i>subclases</i>) provien
 <p align="center"><img src="http://static.commentcamarche.net/es.kioskea.net/pictures/poo-images-animaux.gif"alt="Jerarqu&iacute;a de clase" />
 
 <a name="multiple" class="ancre"></a>
-<h1>Herencia m&uacute;ltiple</h1>
+<h3>Herencia m&uacute;ltiple</h3>
 <p align="justify">Algunos lenguajes orientados a objetos, como C++ permiten herencias m&uacute;ltiples, lo que significa que una clase puede heredar los atributos de otras dos superclases.
 Este m&eacute;todo puede utilizarse para agrupar atributos y m&eacute;todos desde varias clases dentro de una sola.
 <p align="center"><img src="http://static.commentcamarche.net/es.kioskea.net/pictures/poo-images-animaux2.gif"alt="Herencia m&uacute;ltiple" />
@@ -79,7 +79,7 @@ Este m&eacute;todo puede utilizarse para agrupar atributos y m&eacute;todos desd
 
     """ ,
 
-'/activity/Polimorfismo': u""" <h1>Definici&oacute;n de polimorfismo</h1>
+'/activity/Polimorfismo': u""" <h3>Definici&oacute;n de polimorfismo</h3>
 <p align="justify">La palabra <i>polimorfismo</i> proviene del griego y significa <i>que posee varias formas diferentes</i>. Este es uno de los conceptos esenciales de una programaci&oacute;n orientada a objetos. As&iacute; como la herencia est&aacute; relacionada con las clases y su jerarqu&iacute;a, el polimorfismo se relaciona con los m&eacute;todos.
 
 <p align="justify">En general, hay tres tipos de polimorfismo:<ul>
@@ -135,72 +135,63 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
     """ ,
 
     '/activity/Encapsulacion_Ejemplos': u"""
-    <h1> Una introducción a Objetos y Clases </h1>
+    <h3> Una introducción a Objetos y Clases </h3>
+
+
     <div class="video">
-  <iframe width="640" height="510" src="http://www.youtube.com/embed/2srbnA_V2lI?rel=0" frameborder="0" allowfullscreen></iframe>   </div>
-    """
-    ,
-       '/bye/POO': u""" <h1>Muchas Gracias</h1>
+  <iframe width="560" height="315" src="http://www.youtube.com/embed/2srbnA_V2lI?rel=0" frameborder="0" ></iframe>
+   </div>
+    """,
+
+'/bye/POO': u""" <h3>Muchas Gracias</h3>
   <p> Con esto termina la evaluación de este sistema prototipo, por ultimo por favor
   danos tus comentarios llenando un cuestionario.
    </p>
 
     """ ,
 
+'/test/Pretest':{
+    'questions':  [{'id': 1324,
+                    'title': "Pregunta Abierta",
+                    'question': "Son paises de America del Norte",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Mexico","USA","Nicaragua","España"],
+                    'answer': [1,1,0,0],
+                    'answer_text': "Solo son México y USA",
+                    'hints': ["España está en Europa", "Nicaragua es de Sudamérica"]
+                    },
+                    {
+                    'id':1323,
+                    'title': "Pregunta Abierta",
+                    'question': "Son lenguajes de programación orientado a objetos",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["C","Java","Fortran","C++"],
+                    'answer': [0,1,0,1],
+                    },
+                    {
+                    'id':1311,
+                    'title': "Pregunta Abierta",
+                    'question': "Cual fué la primera selección en ganar el primer mundial",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Brasil","Uruguay","Italia","Alemania"],
+                    'answer': [0,1,0,0],
+                    }
+                    ],
+    'intro':"""<h3>Evaluación Previa</h3>
+    <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
+    'bye':"""<p> Gracias </p>"""
+                    },
 
-'/test/Pretest': u"""
-
-<h1>Evaluación Previa</h1>
-    <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>
-
- <ol>
-	<li class="question">
-           <p ><label for="r1">Es un subprograma o subrutina que realiza una tarea específica y devuelve un valor</label></p>
-			<select id="question_1" name="question_1" >
-				<option value="0"> Variable </option>
-				<option value="0"> Parámetro </option>
-				<option value="0"> Google </option>
-				<option value="1"> Función </option>
-			</select>
-    </li>			
-
-	<li class="question">
-           <p ><label for="r2">Son espacios reservados en la memoria que, como su nombre indica, pueden cambiar de contenido
-                                a lo largo de la ejecución de un programa</label></p>
-			<select id="question_2" name="question_2">
-				<option value="0">  RAM </option>
-				<option value="0">  Volatiles </option>
-				<option value="1">  Variables </option>
-				<option value="0">  Espacio Virtual </option>
-			</select>
-    </li>			
-	<li  class="question">
-           <p><label for="r3">Es una variable que puede ser recibida por una rutina o subrutina.
-            Una subrutina usa los valores asignados para alterar su comportamiento en tiempo de ejecución. </label></p>
-			<select id="question_3" name="question_3" >
-				<option value="1"> Argumento </option>
-				<option value="0"> Input </option>
-				<option value="1"> Parámetro </option>
-				<option value="0"> Todos </option>
-			</select>
-    </li>
-	<li  class="question">
-           <p ><label for="r4">El paso de parámetros por valor consiste en:</label></p>
-			<select id="question_4" name="question_4">
-				<option value="1"> Copiar el contenido de la variable que queremos pasar en otra dentro del ámbito local de la subrutina </option>
-				<option value="0"> Enviar la direccion de la variable que queremos pasar, lo cual permitira modificar su valor de ser necesario </option>
-				<option value="0"> Significa que solo se parará la variable si tiene un valor, si no se la ha asignado algo marca error </option>
-				<option value="0"> Ningúna de las anteriores </option>
-			</select>
-    </li>
-
-    
- </ol>      
-         """ ,
 
 '/test/Posttest': u"""
 
-<h1>Evaluación Previa</h1>
+<h3>Evaluación Previa</h3>
 
     <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>
 
@@ -258,7 +249,7 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
          """ ,
 
 '/activity/Preliminar':u"""
-    <h1> Programación Orientada a Objetos – ¿Qué es POO?</h1>
+    <h3> Programación Orientada a Objetos – ¿Qué es POO?</h3>
           <p> La P.O.O. (también conocida como O.O.P., por sus siglas en inglés) es lo que se conoce como un paradigma o modelo de programación.
           Esto significa que no es un lenguaje específico, o una tecnología, sino una forma de programar, una manera de plantearse la programación.
           No es la única (o necesariamente mejor o peor que otras), pero se ha constituido en una de las formas de programar más populares
@@ -281,7 +272,7 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
 
 '/activity/Encapsulacion_intro':
     u"""
-    <h1> Encapsulación </h1>
+    <h3> Encapsulación </h3>
 
    <p> La encapsulación se considera una de las características definitorias de la orientación a objetos.
 
@@ -306,7 +297,7 @@ No necesitamos saber cómo se programó el objeto, ni saber las variables que us
 
 '/activity/Objetos_y_Clases_YouTube':
     u"""
-    <h1> Una introducción a Objetos y Clases </h1>
+    <h3> Una introducción a Objetos y Clases </h3>
     <div class="video">
     <iframe width="640" height="510" src="http://www.youtube.com/embed/D-w9RKQlAsA?rel=0" frameborder="0" allowfullscreen></iframe> </div>
     """,
@@ -314,7 +305,7 @@ No necesitamos saber cómo se programó el objeto, ni saber las variables que us
     '/activity/Objetos_y_Clases_HTML':
             u"""
             
-           <h1> ¿Qué es una Clase?</h1>
+           <h3> ¿Qué es una Clase?</h3>
            
           <p> Cuando decimos “ave”, sabemos que nos referimos a “algo” con plumas, pico, dos patas, etc. No importa realmente si hemos visto un ave o no,
            o si tenemos un ave frente a nosotros; entendemos claramente que la palabra “ave” se refiere a alguna cosa que cumple
@@ -343,7 +334,7 @@ No necesitamos saber cómo se programó el objeto, ni saber las variables que us
             <p>
 Por último, también sabemos que las aves reaccionan ante ciertos sucesos, como <i>peligro</i>, <i>atracción</i>, <i>defensa</i>. A esto lo llamaremos eventos
           </p>
-<h1>¿Qué es una Instancia?</h1>
+<h3>¿Qué es una Instancia?</h3>
           <p>
           Bien, decíamos que una clase es como la definición de un <b>tipo</b> de objetos, pero no es el objeto en sí, del modo como
           una idea no es una cosa concreta. Así que para sentarnos necesitaremos convertir

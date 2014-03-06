@@ -23,7 +23,7 @@ POO = LearningActivity( name = 'Intro a la POO', slug = 'POO',
     post_condition_rule = "",
 
     flow = True,
-    forward_only = True,
+    forward_only = False,
     choice = True,
 
     rollup_rule  = "satisfied IF All satisfied",
@@ -50,7 +50,7 @@ welcome = LearningActivity( name = 'Bienvenidos', slug = 'Bienvenidos',
     rollup_progress = False,
 
     is_container = False,
-    is_visible = True,
+    is_visible = False,
     order_in_container = 0
     )
 welcome.save()
@@ -69,7 +69,7 @@ pretest = LearningActivity( name = 'Pretest', slug = 'Pretest',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,
+    is_visible = False,
     order_in_container = 1
     )
 pretest.save()
@@ -83,7 +83,7 @@ content = LearningActivity( name = 'Contenido', slug = 'Contenido',
     post_condition_rule = "",
 
     flow = True,
-    forward_only = True,
+    forward_only = False,
     choice = True,
 
     match_rule = "",
@@ -93,7 +93,7 @@ content = LearningActivity( name = 'Contenido', slug = 'Contenido',
     rollup_objective = True,
     rollup_progress = True,
     is_container = True,
-    is_visible = True,
+    is_visible = False,
     order_in_container = 2
     )
 content.save()
@@ -127,14 +127,14 @@ objetosyclases = LearningActivity( name = 'Objetos y Clases', slug = 'OBJETOS_CL
     post_condition_rule = "",
 
     flow = True,
-    forward_only = True,
+    forward_only = False,
     choice = False,
 
     rollup_rule  = "",
     rollup_objective = True,
     rollup_progress = True,
     is_container = True,
-    is_visible = True,
+    is_visible = False,
     order_in_container = 1
     )
 objetosyclases.save()
@@ -149,7 +149,7 @@ objetos_y_clases_html = LearningActivity( name = 'Objetos y Clases HTML', slug =
     post_condition_rule = "",
 
     flow = True,
-    forward_only = True,
+    forward_only = False,
     choice = False,
 
     rollup_objective = True,

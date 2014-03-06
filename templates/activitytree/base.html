@@ -11,9 +11,10 @@
     <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
-    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}bluehaze.css" title="Blue Haze stylesheet" />
+     <!--
+     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}bluehaze.css" title="Blue Haze stylesheet" />
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}color-scheme.css" title="Blue Haze stylesheet" />
-
+    -->
       <!-- Custom styles for this template -->
 
     <!-- Custom styles for this template -->
@@ -140,8 +141,8 @@ li.nav-header {
 
 #navlist ul {
     list-style: none outside none;
-    /* padding-left: 20px;*/
-     padding-left: 0;
+     padding-left: 20px;
+    /*  padding-left: 0;*/
 }
 
 #navlist li {
@@ -151,6 +152,12 @@ li.nav-header {
 
 }
 
+
+#navlist {
+    list-style: none outside none;
+    margin-left: 0;
+    padding-left: 0;
+}
 
 #navcontainer {
     font-weight: normal;
@@ -171,6 +178,13 @@ li.nav-header {
     padding-top: 3px;
 }
 
+.cont_disabled
+{
+padding-left: 10px;
+background-image: url({{MEDIA_URL}}images/lullacons/folder-option-denied.png);
+background-position: 0 .4em;
+}
+
 .activity_notSatisfied {
     background-image: url("{{MEDIA_URL}}images/lullacons/doc-plain-red.png");
     background-position: left top;
@@ -188,6 +202,36 @@ li.nav-header {
     padding-left: 15px;
 
 }
+.activity_disabled
+{
+padding-left: 15px;
+background-image: url({{MEDIA_URL}}images/lullacons/folder-option-denied.png);
+background-position:  left top;
+}
+
+.activity_enabled
+{
+padding-left: 15px;
+background-image: url({{MEDIA_URL}}images/lullacons/doc-plain-white.png);
+background-position: left top;
+}
+
+
+.video {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px; height: 0; overflow: hidden;
+}
+
+.video iframe,
+.video object,
+.video embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
 
 .activity_current {
     background-image: url("{{MEDIA_URL}}images/lullacons/arrow-double-right-green.png");
@@ -201,7 +245,9 @@ li.nav-header {
         #panel_col{
       margin-top: 50px;
         }
-
+.second-navbar{
+    top:40px;
+}
 	  </style>
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -224,24 +270,35 @@ li.nav-header {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">protoboard.org</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+            {% if user.username %}
             <li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#">Profile</a></li>
             <li><a href="#">Help</a></li>
-
             <li><a href="/logout">Log out</a></li>
 
+           {% endif %}
+
+            {% if not user.username %}
+
+            <li><a href="/login">Log in</a></li>
+
+            {% endif %}
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
+
         </div>
       </div>
     </div>
+
+
+
+
+
+
 
 
     <div class="container-fluid">
@@ -252,7 +309,8 @@ li.nav-header {
         </div>
 
           <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-2 main">
-            <h1 class="page-header">Dashboard</h1>
+
+
 
             {% block content %}
             <!--
@@ -263,26 +321,25 @@ li.nav-header {
             {% endblock content %}
 
            </div>
-
+{% if user.username %}
 
       <div id="panel_col" class="col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0">
         <div class="panel panel-default">
                 <div class="panel-heading"> <h3 class="panel-title">Estilo de Aprendizaje</h3></div>
                 <div class="panel-body">
 
-                    {% if user.username %}
+
 
 
                 <span> <strong> {{user.username}} </strong>   según el cuestionario que resolviste este es tu estilo de aprendizaje.</span>
                 <img class="img-responsive" src="{{lsi_graphic}}" alt="Estilo de Aprendizaje"/>
 
 
-                {% endif %}
                 </div>
         </div>
 
       </div>
-
+{% endif %}
 
       </div>
     </div>

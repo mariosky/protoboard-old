@@ -4,8 +4,66 @@
     
          
     <form action="{{uri}}" method = "POST">{% csrf_token %}
-	   <input type="submit" value="Siguiente">
-        {{content|safe}}
+
+
+    {% if feedback %}
+     <input type="submit" name="check" value="Re-try">
+     <input type="submit" name="next"  value="Next">
+
+
+    {% else %}
+
+     <input type="submit" name="check" value="Submit">
+
+    {% endif %}
+
+    {{ content.intro|safe }}
+
+    {% if feedback %}
+
+        {% for q in content.questions %}
+            {% if q.feedback.correct %}
+            <h4> <span class="glyphicon glyphicon-ok"></span> {{q.question}} </h4>
+            {% else %}
+            <h4> <span class="glyphicon glyphicon-remove"></span> {{q.question}} </h4>
+            {% endif %}
+
+                {% for o in q.feedback_options %}
+                    <div class="checkbox">
+                        <label>
+
+                            <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}" {{ o.1|yesno:"checked,," }}  />
+                            {{ o.0 }}
+                        </label>
+                    </div>
+                   {% endfor %}
+        {% endfor %}
+
+
+    {% else %}
+
+
+
+
+    {% for q in content.questions %}
+        <h4>{{q.question}} </h4>
+            {% for o in q.options %}
+             <div class="checkbox">
+                 <label>
+                    <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
+                    {{ o }}
+                 </label>
+            </div>
+
+            {% endfor %}
+
+        {% endfor %}
+
+
+    {% endif %}
+
+
+        {{content.bye|safe}}
                       
 
 		</form>

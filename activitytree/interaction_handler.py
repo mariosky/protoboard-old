@@ -7,55 +7,67 @@ from lxml import etree
 #Exceptions
 
 
+
+
 TRANSFORM = """<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Author: Mario Garcia
 	File:
-	Date: 
+	Date:
 	Purpose: Crear elementos de navegacion a partir de XML
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="html" indent="yes" encoding="utf-8" />
-	
+
 	<xsl:template match="/">
 	<div id="navcontainer">
 	    <ul id="navlist">
 			<xsl:apply-templates select="item"/>
 		</ul>
-	</div>							
+	</div>
 	</xsl:template>
-	
-	
+
+
 	<xsl:template match="item" >
       	<xsl:choose>
 
-      			  <xsl:when test="@pre_condition = 'disabled'">
+			<!-- CONTAINER-->
+			<xsl:when test="@is_container = 'True'">
+	            <li>
+	             <xsl:attribute name="class">
+	                    <xsl:if test="@is_visible = 'False'">hidden </xsl:if>
+	                    <xsl:value-of select="concat('container_', @objective_status)" />
+	             </xsl:attribute>
 
-            <li class="activity_disabled">
-        		<a href="#top">
-					<xsl:value-of select="@identifier"/> (<xsl:value-of select="@objective_measure"/>)
-       		 	</a>
-		    </li>
-		  </xsl:when>
+	        		<a href="#top">
+						<xsl:value-of select="@identifier" />
+	       		 	</a>
+			    </li>
+			  </xsl:when>
 
-      	          <xsl:when test="@is_current = 'True'">
-            <li class="activity_current">
-        		<a href="{@uri}">
-					<xsl:value-of select="@identifier" />
-       		 	</a>
-		    </li>
-		  </xsl:when>
-		  
-          <xsl:when test="@is_container = 'True'">
-            <li class="container_{@objective_status}">
-        		<a href="#top">
-					<xsl:value-of select="@identifier" />
-       		 	</a>
-		    </li>
-		  </xsl:when>
+            <!-- ACTIVITY DISABLED -->
+			<xsl:when test="@pre_condition = 'disabled'">
+	            <li>
+		             <xsl:attribute name="class">
+			      		<xsl:if test="@pre_condition = 'disabled'">activity_disabled </xsl:if>
+						<xsl:if test="@is_visible = 'False'">hidden </xsl:if>
+			         </xsl:attribute>
+
+	        		 <a href="#top">
+					   <xsl:value-of select="@identifier"/> (<xsl:value-of select="@objective_measure"/>)
+					 </a>
+			    </li>
+			</xsl:when>
+			<xsl:when test="@is_current = 'True'">
+	            <li class="activity_current">
+	        		<a href="{@uri}">
+						<xsl:value-of select="@identifier" />
+	       		 	</a>
+			    </li>
+			</xsl:when>
 
 
-		  		  
+
           <xsl:when test="@objective_status = 'satisfied'">
             <li class="activity_satisfied">
         		<a href="{@uri}">
@@ -76,23 +88,24 @@ TRANSFORM = """<?xml version="1.0" encoding="utf-8"?>
 		  </xsl:when>
 
 
-		  		  
+
             <xsl:otherwise>
             <li class="{@identifier}"/>
-          
+
           </xsl:otherwise>
         </xsl:choose>
-		
-		 
+
+
         <xsl:if test="item">
-        
+
     		<ul>
 				<xsl:apply-templates select="item"/>
-			</ul>						
+			</ul>
 		</xsl:if>
 	</xsl:template>
 
-</xsl:stylesheet>"""
+</xsl:stylesheet>
+"""
 
 
 class Error(Exception):
@@ -186,13 +199,27 @@ class SimpleSequencing(object):
                 ula.progress_status = progress_status
             if objective_status:
                 ula.objective_status = objective_status
-            if objective_measure:
+            if objective_measure is not None:
                 ula.objective_measure = objective_measure
             ula.last_visited = datetime.datetime.now()
             ula.num_attempts += 1
             ula.save()
             atree.save()
             ula.rollup_rules()
+
+    def update(self, ula, progress_status=None, objective_status=None, objective_measure=None):
+        if not ula.is_current:
+            raise NotAllowed('Update', "Can only update a current activity")
+        else:
+            if progress_status is not None:
+                ula.progress_status = progress_status
+            if objective_status is not None :
+                ula.objective_status = objective_status
+            if objective_measure is not None:
+                ula.objective_measure = objective_measure
+            ula.last_visited = datetime.datetime.now()
+            ula.num_attempts += 1
+            ula.save()
 
     def suspend(self, user, activity):
         pass
@@ -279,15 +306,15 @@ class SimpleSequencing(object):
 
 
     def nav_to_xml(self, node=None, s="", root=None):
-        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s">'
-        single_tag_template = '<item activity = "%s" uri = "%s" identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s"/>'
+        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s">'
+        single_tag_template = '<item activity = "%s" uri = "%s" identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s"/>'
 
         if node is None:
             node = root
         vals = (node.learning_activity.id, node.learning_activity.uri, node.learning_activity.name, node.is_current,
                 node.learning_activity.is_container, node.pre_condition,
                 node.recommendation_value,
-                node.objective_status, node.objective_measure)
+                node.objective_status, node.objective_measure,node.learning_activity.is_visible)
         if len(node.children) > 0:
 
             s += open_tag_template % vals
