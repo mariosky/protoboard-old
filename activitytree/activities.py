@@ -152,6 +152,8 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
 
 '/test/Pretest':{
     'questions':  [{'id': 1324,
+                    'interaction': 'choiceInteraction',
+                    'inline': 0 ,
                     'title': "Pregunta Abierta",
                     'question': "Son paises de America del Norte",
                     'can_check': "True",
@@ -164,6 +166,8 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
                     },
                     {
                     'id':1323,
+                    'interaction': 'choiceInteraction',
+                    'inline': 1,
                     'title': "Pregunta Abierta",
                     'question': "Son lenguajes de programación orientado a objetos",
                     'can_check': "True",
@@ -174,6 +178,8 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
                     },
                     {
                     'id':1311,
+                     'interaction':'simpleChoice',
+                     'inline': 0,
                     'title': "Pregunta Abierta",
                     'question': "Cual fué la primera selección en ganar el primer mundial",
                     'can_check': "True",
@@ -187,66 +193,74 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
     <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
     'bye':"""<p> Gracias </p>"""
                     },
+'/test/Posttest':{
+    'questions':  [{'id': 1,
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "La Programación Orientada a Objetos es:",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Es un  programa parecido a Visual Studio",
+                                "Un lenguaje de programación basado en Java ",
+                                "Un Paradigma o Modelo de Programación",
+                                "Un estándar de programación apoyado por Microsoft y Apple"],
+                    'answer': [0,0,1,0],
+                    'answer_text': "Es un paradigma de programación",
+                    'hints': []
+                    },
+                    {
+                    'id':2,
+                    'interaction': 'simpleChoice',
+                    'inline': 1,
+                    'title': "Pregunta Abierta",
+                    'question': "¿Donde se especifican los atributos y comportamiento que tendrá un conjunto de objetos?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Un Arreglo",
+                                "La Clase",
+                                "Un objeto instancia",
+                                "En C#"],
+                    'answer': [0,1,0,0],
+                    },
+                    {
+                    'id':3,
+                    'title': "Pregunta Abierta",
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'question': "¿Como se determina el estado de un objeto?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Es el conjunto de atributos y sus valores actuales",
+                                "El estado se indica en la clase",
+                                "No se puede",
+                                "Un objeto no tiene estado"],
+                    'answer': [1,0,0,0],
+                    },
+                    {
+                    'id': 4,
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "¿Que otro nombre reciben los objetos?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Clases básicas",
+                                "Instancias",
+                                "Entidades",
+                                "Agentes"],
+                    'answer': [0,1,0,0],
+                    }
 
-
-'/test/Posttest': u"""
-
-<h3>Evaluación Previa</h3>
-
-    <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>
-
- <ol>
-	<li class="question">
-           <p ><label for="r1">La Programación Orientada a Objetos es:</label></p>
-			<select id="question_1" name="question_1" >
-				<option value="0">Es un  programa parecido a Visual Studio </option>
-				<option value="0">Un lenguaje de programación basado en Java  </option>
-				<option value="1">Un Paradigma o Modelo de Programación </option>
-				<option value="0"> Un estándar de programación apoyado por Microsoft y Apple</option>
-			</select>
-    </li>
-
-	<li class="question">
-           <p ><label for="r2">¿Donde se especifican los atributos y comportamiento que tendrá un conjunto de objetos?</label></p>
-			<select id="question_2" name="question_2">
-				<option value="0">  Un Arreglo </option>
-				<option value="1">  La Clase </option>
-				<option value="0">  Un objeto instancia </option>
-				<option value="0">  En C# </option>
-			</select>
-    </li>
-	<li  class="question">
-           <p><label for="r3">¿Como se determina el estado de un objeto?</label></p>
-			<select id="question_3" name="question_3" >
-				<option value="1">  Es el conjunto de atributos y sus valores actuales </option>
-				<option value="0">  El estado se indica en la clase</option>
-				<option value="0">  No se puede </option>
-				<option value="0">  Un objeto no tiene estado </option>
-			</select>
-    </li>
-	<li  class="question">
-           <p ><label for="r4">¿Que otro nombre reciben los objetos?</label></p>
-			<select id="question_4" name="question_4">
-				<option value="0">Clases básicas </option>
-				<option value="1">Instancias</option>
-				<option value="0"> Entidades </option>
-				<option value="0"> Agentes </option>
-			</select>
-    </li>
-
-	<li   class="question">
-           <p><label for="r5"> Permite reutilizar código, ya que las nuevas clases se crean especializando a otras</label> </p>
-	       </p>
-			<select id="question_5" name="question_5">
-				<option value="0"> Estado </option>
-				<option value="1"> Herencia </option>
-				<option value="0"> Atributos  </option>
-				<option value="0"> Archivos </option>
-			</select>
-    </li>
-
- </ol>
-         """ ,
+                    ],
+    'intro':"""<h3>Evaluación Final</h3>
+    <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
+    'bye':""" """
+                    },
 
 '/activity/Preliminar':u"""
     <h3> Programación Orientada a Objetos – ¿Qué es POO?</h3>

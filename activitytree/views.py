@@ -42,7 +42,9 @@ def index(request):
     
 
 def activity(request, uri, objective_status = None):
+
     if request.user.is_authenticated():
+        print request.POST
         # Gets the Learning Activity object from id
         activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user )[0]
 
@@ -60,6 +62,7 @@ def activity(request, uri, objective_status = None):
             if atree.current_activity:
                 s.exit( atree.current_activity, objective_status = 'satisfied', progress_status = 'complete' )
             s.set_current(activity)
+
         elif request.method == 'POST':
             # Get NEXT ACTIVITY
             next_uri = s.get_next(root)
