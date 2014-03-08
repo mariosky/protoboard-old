@@ -1,21 +1,10 @@
 {% extends "activitytree/base.html" %}
 
-{% block content %} 
-    
-         
-    <form action="{{uri}}" method = "POST">{% csrf_token %}
+{% block content %}
 
 
-    {% if feedback %}
-     <input type="submit" name="check" value="Re-try">
-     <input type="submit" name="next"  value="Next">
+    <form id="learning_activity_form"    role="form"  action="{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
-
-    {% else %}
-
-     <input type="submit" name="check" value="Submit">
-
-    {% endif %}
 
     {{ content.intro|safe }}
 
@@ -27,7 +16,7 @@
             {% else %}
             <h4> <span class="glyphicon glyphicon-remove"></span> {{q.question}} </h4>
             {% endif %}
-
+            {% if q.options %}
                 {% for o in q.feedback_options %}
                  {% if q.interaction == 'choiceInteraction' %}
                     <div class="checkbox{{ q.inline|yesno:"-inline,," }}">
@@ -43,9 +32,15 @@
                         <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}" {{ o.1|yesno:"checked,," }}  />
                             {{ o.0 }}
                      </label>
-                </div>
-                {% endif %}
+                     </div>
+                 {% endif %}
                 {% endfor %}
+            {% elif q.interaction == 'textEntryInteraction' %}
+                    <input type="text" class="form-control" placeholder="Escribe tu respuesta" name="{{q.id}}" value="{{ q.feedback.user_answer }}">
+
+
+
+            {% endif %}
         {% endfor %}
 
 
@@ -54,32 +49,54 @@
 
     {% for q in content.questions %}
         <h4>{{q.question}} </h4>
-            {% for o in q.options %}
-                {% if q.interaction == 'choiceInteraction' %}
-                 <div class="checkbox{{ q.inline|yesno:"-inline,," }}">
-                     <label>
-                        <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
-                        {{ o }}
-                     </label>
-                </div>
-                {% elif q.interaction == 'simpleChoice' %}
-                    <div class="radio{{ q.inline|yesno:"-inline,," }}">
-                     <label>
-                        <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
-                        {{ o }}
-                     </label>
-                </div>
-                {% endif %}
-            {% endfor %}
+            {% if q.options %}
+                {% for o in q.options %}
+                    {% if q.interaction == 'choiceInteraction' %}
+                     <div class="checkbox{{ q.inline|yesno:"-inline,," }}">
+                         <label>
+                            <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
+                            {{ o }}
+                         </label>
+                    </div>
+                    {% elif q.interaction == 'simpleChoice' %}
+                        <div class="radio{{ q.inline|yesno:"-inline,," }}">
+                         <label>
+                            <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
+                            {{ o }}
+                         </label>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% elif q.interaction == 'textEntryInteraction' %}
+                    <input type="text" class="form-control" placeholder="Escribe tu respuesta" name="{{q.id}}">
+                    </input>
+            {% endif %}
 
         {% endfor %}
 
 
     {% endif %}
 
-
         {{content.bye|safe}}
-                      
+
+        {% if feedback %}
+
+     <input type="submit" name="check" value="Re-try" class="btn btn-primary">
+
+        <ul class="pager">
+                     <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
+                    <li class="next"><span class="nav_next">  Siguiente &rarr;</span></li>
+        </ul>
+
+
+    {% else %}
+
+
+
+        <input type="submit" name="check" value="Submit" class="btn btn-primary">
+
+    {% endif %}
+
 
 		</form>
 {% endblock content %}

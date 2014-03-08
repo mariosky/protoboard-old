@@ -103,7 +103,7 @@ preliminar = LearningActivity( name = 'Comentario Preliminar', slug = 'Prelimina
 #   lom =
     parent = content, root   = POO,
 
-    pre_condition_rule = """if self.get_objective_measure('Pretest')  > 4:
+    pre_condition_rule = """if self.get_objective_measure('Pretest')  > 2:
 	                  self.pre_condition = 'skip' """,
     post_condition_rule = "",
 

@@ -268,6 +268,30 @@ class SimpleSequencing(object):
         else:
             return None
 
+    def get_prev(self, ula):
+
+        current = self.get_current(ula)
+
+        if current:
+            nav = self.get_nav(ula)
+            XML = self.nav_to_xml(root=nav)
+            eroot = etree.XML(XML)
+            navlist = [e for e in eroot.iter()]
+            navlist.reverse()
+            current_found = False
+            for i, item in enumerate(navlist):
+                if (item.get("uri") == current.learning_activity.uri) or current_found:
+                    current_found = True
+                    if i + 1 >= len(navlist):
+                        return None
+                    next = navlist[i + 1]
+
+                    if next.get("is_container") == "False" and next.get("pre_condition") <> "disabled":
+                        return next.get("uri")
+            return None
+        else:
+            return None
+
 
     def get_nav(self, ula):
         #TO DO: Check is root

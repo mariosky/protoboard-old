@@ -178,20 +178,21 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
                     },
                     {
                     'id':1311,
-                     'interaction':'simpleChoice',
-                     'inline': 0,
+                    'interaction': 'textEntryInteraction',
+                    'inline': 0,
                     'title': "Pregunta Abierta",
                     'question': "Cual fué la primera selección en ganar el primer mundial",
                     'can_check': "True",
                     'can_show': "True",
                     'can_hint': "True",
-                    'options': ["Brasil","Uruguay","Italia","Alemania"],
-                    'answer': [0,1,0,0],
+                    'options': [],
+                    'type':"str",
+                    'answer': ["Uruguay", "uruguay"],
                     }
                     ],
     'intro':"""<h3>Evaluación Previa</h3>
     <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
-    'bye':"""<p> Gracias </p>"""
+    'bye':""""""
                     },
 '/test/Posttest':{
     'questions':  [{'id': 1,
