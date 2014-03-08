@@ -12,8 +12,7 @@ urlpatterns = patterns('',
       (r'^ajax_vote/(?P<type>\w+)/(?P<uri>\w+)$','activitytree.views.ajax_vote'),
       (r'^protoboard/index.html$','activitytree.views.index'),
       (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'registration/login.html'}),
-      (r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
-      (r'^accounts/', include('registration.urls'))
+      (r'^logout/$', 'django.contrib.auth.views.logout_then_login')
       
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
