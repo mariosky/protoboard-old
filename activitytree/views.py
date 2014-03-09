@@ -1,67 +1,73 @@
 # -*- coding: utf-8 -*-
 # Create your views here.
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
 from django.template import RequestContext
 from django.utils import simplejson
 from django.db.models import Avg, Count
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
-from activitytree.models import LearningActivity, UserProfile, LearningStyleInventory,ActivityTree,UserLearningActivity
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity,LearningStyleInventory
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
 
 
 
-def index(request):
-    if request.user.is_authenticated():
-        # Bring the root ULA (default lesson) , in this case Unit
-        # We can have different lessons this can be done with adding  root parameter
-        root = UserLearningActivity.objects.filter(learning_activity__uri = "/activity/POO" ,user = request.user )[0]
-        s = SimpleSequencing()
-        atree = ActivityTree.objects.get(user=root.user,root_activity=root.learning_activity)
 
-        #if the student has a current activity return it
-        if atree.current_activity:
-            activity =  atree.current_activity
-            return HttpResponseRedirect(activity.learning_activity.uri)
-        #else get the next activity to start the lesson
-        else:
-            # Go TO NEXT ACTIVITY
-            next_uri = s.get_next(root)
-            if next_uri is None:
-                #Go to Root
-                return HttpResponseRedirect(root.learning_activity.uri)
-            else:
-                next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
-                return HttpResponseRedirect(next_activity.learning_activity.uri)
-    else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
-    # Do something for anonymous users.
-    
+def welcome(request):
+    courses = Course.objects.all()
+
+    return render_to_response('activitytree/welcome.html', {'courses':courses}, context_instance=RequestContext(request))
+
+
+
+
 
 def activity(request, uri, objective_status = None):
 
     if request.user.is_authenticated():
-        print request.POST
-        # Gets the Learning Activity object from id
-        activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user )[0]
+
+        # First, the requested_activity  exists??
+        # Gets the Learning Activity object from uri
+        try:
+            la = LearningActivity.objects.filter(uri=request.path)[0]
+        except ObjectDoesNotExist:
+            return HttpResponseNotFound('<h1>Activity Not Found</h1>')
 
         s = SimpleSequencing()
-        # Exits the current LA if there is one, but with out setting an objective_measure
-        # Must EXIT ??
-        # Gets the root of the learning Activity
-        root = UserLearningActivity.objects.filter(learning_activity = activity.learning_activity.get_root() ,user = request.user )[0]
-        # activity.get_root()
 
+        # Let's get the requested user learning activity
+        try:
+            requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user )[0]
+        except ObjectDoesNotExist:
+            #User does not have a tracking activity tree
+            #If the requested activity is the root of a tree
+            #register the user to it
+            if la and la.root is None:
+                s.assignActivityTree(request.user,la)
+                requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
+            #If is not a root learning activity then sorry, not found
+            else:
+                return HttpResponseNotFound('<h1>Page not found</h1>')
+
+        # Exits the current LA if there is one, but with out setting an objective_measure
+        # Gets the root of the User Learning Activity
+        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
 
         if request.method == 'GET':
-            # Sets the Learning Activity as current
-            atree = ActivityTree.objects.get(user=activity.user,root_activity=root.learning_activity.get_root())
+
+
+            # Sets the requested  Learning Activity as current
+            atree = ActivityTree.objects.get(user=request.user,root_activity=root.learning_activity.get_root())
+            # Exits last activty
             if atree.current_activity:
                 s.exit( atree.current_activity, objective_status = 'satisfied', progress_status = 'complete' )
-            s.set_current(activity)
+            s.set_current(requested_activity)
+
+
 
 
 
@@ -70,7 +76,7 @@ def activity(request, uri, objective_status = None):
             next_uri = s.get_next(root)
             # Exits the current Learning Activity
             objective_measure = float(request.POST['objective_measure'])
-            s.exit( activity, progress_status = 'complete', objective_status = 'satisfied', objective_measure = objective_measure)
+            s.exit( requested_activity, progress_status = 'complete', objective_status = 'satisfied', objective_measure = objective_measure)
 
             if next_uri is None:
                 #No more activities ?
@@ -84,7 +90,7 @@ def activity(request, uri, objective_status = None):
             next_uri = s.get_prev(root)
             # Exits the current Learning Activity
             objective_measure = float(request.POST['objective_measure'])
-            s.exit( activity, progress_status = 'complete', objective_status = 'satisfied', objective_measure = objective_measure)
+            s.exit( requested_activity, progress_status = 'complete', objective_status = 'satisfied', objective_measure = objective_measure)
 
             if next_uri is None:
                 #No more activities ?
@@ -97,10 +103,23 @@ def activity(request, uri, objective_status = None):
         # Gets the current navegation tree as HTML
         nav = s.get_nav(root)
         navegation_tree = s.nav_to_html(nav)
-        ls = request.user.learningstyleinventory
-        content = activities[activity.learning_activity.uri]
+
+
+        try:
+            request.user.learningstyleinventory
+        except ObjectDoesNotExist:
+            # Assign LS
+            lsj=LearningStyleInventory(visual=10,verbal=10,aural=10,physical=10,logical=10,
+                          social=10, solitary=10, user = request.user)
+            lsj.save()
+        finally:
+            ls = request.user.learningstyleinventory
+
+
+
+        content = activities[requested_activity.learning_activity.uri]
         lsi_graphic =  "http://chart.apis.google.com/chart?cht=r&chs=200x200&chd=t:" + str(ls.visual*100/25)+","+ str(ls.verbal*100/25)+","+str(ls.aural*100/25)+","+str(ls.physical*100/25)+","+str(ls.logical*100/25)+","+str(ls.social*100/25)+","+str(ls.solitary*100/25)+ "&chco=FF0000&chls=2.0,4.0,0.0&chxt=x&chxl=0:|visual|verbal|aural|fisico|logico|social|solitario&chxr=0,0.0,25.0&chm=B,FF000080,0,1.0,5.0"
-        return render_to_response('activitytree/' + (activity.learning_activity.uri).split('/')[1]+'.html', {'navegation': navegation_tree, 'uri':activity.learning_activity.uri,'lsi_graphic':lsi_graphic,'content':content},context_instance=RequestContext(request))
+        return render_to_response('activitytree/' + (requested_activity.learning_activity.uri).split('/')[1]+'.html', {'navegation': navegation_tree, 'uri':requested_activity.learning_activity.uri,'lsi_graphic':lsi_graphic,'content':content},context_instance=RequestContext(request))
     else:      
         return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.    
@@ -194,25 +213,7 @@ def test(request, uri, objective_status = None):
 
 
 
-def bye(request, uri ):
-    if request.user.is_authenticated():
-        # Gets the Learning Activity object from id
 
-        root = UserLearningActivity.objects.filter(learning_activity__uri = "/activity/"+ uri  ,user = request.user )[0]
-        s = SimpleSequencing()
-        nav = s.get_nav(root)
-
-        if request.method == 'GET':
-            # Sets the Learning Activity as current
-            navigation_tree = s.nav_to_html(nav)
-            ls = request.user.learningstyleinventory
-            content = activities[request.path]
-            lsi_graphic =  "http://chart.apis.google.com/chart?cht=r&chs=200x200&chd=t:" + str(ls.visual*100/25)+","+ str(ls.verbal*100/25)+","+str(ls.aural*100/25)+","+str(ls.physical*100/25)+","+str(ls.logical*100/25)+","+str(ls.social*100/25)+","+str(ls.solitary*100/25)+ "&chco=FF0000&chls=2.0,4.0,0.0&chxt=x&chxl=0:|visual|verbal|aural|fisico|logico|social|solitario&chxr=0,0.0,25.0&chm=B,FF000080,0,1.0,5.0"
-            return render_to_response('activitytree/bye.html', {'uri':'/bye/' + uri,'content':content},context_instance=RequestContext(request))
-    else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
-        # Do something for anonymous users.
-    
 
 def check_quiz(post_dict, quiz):
     answerDict = dict(post_dict.iterlists())

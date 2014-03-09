@@ -256,15 +256,21 @@ class UserLearningActivity(models.Model):
                 parent = UserLearningActivity.objects.filter(learning_activity=self.learning_activity.parent,user=self.user)[0]
                 parent.rollup_rules()     
   
+class Course(models.Model):
+    short_description = models.TextField()
+    image = models.ImageField(upload_to='courses', blank=True)
+    root = models.ForeignKey('LearningActivity')
+    start_date = models.DateField(auto_now=True)
+
 class ActivityTree(models.Model):
     user = models.ForeignKey(User)
     root_activity = models.ForeignKey(to ='LearningActivity',related_name = 'activity_tree')
     current_activity =  models.ForeignKey(to ='UserLearningActivity',related_name = 'current_in', null = True ,default=None)
-    short_description = models.TextField()
     class Meta:
-        unique_together = ("user", "root_activity")        
-            
-            
+        unique_together = ("user", "root_activity")
+
+
+
             
             
             

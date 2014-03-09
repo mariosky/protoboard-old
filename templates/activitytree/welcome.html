@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Protoboard  Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+     <!--
+     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}bluehaze.css" title="Blue Haze stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}color-scheme.css" title="Blue Haze stylesheet" />
+    -->
+      <!-- Custom styles for this template -->
+
+    <!-- Custom styles for this template -->
+    <style type="text/css" media="screen">
+	 /*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+}
+
+    </style>
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">protoboard.org</a>
+        </div>
+
+
+       <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.username %}
+             <li><a class="navbar-brand" href="#"> Usuario: {{ user.username }}</a></li>
+
+             <li><a href="/logout">Log out</a></li>
+
+            {% else %}
+
+            <li><a href="/login">Log in</a></li>
+
+            {% endif %}
+          </ul>
+
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h2> <code> !Hola Mundo!</code></h2>
+        <p>Bienvenidos a protoboard.org un prototipo de Sistema de Tutoría Inteligente de código abierto.</p>
+        <p>La plataforma está enfocada a brindar tutorías de programación de manera informal,
+            <a href="/login"> ingresa como alguno de los estudiantes de prueba. </a> y elige algunos de los mini-cursos
+        demo.</p>
+
+        <p><a class="btn btn-default btn-lg" role="button">Ver más &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+         {% for c in courses %}
+
+        <div class="col-md-4">
+
+            <h2>{{c.root.name}}</h2>
+            {{ c.short_description|safe }}
+            <a class="btn btn-primary" href="{{ c.root.uri }}" role="button">Vamos &raquo;</a>
+        </div>
+
+         {% endfor %}
+        <div class="col-md-4">
+          <h2>Python __init__</h2>
+          <p> Orientado a principiantes muy avanzados, que se maravillen con la simplicidad de este hola mundo: </p>
+            <p><code>print "hola mundo"</code></p>
+          <p> Utilizado por la  Nasa, Google, Instagram y por su puesto protoboard.org</p>
+
+          <p><a class="btn btn-primary" href="#" disabled="disabled" role="button">Próximamente &raquo;</a></p>
+        </div>
+
+
+      </div>
+
+      <hr>
+
+      <footer>
+        <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />El contennido de los cursos es: <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

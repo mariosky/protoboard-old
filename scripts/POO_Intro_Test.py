@@ -1,6 +1,5 @@
-from decimal import Decimal
-from activitytree.models import LearningActivity,UserProfile,LearningStyleInventory, \
-     LearningActivity, UserLearningActivity,ActivityTree
+# -*- coding: utf-8 -*-
+from activitytree.models import LearningStyleInventory, LearningActivity, Course
 from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
 
@@ -15,7 +14,6 @@ from activitytree.interaction_handler import SimpleSequencing
 LearningActivity.objects.all().delete()
 POO = LearningActivity( name = 'Intro a la POO', slug = 'POO',
     uri = "/activity/POO",
-#    lom =
     parent = None,
     root   = None,
 
@@ -36,24 +34,15 @@ POO = LearningActivity( name = 'Intro a la POO', slug = 'POO',
     )
 
 POO.save()
+description= u"""
+        <p> Que no te intimiden las palabras <code>class</code> , <code>abstract</code> , <code>override</code> o te dé miedo eso del
+        <strong> polimorfismo </strong> o te emociones con la <strong> herencia múltiple</strong>.</p>
+        <p> Ya deberías saber programación básica en algún lenguaje de programación.</p>"""
 
-welcome = LearningActivity( name = 'Bienvenidos', slug = 'Bienvenidos',
-    uri = "/activity/Bienvenidos",
-#   lom = ,
-    parent = POO, root  = POO,
 
-    pre_condition_rule = "",
-    post_condition_rule = "",
+cursoPOO = Course(short_description=description, root=POO)
+cursoPOO.save()
 
-    rollup_rule  = "",
-    rollup_objective = False,
-    rollup_progress = False,
-
-    is_container = False,
-    is_visible = False,
-    order_in_container = 0
-    )
-welcome.save()
 
 pretest = LearningActivity( name = 'Pretest', slug = 'Pretest',
     uri = "/test/Pretest",
