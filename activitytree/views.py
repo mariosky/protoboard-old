@@ -13,7 +13,42 @@ from activitytree.models import Course,ActivityTree,UserLearningActivity, Learni
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
+from eval_code.RedisCola import Cola, Task
+import json
 
+test_code = '''
+import unittest, sys, json
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_order(self):
+        self.assertEqual(solution([2,6,1,5]),[1,2,5,6])
+
+    def test_none(self):
+        self.assertEqual(solution(None),[])
+
+
+class TestFoo(unittest.TestCase):
+    def test_foo(self):
+        from StringIO import StringIO
+        saved_stdout = sys.stdout
+        try:
+            out = StringIO()
+            sys.stdout = out
+            foo()
+            output = out.getvalue().strip()
+
+            assert output == 'hello world!'
+        finally:
+            sys.stdout = saved_stdout
+            print output
+
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+test_result = unittest.TextTestRunner(verbosity=2, stream=sys.stderr).run(suite)
+'''
 
 
 
@@ -21,6 +56,50 @@ def welcome(request):
     courses = Course.objects.all()
 
     return render_to_response('activitytree/welcome.html', {'courses':courses}, context_instance=RequestContext(request))
+
+
+def program(request,uri):
+    return render_to_response('activitytree/program.html', {}, context_instance=RequestContext(request))
+
+
+
+def execute_queue(request):
+    if request.method == 'POST':
+        rpc=json.loads(request.body)
+
+        server = Cola("curso")
+
+        code = rpc["params"][0]
+        task = {"id": None,"method": "exec","params": {"code": code, "test": test_code}}
+        task_id = server.enqueue(**task)
+
+        print 'TASK:',task_id, task
+
+        result= {"result":"added" , "error": None, "id": task_id}
+        return HttpResponse(json.dumps(result), mimetype='application/javascript')
+
+def get_result(request):
+    if request.method == 'POST':
+        rpc=json.loads(request.body)
+        #We only need the Task identifier
+        #TO DO:
+        # No ID, Task Not Found
+        task_id = rpc["id"]
+        print task_id
+        t = Task(id=task_id)
+        print t
+
+        # outcome:
+        # -1 No result found
+        # 0 Sub-process Success
+        # 1 Sub-process Failure
+        if t.get_result('curso'):
+            result = json.dumps({'result': t.result[0], 'outcome': t.result[1]})
+            return HttpResponse(result , mimetype='application/javascript')
+
+        else:
+            return HttpResponse(json.dumps({'outcome':-1}) , mimetype='application/javascript')
+
 
 
 
