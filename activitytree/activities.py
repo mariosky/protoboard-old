@@ -379,5 +379,76 @@ Por último, también sabemos que las aves reaccionan ante ciertos sucesos, como
           </p>
 
             """
-    }    
+    ,
+    '/program/1':
+        { 'initial_code':"""
+# Funcion que ordena una lista, puedes utilizar sort()
+def solution():
+    pass
+""",
+            'correct_code':"""# Solution:
+def solution(l):
+    if l is None:
+        return []
+    else:
+        l.sort()
+        return l""",
+            'instructions':"""<p>Escribe una función llamada solution la cual reciba como parámetro
+                una lista y regrese la lista ordenada.</p>
+            <p>En caso de recibir como parámetro el valor None debe regresar una lista vacía. </p>
+            <code>
+                <p>>>> solution([4,3,5,1])</p>
+                <p>[1, 3, 4, 5]</p>
+                <p>>>> solution(None)</p>
+                <p>[]</p>
+            </code>""",
+            'unit_test':"""import unittest,sys
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_order(self):
+        self.assertEqual(solution([2,6,1,5]),[1,2,5,6])
+
+    def test_none(self):
+        self.assertEqual(solution(None),[])
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+test_result = unittest.TextTestRunner(verbosity=2, stream=sys.stderr).run(suite)
+"""},
+
+
+    '/program/2':
+        { 'initial_code':u"""
+# Funcion que imprime Hola
+def foo():
+    pass
+""",
+            'correct_code':u"""# Solution:
+def foo(l):
+    print 'hola'
+    """,
+            'instructions':u"""<p>Escribe una función llamada foo la cual imprima Hola.</p>
+            </code>""",
+            'unit_test':u"""import unittest, sys
+class Test(unittest.TestCase):
+    def test_foo(self):
+        from StringIO import StringIO
+        saved_stdout = sys.stdout
+        output = None
+        try:
+            out = StringIO()
+            sys.stdout = out
+            foo()
+            output = out.getvalue().strip()
+            assert output == 'Hola'
+        finally:
+            sys.stdout = saved_stdout
+            print output
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+test_result = unittest.TextTestRunner(verbosity=2, stream=sys.stderr).run(suite)
+"""}
+}
+
 

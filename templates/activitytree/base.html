@@ -331,12 +331,12 @@ background-position: left top;
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-2 col-sm-2 sidebar">
+        <div class="col-md-3 col-sm-3 sidebar">
                 {{navegation|safe}}
 
         </div>
 
-          <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-2 main">
+          <div class="col-sm-9 col-sm-offset-3 col-md-7 col-md-offset-3 main">
 
 
 
@@ -349,25 +349,7 @@ background-position: left top;
             {% endblock content %}
 
            </div>
-{% if user.username %}
 
-      <div id="panel_col" class="col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0">
-        <div class="panel panel-default">
-                <div class="panel-heading"> <h3 class="panel-title">Estilo de Aprendizaje</h3></div>
-                <div class="panel-body">
-
-
-
-
-                <span> <strong> {{user.username}} </strong>   según el cuestionario que resolviste este es tu estilo de aprendizaje.</span>
-                <img class="img-responsive" src="{{lsi_graphic}}" alt="Estilo de Aprendizaje"/>
-
-
-                </div>
-        </div>
-
-      </div>
-{% endif %}
 
       </div>
     </div>
@@ -378,7 +360,7 @@ background-position: left top;
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
 
-  <script>
+  <script type="text/javascript" charset="utf-8">
 
 
 

@@ -106,6 +106,50 @@ preliminar = LearningActivity( name = 'Comentario Preliminar', slug = 'Prelimina
     )
 preliminar.save()
 
+
+
+program_1 = LearningActivity( name = 'Ejercicio 1', slug = 'E1',
+    uri = "/program/1",
+#   lom =
+    parent = content, root  = POO,
+
+#   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
+
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    flow = True,
+    forward_only = True,
+    choice = False,
+
+    rollup_objective = True,
+    rollup_progress = True,
+    is_container = False,
+    is_visible = True,    order_in_container = 0
+    )
+program_1.save()
+
+program_2 = LearningActivity( name = 'Ejercicio 2', slug = 'E2',
+    uri = "/program/2",
+#   lom =
+    parent = content, root  = POO,
+
+#   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
+
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    flow = True,
+    forward_only = True,
+    choice = False,
+
+    rollup_objective = True,
+    rollup_progress = True,
+    is_container = False,
+    is_visible = True,    order_in_container = 0
+    )
+program_2.save()
+
 objetosyclases = LearningActivity( name = 'Objetos y Clases', slug = 'OBJETOS_CLASES',
     uri = "/activity/Objetos_y_Clases",
 #   lom =

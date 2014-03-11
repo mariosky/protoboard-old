@@ -1,5 +1,4 @@
 __author__ = 'mariosky'
-__author__ = 'mariosky'
 import redis
 
 HOST = "96.126.96.132"
