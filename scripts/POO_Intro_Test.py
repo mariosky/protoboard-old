@@ -125,7 +125,7 @@ program_1 = LearningActivity( name = 'Ejercicio 1', slug = 'E1',
     rollup_objective = True,
     rollup_progress = True,
     is_container = False,
-    is_visible = True,    order_in_container = 0
+    is_visible = True,    order_in_container = 1
     )
 program_1.save()
 
@@ -146,7 +146,7 @@ program_2 = LearningActivity( name = 'Ejercicio 2', slug = 'E2',
     rollup_objective = True,
     rollup_progress = True,
     is_container = False,
-    is_visible = True,    order_in_container = 0
+    is_visible = True,    order_in_container = 2
     )
 program_2.save()
 
@@ -235,7 +235,7 @@ encapsulacion = LearningActivity( name = 'Encapsulacion', slug = 'Encapsulacion'
 
     is_container = True,
     is_visible = True,
-    order_in_container = 2
+    order_in_container = 4
     )
 encapsulacion.save()
 
@@ -296,7 +296,7 @@ herencia = LearningActivity( name = 'Herencia', slug = 'Herencia',
     rollup_progress = True,
     is_container = False,
     is_visible = True,
-    order_in_container = 3
+    order_in_container = 7
     )
 herencia.save()
 
@@ -316,7 +316,7 @@ polimorfismo = LearningActivity( name = 'Polimorfismo', slug = 'polimorfismo',
     rollup_progress = True,
     is_container = False,
     is_visible = True,
-    order_in_container = 4
+    order_in_container = 14
     )
 polimorfismo.save()
 
@@ -335,7 +335,7 @@ posttest = LearningActivity( name = 'Posttest', slug = 'posttest',
 
     is_container = False,
     is_visible = True,
-    order_in_container = 3
+    order_in_container = 23
     )
 posttest.save()
 
@@ -355,7 +355,7 @@ comentario_final = LearningActivity( name = 'Comentario_final', slug = 'comentar
     rollup_progress = True,
     is_container = False,
     is_visible = True,
-    order_in_container = 4
+    order_in_container = 34
     )
 comentario_final.save()
 
