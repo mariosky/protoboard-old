@@ -6,6 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Example:
       (r'^$','activitytree.views.welcome'),
+      (r'^welcome/$','activitytree.views.welcome'),
       (r'^activity/(?P<uri>\w+)$','activitytree.views.activity'),
       (r'^test/(?P<uri>\w+)$','activitytree.views.test'),
 
