@@ -39,6 +39,7 @@ class LearningActivity(models.Model):
     flow = models.BooleanField(default=True)
     forward_only = models.BooleanField(default=False)
     choice = models.BooleanField(default=True)
+    choice_exit = models.BooleanField(default=True)
     
     match_rule = models.TextField(blank=True)
     filter_rule = models.TextField(blank=True)
@@ -108,6 +109,12 @@ class UserLearningActivity(models.Model):
         self.pre_condition = ""
         if  self.learning_activity.pre_condition_rule != "":
             exec(self.learning_activity.pre_condition_rule)
+            super(UserLearningActivity, self).save()
+
+    def eval_post_condition_rule(self):
+        self.pre_condition = ""
+        if  self.learning_activity.post_condition_rule != "":
+            exec(self.learning_activity.post_condition_rule)
             super(UserLearningActivity, self).save()
 
 

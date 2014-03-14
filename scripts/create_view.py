@@ -3,6 +3,10 @@ __author__ = 'mariosky'
 import psycopg2
 from django.conf import settings
 
+if __name__ == "__main__":
+    import os
+    print "####### DJANGO SETTINGS"
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
 
 con = psycopg2.connect(database=settings.DATABASES['default']['NAME'],user=settings.DATABASES['default']['USER'],
                        host=settings.DATABASES['default']['HOST'],password=settings.DATABASES['default']['PASSWORD'],

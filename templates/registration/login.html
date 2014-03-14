@@ -5,7 +5,61 @@
 {% block content %}
 
 
+    <button class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-sm">Usuarios de Prueba</button>
+
+      <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel"> Usuarios de Prueba </h4>
+
+      </div>
+    <div class="modal-body">
+        <table class="table">
+            <tr>
+              <th>Usuario</th>
+              <th>Password</th>
+             </tr>
+            <tr>
+              <td>ana</td>
+              <td>1234</td>
+             </tr>
+            <tr>
+              <td>paul</td>
+              <td>1234</td>
+              </tr>
+<tr><td>edgar </td>          <td>1234</td></tr>
+<tr><td>osuna </td>       <td>1234</td></tr>
+<tr><td>malu  </td>         <td>1234</td></tr>
+<tr><td>jose  </td>        <td>1234</td></tr>
+<tr><td>david  </td>         <td>1234</td></tr>
+<tr><td>juan</td>    <td>1234</td></tr>
+<tr><td>cota</td>              <td>1234</td></tr>
+<tr><td>omar</td>            <td>1234</td></tr>
+<tr><td>santana</td>           <td>1234</td></tr>
+<tr><td>hector</td>  <td>1234</td></tr>
+<tr><td>edie</td>           <td>1234</td></tr>
+<tr><td>baby</td>      <td>1234</td></tr>
+<tr><td>saul</td>            <td>1234</td></tr>
+<tr><td>brenda</td>             <td>1234</td></tr>
+<tr><td>samara</td>         <td>1234</td></tr>
+<tr><td>daniel</td>      <td>1234</td></tr>
+<tr><td>jorge</td>           <td>1234</td></tr>
+<tr><td>mike</td>             <td>1234</td></tr>
+<tr><td>luis</td>            <td>1234</td></tr>
+            </table>
+
+
+     </div>
+     </div>
+     </div>
+     </div>
+
+
 <form class="form-horizontal" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}" >{% csrf_token %}
+
+
 
   <p class="lead">  Por favor, regístrate </p>
 

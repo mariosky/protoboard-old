@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from activitytree.models import LearningStyleInventory, LearningActivity, Course
-from django.contrib.auth.models import User
-from activitytree.interaction_handler import SimpleSequencing
 
 ##
 ##
@@ -11,18 +8,27 @@ from activitytree.interaction_handler import SimpleSequencing
 
 
 
+if __name__ == "__main__":
+    import os
+    print "####### DJANGO SETTINGS"
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
+
+from activitytree.models import LearningStyleInventory, LearningActivity, Course
+from django.contrib.auth.models import User
+from activitytree.interaction_handler import SimpleSequencing
+
+
+
 LearningActivity.objects.all().delete()
 POO = LearningActivity( name = 'Intro a la POO', slug = 'POO',
     uri = "/activity/POO",
     parent = None,
     root   = None,
 
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
     flow = True,
     forward_only = False,
     choice = True,
+    choice_exit = False,
 
     rollup_rule  = "satisfied IF All satisfied",
     rollup_objective = True,
@@ -50,12 +56,16 @@ pretest = LearningActivity( name = 'Pretest', slug = 'Pretest',
     parent = POO, root  = POO,
 
     pre_condition_rule = """if self.num_attempts == 0 :
-                  self.pre_condition = 'stopForwardTraversal' """,
-    post_condition_rule = "",
+ self.pre_condition = 'stopForwardTraversal'
+else:
+ self.pre_condition = 'hidden'""",
+    post_condition_rule = "" ,
 
     rollup_rule  = "",
     rollup_objective = True,
     rollup_progress = True,
+    choice_exit = False,
+
 
     is_container = False,
     is_visible = False,
@@ -74,6 +84,7 @@ content = LearningActivity( name = 'Contenido', slug = 'Contenido',
     flow = True,
     forward_only = False,
     choice = True,
+    choice_exit = False,
 
     match_rule = "",
     filter_rule = "",
@@ -82,7 +93,7 @@ content = LearningActivity( name = 'Contenido', slug = 'Contenido',
     rollup_objective = True,
     rollup_progress = True,
     is_container = True,
-    is_visible = False,
+    is_visible = True,
     order_in_container = 2
     )
 content.save()
@@ -220,8 +231,8 @@ encapsulacion = LearningActivity( name = 'Encapsulacion', slug = 'Encapsulacion'
 #   lom =
     parent = content, root  = POO,
 
-#   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
-
+#    pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
+    pre_condition_rule = """self.pre_condition = 'disabled'"""  ,
     post_condition_rule = "",
 
     flow = True,
@@ -392,30 +403,26 @@ s.assignActivityTree(p,POO)
 
 
 estudiantes = [
-('edgar.gm1691@gmail.com',          '10211108',17,13,16,12,14,16, 9),
-('m.machuca.osuna@gmail.com',       '10211123',15,12,14,18,14,19, 8),
-('malu.esquivel@gmail.com',         '10211102', 7,10, 4, 8,17,14,16),
-('jose-eleasar@hotmail.com',        '10211156',17, 6,16,13,14,11, 8),
-('davidhdez.sin@gmail.com',         '10211090',15,10,13,14,17,15,11),
-('chavezjuancarlos12@gmail.com',    '10211607',11,13,11,10,13,18, 8),
-('isaicota@gmail.com',              '10211618',13, 7,18,14,12,10,13),
-('omar_147@hotmail.com',            '10211166', 7, 3, 7,12,16,17, 6),
-('santana77@hotmail.com',           '10211670',10, 9,13,13,13,14,13),
-('hector.guerrero.1325@gmail.com',  '10211325', 1,11,11,11,18,13,13),
-('edie_1023@hotmail.com',           '10211147',14, 6,16,12,12,13,12),
-('chiquibaby1000@hotmail.com',      '10211129',15,18,20,17,13,18,17),
-('saulgreen7@gmail.com',            '10211141',13,11,14,11,14,14,13),
-('brenda_mcr@live.com',             '10211107',17,13,20,12,14,11,16),
-('samara.heba@hotmail.com',         '10211158',14,15,13,12,15,16,12),
-('danieladelgado.h@gmail.com',      '10211092', 9, 8,15,11,13,14,13),
-('jorge.hrdez@gmail.com',           '10211112',17,12,14,17,19,18,14),
-('jonathanbarronleon@gmail.com',    '10211091',14, 5,16,12, 6,12, 7),
-('itandreasalgado@gmail.com',       '10211183', 7,12,10, 8,15, 8,11),
-('victorpaniagua91@gmail.com',      '10211136', 9,10,11,12,14,20, 9),
-('mike.amms@gmail.com',             '10211167',15,16,17,18,18,13,11),
-('luisjuan91@gmail.com',            '10211103',11, 7,11,10,11,12, 6),
-('link_ztb@hotmail.com',            '10211100', 8, 7, 6,10,13,14,15),
-('anguiano.ae22@hotmail.com',       '10211097',12,10,12,13,10,18,10)]
+('edgar',          '1234',17,13,16,12,14,16, 9),
+('osuna',       '1234',15,12,14,18,14,19, 8),
+('malu',         '1234', 7,10, 4, 8,17,14,16),
+('jose',        '1234',17, 6,16,13,14,11, 8),
+('david',         '1234',15,10,13,14,17,15,11),
+('juan',    '1234',11,13,11,10,13,18, 8),
+('cota',              '1234',13, 7,18,14,12,10,13),
+('omar',            '1234', 7, 3, 7,12,16,17, 6),
+('santana',           '1234',10, 9,13,13,13,14,13),
+('hector',  '1234', 1,11,11,11,18,13,13),
+('edie',           '1234',14, 6,16,12,12,13,12),
+('baby',      '1234',15,18,20,17,13,18,17),
+('saul',            '1234',13,11,14,11,14,14,13),
+('brenda',             '1234',17,13,20,12,14,11,16),
+('samara',         '1234',14,15,13,12,15,16,12),
+('daniel',      '1234', 9, 8,15,11,13,14,13),
+('jorge',           '1234',17,12,14,17,19,18,14),
+('mike',             '1234',15,16,17,18,18,13,11),
+('luis',            '1234',11, 7,11,10,11,12, 6),
+('anguiano.ae22@hotmail.com',       '1234',12,10,12,13,10,18,10)]
 
 for e in estudiantes:
     User.objects.filter(username=e[0]).delete()
@@ -427,6 +434,13 @@ for e in estudiantes:
     lsu.save()
     ss = SimpleSequencing()
     ss.assignActivityTree(u,POO)
+
+
+import os
+
+if __name__ == "__main__":
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
+
 ##
 ##
 ## Assign Activity to both Users

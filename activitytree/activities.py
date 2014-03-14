@@ -1,10 +1,80 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 activities = {
-'/activity/POO':u""" <h3 id="welcome">Bienvenidos</h3>
+'/activity/POO':u"""
+      <button class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-lg">Leer</button>
+      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel"> Secuenciado </h4>
+      </div>
+ <div class="modal-body">
+
+      <h3>Introducción</h3>
+		<p>
+		    Aprender a programar de forma autodidácta puede ser una tarea difícil. No sabemos por donde empezar, ¿que material debo leer
+		    primero?, ¿que ejercicios son los adecuados, para mi habilidad actual?, ¿que necesito instalar para empezar?,¿veo videos o leo?.
+			Uno de los problemas de la Web es que nos podemos perder entre tanta información, todos los recursos necesarios pueden estar ahí, pero
+			   ¿cual podría ser una secuencia adecuada para visitarlos?.
+		</p>
+		<p>
+		   Para Protoboard nos basamos en una especificación llamada <a href="http://www.imsglobal.org/simplesequencing/"> IMS Simple Sequencing Specification (SS) </a>,
+		   la cual sirve para 	"representar el  comportamiento deseado en una experiencia de aprendizaje", básicamente es una manera de especificar
+		   como se deberían ir entregando las actividades de aprendizaje a los alumnos. No pretendemos cumplir totalmente con la especificación y más bien
+		   se ha ido adaptando a nuestras necesidades. Trabajaremos en lograr que el sequenciado se adapte a los usuarios utilizando técnicas de
+		   personalización y sistemas de recomendación. Por ejemplo:
+		 </p>
+		   <ul>
+              <li> Agregando reglas difusas para especificar el secuenciado.</li>
+              <li> Implementando un sistema de recomendación híbrido para proponer actividades de aprendizaje.</li>
+		      <li> Proponiendo un modelo para medir de manera indirecta el nivel de fluidez que experimenta el
+                 estudiante para sugerirle ejercicios adecuados</li>
+              <li> Considerar información  contexto en los algoritmos de recomendación </li>
+           </ul>
+          <p>
+             Con este demo  iremos probando la funcionalidad básica de la plataforma sin agregar todavía los módulos de personalización,
+             ya que esta es una nueva versión en desarrollo.
+          </p>
+          <p>
+
+              Se irán explicando a lo largo del demo las capacidades de secuenciado y el
+             tipo de actividades de aprendizaje implementadas. En las explicaciones se tratará de reducir al mínimo
+             el uso de términos técnicos de computación.
+          </p>
+        <h3> Arbol de Secuencia</h3>
+    <p> Cuando un instructor planea un curso en línea o presencial, podría empezar por  decidir y organizar los temas
+        y objetivos didácticos que cubrirá en el curso. Adecuarlos al tiempo disponible y nivel académico de sus alumnos.
+        Una forma muy común de organización es emplear un árbol de tres niveles: Unidad-Tema-Actividades, las plataformas
+        más populares de cursos en línea utilizan esta estructura. En la especificación SS se generaliza la solución a un
+        árbol de <strong>n</strong> niveles. Solo las hojas del arbol representan actividades de aprendizaje o recursos
+        didácticos con los que interactuarán los alumnos. Estas actividades de aprendizaje se llaman también objetos de
+        aprendizaje, ya que son auto contenidos y pueden reutilizarse en varios cursos. A los otros nodos podemos verlos como
+        contenedores, igual que en las carpatas de archivos en la computadora. Los contenedores pueden corresponder a objetivos de
+        aprendizaje o niveles jerárquicos de organización como unidades, temas, subtemas, etc.
+    </p>
+    <p>
+        Una secuencia de dichas actividades puede establecerse al recorrer el árbol en pre-orden.
+    </p>
+			<img src="https://s3.amazonaws.com/mariogarcia/images/ActivityTree.png" class="img-responsive" alt="Responsive image">
+
+
+
+
+
+
+
+
+      </div>
+     </div>
+     </div>
+     </div>
+      <h3 id="welcome">Bienvenidos</h3>
       <p> En esta clase aprenderas algunos conceptos básicos de la Programación Orientada a Objetos. </p>
       <p> Como primer paso realizarás un pequeño examen para
           evaluar tus conocimientos de Programación. </p>
+
     """
 ,
 '/activity/Bienvenidos': u""" <h3 id="welcome">Bienvenidos</h3>
@@ -80,7 +150,9 @@ Este m&eacute;todo puede utilizarse para agrupar atributos y m&eacute;todos desd
     """ ,
 
 '/activity/Polimorfismo': u""" <h3>Definici&oacute;n de polimorfismo</h3>
-<p align="justify">La palabra <i>polimorfismo</i> proviene del griego y significa <i>que posee varias formas diferentes</i>. Este es uno de los conceptos esenciales de una programaci&oacute;n orientada a objetos. As&iacute; como la herencia est&aacute; relacionada con las clases y su jerarqu&iacute;a, el polimorfismo se relaciona con los m&eacute;todos.
+<p align="justify">La palabra <i>polimorfismo</i> proviene del griego y significa <i>que posee varias formas diferentes</i>.
+Este es uno de los conceptos esenciales de una programaci&oacute;n orientada a objetos. As&iacute; como la herencia est&aacute;
+relacionada con las clases y su jerarqu&iacute;a, el polimorfismo se relaciona con los m&eacute;todos.
 
 <p align="justify">En general, hay tres tipos de polimorfismo:<ul>
 <li><a href="#heritage">Polimorfismo de inclusi&oacute;n</a> (tambi&eacute;n llamado <i>redefinici&oacute;n</i> o <i>subtipado</i>)</li></li>
@@ -89,7 +161,8 @@ Este m&eacute;todo puede utilizarse para agrupar atributos y m&eacute;todos desd
 </ul>
 <p align="center">
 
-<p align="justify">Trataremos de describir ahora con m&aacute;s precisi&oacute;n estos tipos de polimorfismo, pero le sugerimos prestar atenci&oacute;n, ya que muchas personas suelen confundirse al tratar de comprender las diferencias existentes entre estos tres tipos.
+<p align="justify">Trataremos de describir ahora con m&aacute;s precisi&oacute;n estos tipos de polimorfismo, pero le sugerimos prestar atenci&oacute;n,
+ya que muchas personas suelen confundirse al tratar de comprender las diferencias existentes entre estos tres tipos.
 
 <a name="heritage" class="ancre"></a>
 <h2>Polimorfismo de subtipado</h2>
@@ -107,7 +180,8 @@ cada uno heredando el objeto <i>pieza</i>.
 
 <a name="adhoc" class="ancre"></a>
 <h2>Polimorfismo de sobrecarga</h2>
-<p align="justify">El polimorfismo de sobrecarga ocurre cuando las funciones del mismo nombre existen, con funcionalidad similar, en clases que son completamente independientes una de otra (&eacute;stas no tienen que ser clases secundarias de la clase objeto).
+<p align="justify">El polimorfismo de sobrecarga ocurre cuando las funciones del mismo nombre existen, con funcionalidad similar,
+en clases que son completamente independientes una de otra (&eacute;stas no tienen que ser clases secundarias de la clase objeto).
 Por ejemplo, la clase complex, la clase image y la clase link pueden todas tener la funci&oacute;n "display".
 Esto significa que no necesitamos preocuparnos sobre el tipo de objeto con el que estamos trabajando si todo lo que deseamos es verlo en la pantalla.
 <p align="justify">Por lo tanto, el polimorfismo de sobrecarga nos permite definir operadores cuyos comportamientos var&iacute;an de acuerdo a los
@@ -381,19 +455,19 @@ Por último, también sabemos que las aves reaccionan ante ciertos sucesos, como
             """
     ,
     '/program/1':
-        { 'initial_code':"""
+        { 'initial_code':u"""
 # Funcion que ordena una lista, puedes utilizar sort()
 def solution():
     pass
 """,
-            'correct_code':"""# Solution:
+            'correct_code':u"""# Solution:
 def solution(l):
     if l is None:
         return []
     else:
         l.sort()
         return l""",
-            'instructions':"""<p>Escribe una función llamada solution la cual reciba como parámetro
+            'instructions':u"""<p>Escribe una función llamada solution la cual reciba como parámetro
                 una lista y regrese la lista ordenada.</p>
             <p>En caso de recibir como parámetro el valor None debe regresar una lista vacía. </p>
             <code>
@@ -402,7 +476,7 @@ def solution(l):
                 <p>>>> solution(None)</p>
                 <p>[]</p>
             </code>""",
-            'unit_test':"""import unittest,sys
+            'unit_test':u"""import unittest,sys
 class Test(unittest.TestCase):
     def setUp(self):
         pass

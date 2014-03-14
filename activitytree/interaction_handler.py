@@ -36,10 +36,11 @@ TRANSFORM = """<?xml version="1.0" encoding="utf-8"?>
 	            <li>
 	             <xsl:attribute name="class">
 	                    <xsl:if test="@is_visible = 'False'">hidden </xsl:if>
-	                    <xsl:value-of select="concat('container_', @objective_status)" />
+	                    <xsl:if test="@pre_condition = 'disabled'"> disabled </xsl:if>
+						<xsl:value-of select="concat('container_', @objective_status)" />
 	             </xsl:attribute>
 
-	        		<a href="#top">
+	        		<a href="{@uri}">
 						<xsl:value-of select="@identifier" />
 	       		 	</a>
 			    </li>
@@ -206,6 +207,7 @@ class SimpleSequencing(object):
             ula.save()
             atree.save()
             ula.rollup_rules()
+            ula
 
     def update(self, ula, progress_status=None, objective_status=None, objective_measure=None):
         if not ula.is_current:
@@ -309,7 +311,7 @@ class SimpleSequencing(object):
                 child.eval_pre_condition_rule()
 
                 #IF Parent ForwardOnly is True, disable if already tried
-
+                print child.learning_activity.uri, child.pre_condition
                 if child.pre_condition == 'stopForwardTraversal':
                     ula.children.append(child)
                     return ula

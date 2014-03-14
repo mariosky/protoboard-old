@@ -19,11 +19,9 @@ import json
 
 def welcome(request):
     courses = Course.objects.all()
-
     return render_to_response('activitytree/welcome.html', {'courses':courses}, context_instance=RequestContext(request))
 
-def activity(request, uri, objective_status = None):
-
+def activity(request,uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
         # First, the requested_activity  exists??
@@ -38,31 +36,36 @@ def activity(request, uri, objective_status = None):
 
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
-            _set_current(request,requested_activity, root, s, objective_status='satisfied', progress_status='complete')
+            # if choice_exit consider complete
+            _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
 
         if request.method == 'POST' and 'nav_event' in request.POST:
-        # We are going to exit activity, get objective measure
-            objective_measure = float(request.POST['objective_measure'])
+
+            if requested_activity.learning_activity.is_container:
+                progress_status = None
+                objective_status = None
+            else:
+                ###
+                ###  What if status in POST??
+                ###
+                progress_status = 'complete'
+                objective_status = 'satisfied'
 
 
-
-            next_uri = None
             if  request.POST['nav_event'] == 'next':
                 # Go TO NEXT ACTIVITY
                 next_uri = s.get_next(root)
-                print next_uri
-
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
                 next_uri = s.get_prev(root)
-            print next_uri
 
             if next_uri is None:
                     #No more activities ?
                 return HttpResponseRedirect( root.learning_activity.uri)
 
             else:
-                s.exit( requested_activity, progress_status = 'complete', objective_status = 'satisfied', objective_measure = objective_measure)
+
+                s.exit( requested_activity, progress_status = progress_status, objective_status = objective_status)
                 next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
                 return HttpResponseRedirect(next_activity.learning_activity.uri)
 
@@ -112,8 +115,8 @@ def test(request, uri, objective_status = None):
 
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
-            _set_current(request,requested_activity, root, s, objective_status='satisfied', progress_status='complete')
-
+            # if choice_exit consider complete
+            _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
 
         elif request.method == 'POST':
             if 'check' in request.POST:
@@ -122,12 +125,15 @@ def test(request, uri, objective_status = None):
                 objective_measure = feedback['total_correct']
                 s.update(requested_activity, progress_status = None, objective_status = None, objective_measure = objective_measure)
 
+
             elif 'nav_event' in request.POST:
                 next_uri = None
 
                 if request.POST['nav_event'] == 'next' :
                     # Go TO NEXT ACTIVITY
                     next_uri = s.get_next(root)
+                    progress_status = 'complete'
+
                 elif request.POST['nav_event'] == 'prev':
                     # Go TO PREV ACTIVITY
                     next_uri = s.get_prev(root)
@@ -180,7 +186,8 @@ def program(request,uri):
 
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
-            _set_current(request,requested_activity, root, s, objective_status='satisfied', progress_status='complete')
+            # if choice_exit consider complete
+            _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
 
         if request.method == 'POST' and 'nav_event' in request.POST:
         # We are going to exit activity, get objective measure
@@ -290,9 +297,14 @@ def _get_ula(request, s):
 
 def _set_current(request,requested_activity, root, s,objective_status, progress_status):
     # Sets the requested  Learning Activity as current
+
     atree = ActivityTree.objects.get(user=request.user,root_activity=root.learning_activity.get_root())
+
     # Exits last activty
     if atree.current_activity:
+        if request.method == 'GET' and atree.current_activity.learning_activity.choice_exit:
+            objective_status='satisfied'
+            progress_status='complete'
         s.exit( atree.current_activity, objective_status=objective_status, progress_status=progress_status)
     s.set_current(requested_activity)
 
