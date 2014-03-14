@@ -13,7 +13,12 @@ if __name__ == "__main__":
     print "####### DJANGO SETTINGS"
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
 
-from activitytree.models import LearningStyleInventory, LearningActivity, Course
+
+
+
+
+
+from activitytree.models import LearningStyleInventory, LearningActivity, Course, UserLearningActivity
 from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
 
@@ -72,6 +77,9 @@ else:
     order_in_container = 1
     )
 pretest.save()
+
+
+
 
 content = LearningActivity( name = 'Contenido', slug = 'Contenido',
     uri = "/activity/Contenido",
@@ -331,24 +339,88 @@ polimorfismo = LearningActivity( name = 'Polimorfismo', slug = 'polimorfismo',
     )
 polimorfismo.save()
 
-posttest = LearningActivity( name = 'Posttest', slug = 'posttest',
-    uri = "/test/Posttest",
-#   lom = ,
-    parent = POO, root  = POO,
 
-    pre_condition_rule = """if self.num_attempts == 0 :
-                  self.pre_condition = 'stopForwardTraversal' """,
+posttest_root = LearningActivity( name = 'Post', slug = 'Post',
+    uri = "/activity/Post",
+    parent = POO,
+    root   = POO,
+
+    flow = True,
+    forward_only = False,
+    choice = True,
+    choice_exit = False,
+
+    rollup_rule  = "satisfied IF Any satisfied",
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = True,
+    is_visible = True,
+    order_in_container = 4
+    )
+posttest_root.save()
+
+posttest1 = LearningActivity( name = 'Posttest', slug = 'posttest',
+    uri = "/test/Posttest1",
+#   lom = ,
+    parent = posttest_root, root  = POO,
+
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_rule  = "",
     rollup_objective = True,
     rollup_progress = True,
 
+    choice_exit = False,
     is_container = False,
     is_visible = True,
     order_in_container = 23
     )
-posttest.save()
+posttest1.save()
+
+posttest2 = LearningActivity( name = 'Posttest2', slug = 'posttest',
+    uri = "/test/Posttest2",
+#   lom = ,
+    parent = posttest_root, root  = POO,
+
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_rule  = "",
+    rollup_objective = True,
+    rollup_progress = True,
+
+    choice_exit = False,
+    is_container = False,
+    is_visible = True,
+    order_in_container = 24
+    )
+posttest2.save()
+
+
+
+
+
+# posttest = LearningActivity( name = 'Posttest', slug = 'posttest',
+#     uri = "/test/Posttest",
+# #   lom = ,
+#     parent = POO, root  = POO,
+#
+#     pre_condition_rule = """if self.num_attempts == 0 :
+#                   self.pre_condition = 'stopForwardTraversal' """,
+#     post_condition_rule = "",
+#
+#     rollup_rule  = "",
+#     rollup_objective = True,
+#     rollup_progress = True,
+#
+#     choice_exit = False,
+#     is_container = False,
+#     is_visible = True,
+#     order_in_container = 23
+#     )
+# posttest.save()
 
 comentario_final = LearningActivity( name = 'Comentario_final', slug = 'comentario_final',
     uri = "/activity/Comentario_final",

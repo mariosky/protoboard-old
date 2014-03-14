@@ -207,7 +207,6 @@ class SimpleSequencing(object):
             ula.save()
             atree.save()
             ula.rollup_rules()
-            ula
 
     def update(self, ula, progress_status=None, objective_status=None, objective_measure=None):
         if not ula.is_current:
@@ -311,7 +310,7 @@ class SimpleSequencing(object):
                 child.eval_pre_condition_rule()
 
                 #IF Parent ForwardOnly is True, disable if already tried
-                print child.learning_activity.uri, child.pre_condition
+                #print child.learning_activity.uri, child.pre_condition
                 if child.pre_condition == 'stopForwardTraversal':
                     ula.children.append(child)
                     return ula

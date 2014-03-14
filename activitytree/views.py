@@ -123,7 +123,13 @@ def test(request, uri, objective_status = None):
                 feedback = _check_quiz(request.POST, activities[requested_activity.learning_activity.uri])
                 # Exits the current Learning Activity
                 objective_measure = feedback['total_correct']
-                s.update(requested_activity, progress_status = None, objective_status = None, objective_measure = objective_measure)
+                if objective_measure >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
+                    objective_status='satisfied'
+                else:
+                    objective_status='notSatisfied'
+                print requested_activity.learning_activity.uri, objective_measure,objective_status
+
+                s.update(requested_activity, progress_status = None, objective_status = objective_status, objective_measure = objective_measure)
 
 
             elif 'nav_event' in request.POST:
@@ -133,6 +139,8 @@ def test(request, uri, objective_status = None):
                     # Go TO NEXT ACTIVITY
                     next_uri = s.get_next(root)
                     progress_status = 'complete'
+
+
 
                 elif request.POST['nav_event'] == 'prev':
                     # Go TO PREV ACTIVITY

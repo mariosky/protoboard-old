@@ -266,8 +266,11 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
                     ],
     'intro':"""<h3>Evaluación Previa</h3>
     <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
-    'bye':""""""
+    'bye':"""""",
+     'satisfied_at_least':3
                     },
+
+
 '/test/Posttest':{
     'questions':  [{'id': 1,
                     'interaction': 'simpleChoice',
@@ -299,6 +302,7 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
                                 "Un objeto instancia",
                                 "En C#"],
                     'answer': [0,1,0,0],
+
                     },
                     {
                     'id':3,
@@ -334,8 +338,162 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
                     ],
     'intro':"""<h3>Evaluación Final</h3>
     <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
-    'bye':""" """
+    'bye':""" """,
+    'satisfied_at_least':3
                     },
+
+"/activity/Post":{ u"""
+    <h3> Examen   Final</h3>
+
+
+
+
+    """
+
+
+},
+
+'/test/Posttest1':{
+    'questions':  [{'id': 1,
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "La Programación Orientada a Objetos es:",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Es un  programa parecido a Visual Studio",
+                                "Un lenguaje de programación basado en Java ",
+                                "Un Paradigma o Modelo de Programación",
+                                "Un estándar de programación apoyado por Microsoft y Apple"],
+                    'answer': [0,0,1,0],
+                    'answer_text': "Es un paradigma de programación",
+                    'hints': []
+                    },
+                    {
+                    'id':2,
+                    'interaction': 'simpleChoice',
+                    'inline': 1,
+                    'title': "Pregunta Abierta",
+                    'question': "¿Donde se especifican los atributos y comportamiento que tendrá un conjunto de objetos?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Un Arreglo",
+                                "La Clase",
+                                "Un objeto instancia",
+                                "En C#"],
+                    'answer': [0,1,0,0],
+
+                    },
+                    {
+                    'id':3,
+                    'title': "Pregunta Abierta",
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'question': "¿Como se determina el estado de un objeto?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Es el conjunto de atributos y sus valores actuales",
+                                "El estado se indica en la clase",
+                                "No se puede",
+                                "Un objeto no tiene estado"],
+                    'answer': [1,0,0,0],
+                    },
+                    {
+                    'id': 4,
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "¿Que otro nombre reciben los objetos?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Clases básicas",
+                                "Instancias",
+                                "Entidades",
+                                "Agentes"],
+                    'answer': [0,1,0,0],
+                    }
+
+                    ],
+    'intro':"""<h3>Evaluación Final</h3>
+    <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
+    'bye':""" """,
+    'satisfied_at_least':3
+                    },
+'/test/Posttest2':{
+    'questions':  [{'id': 1,
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "La Programación Orientada a Objetos es:",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Es un  programa parecido a Visual Studio",
+                                "Un lenguaje de programación basado en Java ",
+                                "Un Paradigma o Modelo de Programación",
+                                "Un estándar de programación apoyado por Microsoft y Apple"],
+                    'answer': [0,0,1,0],
+                    'answer_text': "Es un paradigma de programación",
+                    'hints': []
+                    },
+                    {
+                    'id':2,
+                    'interaction': 'simpleChoice',
+                    'inline': 1,
+                    'title': "Pregunta Abierta",
+                    'question': "¿Donde se especifican los atributos y comportamiento que tendrá un conjunto de objetos?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Un Arreglo",
+                                "La Clase",
+                                "Un objeto instancia",
+                                "En C#"],
+                    'answer': [0,1,0,0],
+
+                    },
+                    {
+                    'id':3,
+                    'title': "Pregunta Abierta",
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'question': "¿Como se determina el estado de un objeto?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Es el conjunto de atributos y sus valores actuales",
+                                "El estado se indica en la clase",
+                                "No se puede",
+                                "Un objeto no tiene estado"],
+                    'answer': [1,0,0,0],
+                    },
+                    {
+                    'id': 4,
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "¿Que otro nombre reciben los objetos?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Clases básicas",
+                                "Instancias",
+                                "Entidades",
+                                "Agentes"],
+                    'answer': [0,1,0,0],
+                    }
+
+                    ],
+    'intro':"""<h3>Evaluación Final</h3>
+    <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
+    'bye':""" """,
+    'satisfied_at_least':3
+                    },
+
 
 '/activity/Preliminar':u"""
     <h3> Programación Orientada a Objetos – ¿Qué es POO?</h3>
