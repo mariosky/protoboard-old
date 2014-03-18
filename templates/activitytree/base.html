@@ -10,11 +10,12 @@
     <!-- Bootstrap core CSS -->
     <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
      <!--
      <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}bluehaze.css" title="Blue Haze stylesheet" />
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}color-scheme.css" title="Blue Haze stylesheet" />
     -->
+      <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/bootstrap-social.css" title="social stylesheet" />
       <!-- Custom styles for this template -->
 
     <!-- Custom styles for this template -->
@@ -264,9 +265,11 @@ background-position: left top;
         margin-top: 10px;
     }
 
-
-
-
+   .navbar-nav > li >  a.navbar-user
+    {
+    padding-bottom: 0px;
+    padding-top: 0px;
+    }
      {% block style %}
 
      {%  endblock style %}
@@ -302,20 +305,22 @@ background-position: left top;
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            {% if user.username %}
+            {% if user_name %}
             <li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
+            <li><a class="navbar-user" href="#"> <img src="{{ user_image }}" alt=""/>  {{ user_name }}</a></li>
             <li><a href="/logout">Log out</a></li>
 
            {% endif %}
 
-            {% if not user.username %}
+            {% if not user_name %}
 
             <li><a href="/login">Log in</a></li>
 
             {% endif %}
+
+
           </ul>
 
         </div>
@@ -337,7 +342,6 @@ background-position: left top;
         </div>
 
           <div class="col-sm-9 col-sm-offset-3 col-md-7 col-md-offset-3 main">
-
 
 
             {% block content %}
@@ -390,6 +394,12 @@ background-position: left top;
 
             });
         });
+
+
+            $('#signout').on('click', function(event) {
+    gapi.auth.signOut();
+});
+
 
     </script>
   {% block scripts %}

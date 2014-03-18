@@ -3,23 +3,52 @@
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
-from django.template import RequestContext
+from django.template.response import TemplateResponse
 from django.utils import simplejson
 from django.db.models import Avg, Count
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout, get_user_model
+from django.contrib.sites.models import get_current_site
+from django.utils.http import is_safe_url
+from django.shortcuts import resolve_url
+from django.template import RequestContext
+
+
 
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity,LearningStyleInventory
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
+from social.backends.google import GooglePlusAuth
+
 from eval_code.RedisCola import Cola, Task
 import json
+from django.conf import settings
 
+def logout(request):
+    """Logs out user"""
+    auth_logout(request)
+    return render_to_response('activitytree/welcome.html', {}, RequestContext(request))
 
 def welcome(request):
+    plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
+    plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
     courses = Course.objects.all()
-    return render_to_response('activitytree/welcome.html', {'courses':courses}, context_instance=RequestContext(request))
+
+    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+         return render_to_response('activitytree/welcome.html',
+            {'courses':courses,'plus_scope':plus_scope,'plus_id':plus_id},
+                context_instance=RequestContext(request))
+    else:
+        return render_to_response('activitytree/welcome.html',
+            {'user_name':None,'courses':courses,'plus_scope':plus_scope,'plus_id':plus_id},
+                context_instance=RequestContext(request))
 
 def activity(request,uri):
     if request.user.is_authenticated():
@@ -291,7 +320,7 @@ def _get_ula(request, s):
     # Let's get the requested user learning activity
     try:
         requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user )[0]
-    except ObjectDoesNotExist:
+    except (ObjectDoesNotExist, IndexError) as e:
         #User does not have a tracking activity tree
         #If the requested activity is the root of a tree
         #register the user to it
@@ -361,6 +390,54 @@ def _check_quiz(post_dict, quiz):
 
 
 
+@sensitive_post_parameters()
+@csrf_protect
+@never_cache
+def login(request, template_name='registration/login.html',
+          redirect_field_name=REDIRECT_FIELD_NAME, authentication_form=AuthenticationForm,
+          current_app=None, extra_context=None):
+    """
+    Displays the login form and handles the login action.
+    """
+    redirect_to = request.REQUEST.get(redirect_field_name, '')
+
+    if request.method == "POST":
+        form = authentication_form(request, data=request.POST)
+        if form.is_valid():
+
+            # Ensure the user-originating redirection url is safe.
+            if not is_safe_url(url=redirect_to, host=request.get_host()):
+                redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+
+            # Okay, security check complete. Log the user in.
+            auth_login(request, form.get_user())
+
+            return HttpResponseRedirect(redirect_to)
+    else:
+        form = authentication_form(request)
+
+
+
+    current_site = get_current_site(request)
+
+    from django.conf import settings
+    plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
+    plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
+
+    context = {
+        'form': form,
+        redirect_field_name: redirect_to,
+        'site': current_site,
+        'site_name': current_site.name,
+        'plus_scope':plus_scope,'plus_id':plus_id
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    return TemplateResponse(request, template_name, context,
+                            current_app=current_app)
+
+
+
 
 def ajax_vote(request, type, uri):
     activity_uri = request.path[len('/ajax_vote'):]
@@ -376,3 +453,15 @@ def ajax_vote(request, type, uri):
         return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
     else:
         return HttpResponse(content="Ya voto?")
+
+
+def done(request):
+    """Login complete view, displays user data"""
+    from django.conf import settings
+    scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
+
+    return render_to_response('done.html', {
+        'user': request.user,
+        'plus_id':settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY,
+        'plus_scope': scope
+    }, RequestContext(request))

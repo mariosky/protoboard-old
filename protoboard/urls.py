@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     # Example:
       (r'^$','activitytree.views.welcome'),
       (r'^welcome/$','activitytree.views.welcome'),
-      (r'^activity/(?P<uri>\w+)$','activitytree.views.activity'),
+     (r'^activity/(?P<uri>\w+)$','activitytree.views.activity'),
       (r'^test/(?P<uri>\w+)$','activitytree.views.test'),
 
       (r'^program/(?P<uri>\w+)$','activitytree.views.program'),
@@ -15,11 +15,13 @@ urlpatterns = patterns('',
       (r'^get_result$','activitytree.views.get_result'),
 
       (r'^ajax_vote/(?P<type>\w+)/(?P<uri>\w+)$','activitytree.views.ajax_vote'),
-      (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'registration/login.html'}),
-      (r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
-
+      (r'^login/$', 'activitytree.views.login', {'template_name': 'registration/login.html'}),
+     # (r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
+   url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout
       (r'^accounts/login/$', 'activitytree.views.welcome'),
+      url('', include('social.apps.django_app.urls', namespace='social')),
+
 
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 

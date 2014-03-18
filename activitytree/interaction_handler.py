@@ -40,7 +40,8 @@ TRANSFORM = """<?xml version="1.0" encoding="utf-8"?>
 						<xsl:value-of select="concat('container_', @objective_status)" />
 	             </xsl:attribute>
 
-	        		<a href="{@uri}">
+
+	        		 <a href="{@uri}">
 						<xsl:value-of select="@identifier" />
 	       		 	</a>
 			    </li>
