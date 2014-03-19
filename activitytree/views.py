@@ -34,7 +34,11 @@ from django.conf import settings
 def logout(request):
     """Logs out user"""
     auth_logout(request)
-    return render_to_response('activitytree/welcome.html', {}, RequestContext(request))
+    plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
+    plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
+    courses = Course.objects.all()
+    return render_to_response('activitytree/welcome.html', {'courses':courses,'plus_scope':plus_scope,'plus_id':plus_id}
+                              , RequestContext(request))
 
 def welcome(request):
     plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
