@@ -41,6 +41,7 @@ def logout(request):
                               , RequestContext(request))
 
 def welcome(request):
+    print request
     plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
     plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
     courses = Course.objects.all()
@@ -65,12 +66,21 @@ def activity(request,uri):
             return HttpResponseNotFound('<h1>Activity not found</h1>')
 
         # Gets the root of the User Learning Activity
-        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
+        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root(),
+                                                   user = request.user )[0]
 
         if request.method == 'GET':
-            # Exits last activity, and sets requested activity as current
-            # if choice_exit consider complete
-            _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
+            if 'nav' in request.GET and request.GET['nav'] == 'continue':
+                if requested_activity.learning_activity.parent is None:
+                    current_activity = s.get_current(requested_activity)
+                    if current_activity:
+                        requested_activity = current_activity
+                        return HttpResponseRedirect( requested_activity.learning_activity.uri)
+
+            else:
+                # Exits last activity, and sets requested activity as current
+                # if choice_exit consider complete
+                _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
 
         if request.method == 'POST' and 'nav_event' in request.POST:
 
@@ -263,8 +273,8 @@ def program(request,uri):
 
 
 
-        return render_to_response('activitytree/program.html', {'program_quiz':activities[request.path],
-                                                                'activity_uri':request.path,
+        return render_to_response('activitytree/program.html', {'program_quiz':activities[requested_activity.learning_activity.uri],
+                                                                'activity_uri':requested_activity.learning_activity.uri,
                                                                 'navegation': navegation_tree
                                                                 },
                                   context_instance=RequestContext(request))
