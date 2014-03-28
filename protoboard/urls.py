@@ -16,7 +16,6 @@ urlpatterns = patterns('',
 
       (r'^ajax_vote/(?P<type>\w+)/(?P<uri>\w+)$','activitytree.views.ajax_vote'),
       (r'^login/$', 'activitytree.views.login', {'template_name': 'registration/login.html'}),
-     # (r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout
       (r'^accounts/login/$', 'activitytree.views.welcome'),
