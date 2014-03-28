@@ -158,11 +158,11 @@
  }
 
     var signInCallback = function (result) {
-         alert('Result:', result['error']);
-
-        if (result['error']) {
+        alert('Datos', result['error']+result['status']);
+        if (result['error'] ) {
             //alert('An error happened:', result['error']);
-        } else {
+        }
+        else {
             $('#code').attr('value', result['code']);
             $('#at').attr('value', result['access_token']);
             $('#google-plus').submit();
