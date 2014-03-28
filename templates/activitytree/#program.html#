@@ -86,9 +86,9 @@
             <label for="r10">Comentario:</label>
             <select id="exit" name="objective_measure" class="form-control" >
 				<option value="70"> Ninguno </option>
-				<option value="100">Si le entendí</option>
-				<option value="50">Más o menos  </option>
-				<option value="20"> Para nada </option>
+				<option value="100">Si le entendÃ­</option>
+				<option value="50">MÃ¡s o menos  </option>
+1				<option value="20"> Para nada </option>
 	        </select>
 
         </div>
@@ -97,10 +97,9 @@
 
     </div>
 
- <!-- Keyboard & Mouse Dynamics
+ <!-- Keyboard & Mouse Dynamics -->
  <button onclick="report()">Reporte Keystrokes</button>
  <div id="report"></div>
- -->
 
 {% endblock content %}
 
@@ -169,7 +168,7 @@ $(document).ready(function() {
 
 // Report
 
-/*function report() {
+function report() {
 
     $("#report").html("<b>Keystroke Dynamics</b><br/>");
     for (k in keypresses) {
@@ -189,15 +188,15 @@ $(document).ready(function() {
     $("#report").append(JSON.stringify({"keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse}));
 
 }
-*/
     </script>
 
  <script type="text/javascript" charset="utf-8">
-        $( document ).ready(function() {
+        $( "#learning_activity_form" ).submit(function() {
 	  $( ".nav_next" ).unbind( "click");
 	  $( ".nav_prev" ).unbind( "click");
-          $( ".nav_next" ).bind( "click", function( event ) {
-	    var kmdynamics = JSON.stringify({"keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse});
+	var kmdynamics = JSON.stringify({"keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse});
+            $( ".nav_next" ).bind( "click", function( event ) {
+
                    var form =  $("#learning_activity_form");
                    form.append( $('<input>').attr({ type: 'hidden',
                                                     name: 'nav_event',
@@ -215,7 +214,6 @@ $(document).ready(function() {
              });
 
             $( ".nav_prev" ).bind( "click", function( event ) {
-	      var kmdynamics = JSON.stringify({"keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse});
                    var form =  $("#learning_activity_form");
                    form.append( $('<input>').attr({ type: 'hidden',
                                                     name: 'nav_event',
