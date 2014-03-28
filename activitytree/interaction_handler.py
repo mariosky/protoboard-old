@@ -188,7 +188,7 @@ class SimpleSequencing(object):
 
 
 
-    def exit(self, ula, progress_status=None, objective_status=None, objective_measure=None):
+    def exit(self, ula, progress_status=None, objective_status=None, objective_measure=None, kmdynamics=None):
 
         atree = ActivityTree.objects.get(user=ula.user, root_activity=ula.learning_activity.get_root())
 
@@ -203,6 +203,8 @@ class SimpleSequencing(object):
                 ula.objective_status = objective_status
             if objective_measure is not None:
                 ula.objective_measure = objective_measure
+            if kmdynamics is not None:
+                ula.kmdynamics = kmdynamics
             ula.last_visited = datetime.datetime.now()
             ula.num_attempts += 1
             ula.save()

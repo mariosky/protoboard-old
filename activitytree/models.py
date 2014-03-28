@@ -98,6 +98,8 @@ class UserLearningActivity(models.Model):
     is_current = models.BooleanField(default=False)
     user_rating = models.PositiveSmallIntegerField(null=True,default = None)
     comments = models.TextField(blank=True, default = "")
+    #Keyboard & Mouse Dynamics
+    kmdynamics = models.TextField(blank=True, default = "", null=True)
     
     class Meta:
         unique_together = ("user", "learning_activity")

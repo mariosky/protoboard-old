@@ -262,7 +262,7 @@ def program(request,uri):
                 return HttpResponseRedirect( root.learning_activity.uri)
 
             else:
-                s.exit( requested_activity, progress_status = 'complete', objective_status = 'satisfied', objective_measure = objective_measure)
+                s.exit( requested_activity, progress_status = 'complete', objective_status = 'satisfied', objective_measure = objective_measure, kmdynamics=request.POST['kmdynamics'])
                 next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
                 return HttpResponseRedirect(next_activity.learning_activity.uri)
 
