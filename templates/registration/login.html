@@ -158,9 +158,9 @@
  }
 
     var signInCallback = function (result) {
-        alert('Datos', result['error']+result['status']);
         if (result['error'] ) {
             //alert('An error happened:', result['error']);
+            console.log(result['error']);
         }
         else {
             $('#code').attr('value', result['code']);
