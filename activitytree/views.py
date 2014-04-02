@@ -2,13 +2,9 @@
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render_to_response
-from django.core.context_processors import csrf
 from django.template.response import TemplateResponse
-from django.utils import simplejson
 from django.db.models import Avg, Count
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
@@ -309,16 +305,13 @@ def get_result(request):
         #TO DO:
         # No ID, Task Not Found
         task_id = rpc["id"]
-        print task_id
         t = Task(id=task_id)
-        print t
 
         # outcome:
         # -1 No result found
         # 0 Sub-process Success
         # 1 Sub-process Failure
         if t.get_result('curso'):
-            print "t.result",t.result
             if t.result:
                 string_json = json.loads( t.result[0])
                 print string_json
@@ -470,18 +463,6 @@ def ajax_vote(request, type, uri):
         vals = UserLearningActivity.objects.filter(learning_activity__uri = activity_uri).aggregate(Avg('user_rating'),Count('user_rating'))
         response_data = {'avg': vals['user_rating__avg'], 'votes': vals['user_rating__count']}
 
-        return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
+        return HttpResponse(json.dumps(response_data), mimetype="application/json")
     else:
         return HttpResponse(content="Ya voto?")
-
-
-def done(request):
-    """Login complete view, displays user data"""
-    from django.conf import settings
-    scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
-
-    return render_to_response('done.html', {
-        'user': request.user,
-        'plus_id':settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY,
-        'plus_scope': scope
-    }, RequestContext(request))
