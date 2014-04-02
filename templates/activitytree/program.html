@@ -24,6 +24,14 @@
      color:green;
     }
 
+ p.test_error, p.test_failure {
+    color:red;
+    }
+
+ p.test_success{
+    color:green;
+    }
+
 
 {% endblock style %}
 
@@ -33,7 +41,7 @@
 
   <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 style="display: inline;" class="panel-title">Ordena la Lista</h3>
+            <h3 style="display: inline;" class="panel-title">{{program_quiz.title}}</h3>
             <div class="btn-group pull-right">
 
 
@@ -51,24 +59,37 @@
         </div>
     </div>
 
+            <!-- Nav tabs -->
+        <ul id="main_tab" class="nav nav-tabs">
+          <li class="active"><a href="#instrucciones" data-toggle="tab">Instrucciones</a></li>
+          <li><a href="#results" data-toggle="tab">Resultado</a></li>
+        </ul>
 
-    <div id="info_panel" class="panel panel-default">
-        <div id="info_panel_heading" class="panel-heading">
-            <h3 id="instructions-title" class="panel-title">Instrucciones</h3>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane active" id="instrucciones">
+                <div id="info_panel" class="panel panel-info">
+
+                    <div id="info_panel_body" class="panel-body">
+                       {{ program_quiz.instructions|safe }}
+                    </div>
+                </div>
+
+          </div>
+          <div class="tab-pane" id="results">
+             <div id="result_panel" class="panel panel-info">
+                <div id="result_panel_heading"  class="panel-heading"> </div>
+
+                    <div id="result_panel_body" class="panel-body">
+
+                    </div>
+             </div>
+
+          </div>
         </div>
 
-        <div id="info_panel_body" class="panel-body">
-
-           {{ program_quiz.instructions|safe }}
 
 
-
-
-        </div>
-
-
-
-    </div>
 
 
  <div class="row">
@@ -295,10 +316,10 @@ $(document).ready(function() {
                             task_id =data.id;
                             number_of_tries=0;
 
-                        $("#info_panel_body").html("");
-                        $('#instructions-title')[0].textContent = "Resultado"
+                       // $("#info_panel_body").html("");
+                       // $('#instructions-title')[0].textContent = "Resultado"
 
-                         $('<p>'+ 'En proceso...'+'<p/>', {class:"p"}).appendTo("#info_panel_body");
+                       // $('<p>'+ 'En proceso...'+'<p/>', {class:"p"}).appendTo("#info_panel_body");
 
                         poll();
 
@@ -320,18 +341,52 @@ $(document).ready(function() {
             //Update your dashboard gauge
             number_of_tries++;
 
-              $("#info_panel_body").html("");
+              $("#result_panel_body").html("");
+
                     if (data.outcome != -1)
                     {
-                        var info_list = data.result;
-                        for (var i=0; i<info_list.length; i++){
-                         $('<p>'+ info_list[i]+'<p/>', {class:"p"}).appendTo("#info_panel_body");
+                        var result = data.result;
+                        if (result.result == "Failure")
+                        {
+                          $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
+                          $("#result_panel_heading").html("No pasó las pruebas");
+
+
+                       }
+                        else if (result.result == "ProcessError")
+                        {
+                          $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
+                          $("#result_panel_heading").html("Error al procesar las pruebas");
                         }
+
+                        else if (result.result == "Success")
+                        {
+                           $("#result_panel").removeClass("panel-info").removeClass("panel-danger").addClass("panel-success");
+                           $("#result_panel_heading").html("Pruebas exitosas");
+                        }
+
+                          for (var i=0; i<result.errors.length; ++i)
+                            $( "#result_panel_body").append("<p class='test_error'> Error: "+ result.errors[i]+"</p>" );
+                          for (var i=0; i<result.failures.length; ++i)
+                            $( "#result_panel_body").append("<p class='test_failure'>Falló la prueba: "+ result.failures[i].split(" ")[0]+"</p>" );
+                          for (var i=0; i<result.successes.length; ++i)
+                            $( "#result_panel_body").append("<p class='test_success'>Pasó la prueba: "+ result.successes[i].split(" ")[0]+"</p>" );
+
+                        if (typeof result.stdout != 'undefined'  &&  result.stdout != "\n" )
+                        {
+                          $( "#result_panel_body").append("<p> Se imprimió en la consola:</p>" );
+                          $("<code></code>").text(result.stdout).appendTo("#result_panel_body");
+                         // $( "#result_panel_body").append("<code>"+ result.stdout +"</code>" );
+                        }
+                        //for (var i=0; i<info_list.length; i++){
+                        // $('<p>'+ info_list[i]+'<p/>', {class:"p"}).appendTo("#result_panel_body");
+                        //}
                     }
                     else
                     {
 
                     }
+            $('#main_tab a[href="#results"]').tab('show')
             console.log(data.outcome);
 
             }, dataType: "json",

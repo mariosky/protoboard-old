@@ -613,7 +613,8 @@ Por último, también sabemos que las aves reaccionan ante ciertos sucesos, como
             """
     ,
     '/program/1':
-        { 'initial_code':u"""
+        {   'title':u"Ordena la Lista",
+            'initial_code':u"""
 # Funcion que ordena una lista, puedes utilizar sort()
 def solution():
     pass
@@ -634,24 +635,49 @@ def solution(l):
                 <p>>>> solution(None)</p>
                 <p>[]</p>
             </code>""",
-            'unit_test':u"""import unittest,sys
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
 class Test(unittest.TestCase):
     def setUp(self):
         pass
-
     def test_order(self):
         self.assertEqual(solution([2,6,1,5]),[1,2,5,6])
-
     def test_none(self):
         self.assertEqual(solution(None),[])
 
 suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-test_result = unittest.TextTestRunner(verbosity=2, stream=sys.stderr).run(suite)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
 """},
 
 
     '/program/2':
-        { 'initial_code':u"""
+        { 'title':u"Imprime Hola",
+            'initial_code':u"""
 # Funcion que imprime Hola
 def foo():
     pass
@@ -663,6 +689,17 @@ def foo(l):
             'instructions':u"""<p>Escribe una función llamada foo la cual imprima Hola.</p>
             </code>""",
             'unit_test':u"""import unittest, sys
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
 class Test(unittest.TestCase):
     def test_foo(self):
         from StringIO import StringIO
@@ -679,7 +716,19 @@ class Test(unittest.TestCase):
             print output
 
 suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-test_result = unittest.TextTestRunner(verbosity=2, stream=sys.stderr).run(suite)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
 """}
 }
 

@@ -318,9 +318,15 @@ def get_result(request):
         # 0 Sub-process Success
         # 1 Sub-process Failure
         if t.get_result('curso'):
-            result = json.dumps({'result': t.result[0], 'outcome': t.result[1]})
-            return HttpResponse(result , mimetype='application/javascript')
+            print "t.result",t.result
+            if t.result:
+                string_json = json.loads( t.result[0])
+                print string_json
+                result = json.dumps({'result':string_json, 'outcome': t.result[1]})
+                return HttpResponse(result , mimetype='application/javascript')
 
+            else:
+                return HttpResponse(json.dumps({'outcome':-1}) , mimetype='application/javascript')
         else:
             return HttpResponse(json.dumps({'outcome':-1}) , mimetype='application/javascript')
 
