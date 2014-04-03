@@ -25,11 +25,11 @@
     }
 
  p.test_error, p.test_failure {
-    color:red;
+    color:#d9534f;
     }
 
  p.test_success{
-    color:green;
+    color:#5cb85c;
     }
 
 
@@ -42,7 +42,7 @@
   <div class="panel panel-default">
         <div class="panel-heading">
             <h3 style="display: inline;" class="panel-title">{{program_quiz.title}}</h3>
-            <div class="btn-group pull-right">
+            <div id="play_btn" class="btn-group pull-right">
 
 
                 <span id="send_btn_queue" class="glyphicon glyphicon-play"></span>
@@ -300,7 +300,10 @@ $(document).ready(function() {
 
 
      $("#send_btn_queue").on("click", function (){
-           var code = editor.getValue();
+
+         if ( $(this).hasClass("disabled") == false )
+         {
+         var code = editor.getValue();
 
            // alert(code);
 
@@ -316,19 +319,20 @@ $(document).ready(function() {
                             task_id =data.id;
                             number_of_tries=0;
 
-                       // $("#info_panel_body").html("");
-                       // $('#instructions-title')[0].textContent = "Resultado"
-
-                       // $('<p>'+ 'En proceso...'+'<p/>', {class:"p"}).appendTo("#info_panel_body");
-
+                        $("#result_panel").removeClass("panel-danger").removeClass("panel-success").addClass("panel-info");
+                        $("#result_panel_body").html("");
+                        $("#result_panel_heading").html("Esperando resultados...");
                         poll();
 
                      },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);}
                 });
-
-
+         }
+         else
+         {
+             alert("NO ES POSIBLE");
+         }
      });
 
 
