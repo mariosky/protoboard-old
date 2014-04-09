@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-from activitytree.models import LearningActivity, UserProfile, LearningStyleInventory, ActivityTree, \
-    UserLearningActivity
+from activitytree.models import ActivityTree, UserLearningActivity
 import datetime
 from lxml import etree
 #Exceptions

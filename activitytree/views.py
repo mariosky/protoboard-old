@@ -17,7 +17,7 @@ from django.template import RequestContext
 
 
 
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity,LearningStyleInventory
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
@@ -37,7 +37,6 @@ def logout(request):
                               , RequestContext(request))
 
 def welcome(request):
-    print request
     plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
     plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
     courses = Course.objects.all()
@@ -166,7 +165,6 @@ def test(request, uri, objective_status = None):
                     objective_status='satisfied'
                 else:
                     objective_status='notSatisfied'
-                print requested_activity.learning_activity.uri, objective_measure,objective_status
 
                 s.update(requested_activity, progress_status = None, objective_status = objective_status, objective_measure = objective_measure)
 
@@ -238,7 +236,7 @@ def program(request,uri):
 
         if request.method == 'POST' and 'nav_event' in request.POST:
         # We are going to exit activity, get objective measure
-            objective_measure = float(request.POST['objective_measure'])
+            #objective_measure = float(request.POST['objective_measure'])
 
 
 
@@ -246,19 +244,17 @@ def program(request,uri):
             if  request.POST['nav_event'] == 'next':
                 # Go TO NEXT ACTIVITY
                 next_uri = s.get_next(root)
-                print next_uri
 
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
                 next_uri = s.get_prev(root)
-            print next_uri
 
             if next_uri is None:
                     #No more activities ?
                 return HttpResponseRedirect( root.learning_activity.uri)
 
             else:
-                s.exit( requested_activity, progress_status = 'complete', objective_status = 'satisfied', objective_measure = objective_measure, kmdynamics=request.POST['kmdynamics'])
+                s.exit(requested_activity)
                 next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
                 return HttpResponseRedirect(next_activity.learning_activity.uri)
 
@@ -279,25 +275,31 @@ def program(request,uri):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.
 
-
+@csrf_protect
 def execute_queue(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
-
         server = Cola("curso")
 
         code = rpc["params"][0]
         activity_uri = rpc["method"]
         unit_test = activities[activity_uri]['unit_test']
 
-        task = {"id": None,"method": "exec","params": {"code": code, "test":unit_test }}
+        task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
         task_id = server.enqueue(**task)
 
-        print 'TASK:',task_id, task
+        ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["method"], user=request.user )
+        s = SimpleSequencing()
+        s.update(ula)
+        rpc['task_id']=task_id
+        event = ULA_Event.objects.create(ULA=ula,context=rpc)
+        event.save()
 
         result= {"result":"added" , "error": None, "id": task_id}
         return HttpResponse(json.dumps(result), mimetype='application/javascript')
 
+
+@csrf_protect
 def get_result(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
@@ -312,9 +314,15 @@ def get_result(request):
         # 0 Sub-process Success
         # 1 Sub-process Failure
         if t.get_result('curso'):
+
             if t.result:
+
                 string_json = json.loads( t.result[0])
-                print string_json
+                if string_json['result'] == 'Success':
+                    ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0], user=request.user)
+
+                    s = SimpleSequencing()
+                    s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=100)
                 result = json.dumps({'result':string_json, 'outcome': t.result[1]})
                 return HttpResponse(result , mimetype='application/javascript')
 
@@ -375,7 +383,6 @@ def _check_quiz(post_dict, quiz):
                 user = answerDict[unicode(id)]
                 user_index = [ int(a.split("_")[-1]) for a in user]
                 user_answer = [int(i in user_index) for i in range(len(answer))]
-                print user_answer, answer
 
                 if answer == user_answer:
                     checked[id]['correct'] = 1

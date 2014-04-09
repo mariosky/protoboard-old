@@ -96,11 +96,7 @@ class UserLearningActivity(models.Model):
     suspended = models.BooleanField(default=False)
     accumulated_time = models.DecimalField(null=True, decimal_places = 2, max_digits = 3,default = Decimal('0.0'))
     is_current = models.BooleanField(default=False)
-    user_rating = models.PositiveSmallIntegerField(null=True,default = None)
-    comments = models.TextField(blank=True, default = "")
-    #Keyboard & Mouse Dynamics
-    kmdynamics = models.TextField(blank=True, default = "", null=True)
-    
+
     class Meta:
         unique_together = ("user", "learning_activity")
 
@@ -265,12 +261,15 @@ class UserLearningActivity(models.Model):
             if self.learning_activity.parent != None:
                 parent = UserLearningActivity.objects.filter(learning_activity=self.learning_activity.parent,user=self.user)[0]
                 parent.rollup_rules()     
-  
+
+
 class Course(models.Model):
     short_description = models.TextField()
     image = models.ImageField(upload_to='courses', blank=True)
     root = models.ForeignKey('LearningActivity')
     start_date = models.DateField(auto_now=True)
+
+
 
 class ActivityTree(models.Model):
     user = models.ForeignKey(User)
@@ -278,6 +277,16 @@ class ActivityTree(models.Model):
     current_activity =  models.ForeignKey(to ='UserLearningActivity',related_name = 'current_in', null = True ,default=None)
     class Meta:
         unique_together = ("user", "root_activity")
+
+
+#
+# Se puede cambiar a CouchDB, MongoDB, Redis, etc.
+#
+class ULA_Event(models.Model):
+    ULA = models.ForeignKey(UserLearningActivity)
+    time_stamp = models.TimeField(auto_now=True)
+    context = models.TextField()
+
 
 
 
