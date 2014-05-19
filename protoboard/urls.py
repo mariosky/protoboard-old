@@ -7,10 +7,11 @@ urlpatterns = patterns('',
     # Example:
       (r'^$','activitytree.views.welcome'),
       (r'^welcome/$','activitytree.views.welcome'),
-     (r'^activity/(?P<uri>\w+)$','activitytree.views.activity'),
+      (r'^activity/(?P<uri>\w+)$','activitytree.views.activity'),
+      (r'^activity/video/(?P<uri>\w+)$','activitytree.views.activity'),
       (r'^test/(?P<uri>\w+)$','activitytree.views.test'),
 
-      (r'^program/(?P<uri>\w+)$','activitytree.views.program'),
+      (r'^program/(?P<uri>\w(\/*))+$','activitytree.views.program'),
       (r'^execute_queue$','activitytree.views.execute_queue'),
       (r'^get_result$','activitytree.views.get_result'),
 

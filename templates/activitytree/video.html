@@ -1,0 +1,28 @@
+{% extends "activitytree/base.html" %}
+
+
+
+{% block content %}
+
+
+    <div class = "row">
+
+      <h3> {{ video.title }} </h3>
+            <div class="video">
+                    <iframe width="640" height="510" src="{{ video.url }}" frameborder="0" allowfullscreen></iframe> </div>
+            </div>
+
+    <div class="row">
+
+         <form id="learning_activity_form"   role="form" action="{{uri}}" method = "POST">{% csrf_token %}
+
+
+               <ul class="pager">
+                     <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
+                    <li class="next"><span class="nav_next">  Continuar &rarr;</span></li>
+               </ul>
+
+       </form>
+
+    </div>
+{% endblock content %}

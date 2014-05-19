@@ -425,7 +425,7 @@ $(document).ready(function() {
                    {
                         $("#send_btn_queue").removeClass("disabled" );
                         $("#result_panel_body").html("");
-
+                        $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
                         $('<p>'+ 'TIME OUT'+'<p/>', {class:"p"}).appendTo("#result_panel_body");
 
                    }

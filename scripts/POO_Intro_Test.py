@@ -22,8 +22,6 @@ from activitytree.models import LearningStyleInventory, LearningActivity, Course
 from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
 
-
-
 LearningActivity.objects.all().delete()
 POO = LearningActivity( name = 'Intro a la POO', slug = 'POO',
     uri = "/activity/POO",
@@ -401,7 +399,6 @@ posttest2.save()
 
 
 
-
 # posttest = LearningActivity( name = 'Posttest', slug = 'posttest',
 #     uri = "/test/Posttest",
 # #   lom = ,
@@ -467,7 +464,7 @@ lsj.save()
 lsp=LearningStyleInventory(visual=12,verbal=11,aural=20,physical=9,logical=11,
                           social=9, solitary=7, user = p)
 lsp.save()
-s = SimpleSequencing()
+
 
 s = SimpleSequencing()
 s.assignActivityTree(j,POO)

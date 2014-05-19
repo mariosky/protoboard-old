@@ -1,6 +1,359 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 activities = {
+'/activity/video/intro':
+    {'title':u'Introducción',
+     'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0"} ,
+
+
+
+'/activity/video/ejercicios_basados_en_pruebas':
+    {'title':u'Ejercicios Basados en Pruebas',
+     'url':u"http://www.youtube.com/embed/6BL6P48r_9A?rel=0"} ,
+
+'/activity/video/ejemplo_ejercicio':
+    {'title':u'Ejercicios en Protoboard',
+     'url':u"http://www.youtube.com/embed/Htk9KAl1GxU?rel=0"} ,
+
+'/activity/PPP':u"""<h3 id="welcome">Bienvenidos</h3>
+      <p> En este tutorial aprenderás los conceptos básicos de la progeamación en Python </p>
+    """,
+
+ '/program/PPP/1':{ 'title':u"Imprime Hola",
+            'initial_code':u"""
+# Funcion que imprime Hola
+def foo():
+    pass
+""",
+            'correct_code':u"""# Solution:
+def foo(l):
+    print 'hola'
+    """,
+            'instructions':u"""<p>Escribe una función llamada foo la cual imprima Hola.</p>
+            </code>""",
+            'unit_test':u"""import unittest, sys
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+class Test(unittest.TestCase):
+    def test_foo(self):
+        from StringIO import StringIO
+        saved_stdout = sys.stdout
+        output = None
+        try:
+            out = StringIO()
+            sys.stdout = out
+            foo()
+            output = out.getvalue().strip()
+            assert output == 'Hola'
+        finally:
+            sys.stdout = saved_stdout
+            print output
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+ '/program/PPP/2':
+        {   'title':u"¿Es par?",
+            'initial_code':u"""
+def es_par():
+    pass
+""",
+            'correct_code':u""" """,
+             'instructions':u"""<p>Escribe una función llamada <code> es_par </code> la cual tome un
+             parámetro entero y regrese <code> True </code> si es entero y <code> False </code>
+             si no lo es.</p>
+            </code>""",
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_cero(self):
+        self.assertEqual(es_par(0),True)
+    def test_par(self):
+        self.assertEqual(es_par(6),True)
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+
+ '/program/PPP/3':
+        {   'title':u"Suma dos números",
+            'initial_code':u"""
+# Funcion que suma dos números
+def suma():
+    pass
+""",
+            'correct_code':u"""# Solution:
+def suma(a,b):
+    return a + b""",
+            'instructions':u"""<p>Escribe una función llamada <code> suma() </code> la cual reciba como parámetros
+                dos enteros y regrese la suma de ambos.</p>
+            <code>
+                <p>>>> suma(3,4)</p>
+                <p>7</p>
+                <p>>>> suma(3,-4)</p>
+                <p>-1</p>
+            </code>""",
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_suma_positivos(self):
+        self.assertEqual(suma(3,9),12)
+    def test_negativos(self):
+        self.assertEqual(suma(5,-12),-7)
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+ '/program/PPP/4':
+        {   'title':u"distancia()",
+            'initial_code':u"""
+def distancia():
+    pass
+""",
+            'correct_code':u""" """,
+            'instructions':u"""<p>Escribe una función llamada <code> distancia() </code> la cual reciba como parámetros
+                dos enteros y regrese el valor absoluto de la diferencia entre ambos</p>
+            <code>
+                <p>>>> distancia(3,4)</p>
+                <p>1</p>
+                <p>>>> distancia(3,-4)</p>
+                <p>7</p>
+            </code>""",
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_distancia_positivos(self):
+        self.assertEqual(distancia(3,9),6)
+    def test_negativos(self):
+        self.assertEqual(distancia(5,-12),17)
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+
+'/program/PPP/5':
+        {   'title':u"mayor()",
+            'initial_code':u"""
+def mayor():
+    pass
+""",
+            'correct_code':u""" """,
+            'instructions':u"""<p>Escribe una función llamada <code> mayor() </code> la cual reciba como parámetros
+                dos enteros y regrese el mayor entre ellos.</p>
+            <code>
+                <p>>>> mayor(3,4)</p>
+                <p>4</p>
+                <p>>>> mayor(2,-4)</p>
+                <p>2</p>
+            </code>""",
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_mayor_positivos(self):
+        self.assertEqual(mayor(3,9),9)
+    def test_negativos(self):
+        self.assertEqual(mayor(5,-12),5)
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+'/program/PPP/10':
+        {   'title':u"Ordena la Lista",
+            'initial_code':u"""
+# Funcion que ordena una lista, puedes utilizar sort()
+def solution():
+    pass
+""",
+            'correct_code':u"""# Solution:
+def solution(l):
+    if l is None:
+        return []
+    else:
+        l.sort()
+        return l""",
+            'instructions':u"""<p>Escribe una función llamada <code>solution</code> la cual reciba como parámetro
+                una lista y regrese la lista ordenada.</p>
+            <p>En caso de recibir como parámetro el valor <code>None</code> debe regresar una lista vacía. </p>
+            <code>
+                <p>>>> solution([4,3,5,1])</p>
+                <p>[1, 3, 4, 5]</p>
+                <p>>>> solution(None)</p>
+                <p>[]</p>
+            </code>""",
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_order(self):
+        self.assertEqual(solution([2,6,1,5]),[1,2,5,6])
+    def test_none(self):
+        self.assertEqual(solution(None),[])
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+
+
 '/activity/POO':u"""
       <button class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-lg">Leer</button>
       <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -535,7 +888,9 @@ No necesitamos saber cómo se programó el objeto, ni saber las variables que us
 
     """,
 
-
+'/activity/video/Objetos_y_Clases_YouTube':
+    {'title':u'Una introducción a Objetos y Clases',
+     'url':u"http://www.youtube.com/embed/D-w9RKQlAsA?rel=0"} ,
 
 
 

@@ -90,7 +90,7 @@ def activity(request,uri):
                 objective_status = 'satisfied'
 
 
-            if  request.POST['nav_event'] == 'next':
+            if request.POST['nav_event'] == 'next':
                 # Go TO NEXT ACTIVITY
                 next_uri = s.get_next(root)
             elif request.POST['nav_event'] == 'prev':
@@ -118,8 +118,17 @@ def activity(request,uri):
 
 
         content = activities[requested_activity.learning_activity.uri]
+        if (requested_activity.learning_activity.uri).split('/')[2] =='video':
+            print "VIDEO",(requested_activity.learning_activity.uri).split('/')[2]
+            return render_to_response('activitytree/video.html',
 
-        return render_to_response('activitytree/'+ (requested_activity.learning_activity.uri).split('/')[1]+'.html',
+                                  {'navegation': navegation_tree,
+                                   'uri':requested_activity.learning_activity.uri,
+                                   'video':content},
+                                    context_instance=RequestContext(request))
+
+        else:
+            return render_to_response('activitytree/'+ (requested_activity.learning_activity.uri).split('/')[1]+'.html',
 
                                   {'navegation': navegation_tree,
                                    'uri':requested_activity.learning_activity.uri,
@@ -158,7 +167,9 @@ def test(request, uri, objective_status = None):
 
         elif request.method == 'POST':
             if 'check' in request.POST:
+
                 feedback = _check_quiz(request.POST, activities[requested_activity.learning_activity.uri])
+                print feedback
                 # Exits the current Learning Activity
                 objective_measure = feedback['total_correct']
                 if objective_measure >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
