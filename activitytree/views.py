@@ -53,6 +53,7 @@ def welcome(request):
 def activity(request,uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
+
         # First, the requested_activity  exists??
         # Gets the Learning Activity object from uri
         requested_activity = _get_ula(request, s)

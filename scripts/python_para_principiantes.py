@@ -68,7 +68,7 @@ intro = LearningActivity( name = 'Introducción', slug = 'Intro',
     post_condition_rule = "",
 
     flow = True,
-    forward_only = False,
+    forward_only = True,
     choice = True,
 
 
@@ -83,6 +83,29 @@ intro = LearningActivity( name = 'Introducción', slug = 'Intro',
 intro.save()
 
 
+secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
+    uri = "/activity/secuencias",
+#   lom =
+    parent = PPP, root  = PPP,
+
+#    pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
+    pre_condition_rule = ""  ,
+    post_condition_rule = "",
+
+    flow = True,
+    forward_only = True,
+    choice = True,
+
+
+    rollup_rule  = "satisfied IF All satisfied",
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = True,
+    is_visible = True,
+    order_in_container = 1
+    )
+secuencias.save()
 
 
 tema_1 = LearningActivity( name = 'Introduccion', slug = 'Intro',
@@ -129,7 +152,7 @@ tema_3.save()
 
 
 EjerciciosIntro = LearningActivity( name = 'Ejercicios', slug = 'Ejercicios',
-    uri = "/activity/Ejercicios_1",
+    uri = "/activity/EjerciciosIntro",
     parent = intro,
     root   = PPP,
 
@@ -148,7 +171,7 @@ EjerciciosIntro = LearningActivity( name = 'Ejercicios', slug = 'Ejercicios',
     )
 EjerciciosIntro.save()
 
-program_1 = LearningActivity( name = 'Ejercicio 1', slug = 'E1',
+program_1 = LearningActivity( name = 'Imprime Hola', slug = 'E1',
     uri = "/program/PPP/1",
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = "",
@@ -163,10 +186,13 @@ program_1 = LearningActivity( name = 'Ejercicio 1', slug = 'E1',
 program_1.save()
 
 
-program_2 = LearningActivity( name = 'Ejercicio 2', slug = 'E2',
+program_2 = LearningActivity( name = '¿Es par?', slug = 'E2',
     uri = "/program/PPP/2",
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
+#     pre_condition_rule = """if self.num_attempts == 0 :
+#  self.pre_condition = 'stopForwardTraversal'
+# else:
+#  self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -177,10 +203,13 @@ program_2 = LearningActivity( name = 'Ejercicio 2', slug = 'E2',
     )
 program_2.save()
 
-program_3 = LearningActivity( name = 'Ejercicio 3', slug = 'E3',
+program_3 = LearningActivity( name = 'Suma dos números', slug = 'E3',
     uri = "/program/PPP/3",
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
+#     pre_condition_rule = """if self.num_attempts == 0 :
+#  self.pre_condition = 'stopForwardTraversal'
+# else:
+#  self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -191,7 +220,7 @@ program_3 = LearningActivity( name = 'Ejercicio 3', slug = 'E3',
     )
 program_3.save()
 
-program_4 = LearningActivity( name = 'Ejercicio 4', slug = 'E4',
+program_4 = LearningActivity( name = 'distancia()', slug = 'E4',
     uri = "/program/PPP/4",
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = "",
@@ -205,7 +234,7 @@ program_4 = LearningActivity( name = 'Ejercicio 4', slug = 'E4',
     )
 program_4.save()
 
-program_5 = LearningActivity( name = 'Ejercicio 5', slug = 'E5',
+program_5 = LearningActivity( name = 'mayor()', slug = 'E5',
     uri = "/program/PPP/5",
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = "",
@@ -219,9 +248,47 @@ program_5 = LearningActivity( name = 'Ejercicio 5', slug = 'E5',
     )
 program_5.save()
 
-program_6 = LearningActivity( name = 'Ejercicio 6', slug = 'E6',
+
+
+
+secuencias_1 = LearningActivity( name = 'Video', slug = 'Intro',
+    uri = '/activity/video/secuencias',
+    parent = secuencias, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 0
+    )
+secuencias_1.save()
+
+EjerciciosSec = LearningActivity( name = 'Ejercicios', slug = 'Ejercicios',
+    uri = "/activity/EjerciciosSec",
+    parent = secuencias,
+    root   = PPP,
+
+    flow = True,
+    forward_only = False,
+    choice = True,
+    choice_exit = False,
+
+    rollup_rule  = "satisfied IF All satisfied",
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = True,
+    is_visible = True,
+    order_in_container = 3
+    )
+EjerciciosSec.save()
+
+
+program_6 = LearningActivity( name = 'Dame una lista', slug = 'E6',
     uri = "/program/PPP/6",
-    parent = EjerciciosIntro, root  = PPP,
+    parent = EjerciciosSec, root  = PPP,
     pre_condition_rule = "",
     post_condition_rule = "",
 
@@ -233,9 +300,10 @@ program_6 = LearningActivity( name = 'Ejercicio 6', slug = 'E6',
     )
 program_6.save()
 
-program_7 = LearningActivity( name = 'Ejercicio 7', slug = 'E7',
+
+program_7 = LearningActivity( name = 'Dame una tupla', slug = 'E7',
     uri = "/program/PPP/7",
-    parent = EjerciciosIntro, root  = PPP,
+    parent = EjerciciosSec, root  = PPP,
     pre_condition_rule = "",
     post_condition_rule = "",
 
@@ -247,9 +315,9 @@ program_7 = LearningActivity( name = 'Ejercicio 7', slug = 'E7',
     )
 program_7.save()
 
-program_8 = LearningActivity( name = 'Ejercicio 8', slug = 'E8',
+program_8 = LearningActivity( name = 'Solo una tajada', slug = 'E8',
     uri = "/program/PPP/8",
-    parent = EjerciciosIntro, root  = PPP,
+    parent = EjerciciosSec, root  = PPP,
     pre_condition_rule = "",
     post_condition_rule = "",
 
@@ -259,11 +327,12 @@ program_8 = LearningActivity( name = 'Ejercicio 8', slug = 'E8',
     is_container = False,
     is_visible = True,    order_in_container = 10
     )
+
 program_8.save()
 
-program_9 = LearningActivity( name = 'Ejercicio 9', slug = 'E9',
+program_9 = LearningActivity( name = 'Solo una tajadita', slug = 'E9',
     uri = "/program/PPP/9",
-    parent = EjerciciosIntro, root  = PPP,
+    parent = EjerciciosSec, root  = PPP,
     pre_condition_rule = "",
     post_condition_rule = "",
 
@@ -275,9 +344,9 @@ program_9 = LearningActivity( name = 'Ejercicio 9', slug = 'E9',
     )
 program_9.save()
 
-program_10 = LearningActivity( name = 'Ejercicio 10', slug = 'E10',
+program_10 = LearningActivity( name = '¡Pura Acción!', slug = 'E10',
     uri = "/program/PPP/10",
-    parent = EjerciciosIntro, root  = PPP,
+    parent = EjerciciosSec, root  = PPP,
     pre_condition_rule = "",
     post_condition_rule = "",
 
@@ -288,6 +357,51 @@ program_10 = LearningActivity( name = 'Ejercicio 10', slug = 'E10',
     is_visible = True,    order_in_container = 12
     )
 program_10.save()
+
+
+program_11 = LearningActivity( name = 'Mutantes', slug = 'E10',
+    uri = "/program/PPP/11",
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 13
+    )
+program_11.save()
+
+
+program_12 = LearningActivity( name = 'Producto punto', slug = 'E10',
+    uri = "/program/PPP/12",
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 14
+    )
+program_12.save()
+
+
+program_13 = LearningActivity( name = 'Ordena la Lista', slug = 'E10',
+    uri = "/program/PPP/13",
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 14
+    )
+program_13.save()
 
 User.objects.filter(username='ana').delete()
 User.objects.filter(username='paul').delete()

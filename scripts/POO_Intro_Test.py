@@ -61,7 +61,7 @@ pretest = LearningActivity( name = 'Pretest', slug = 'Pretest',
     pre_condition_rule = """if self.num_attempts == 0 :
  self.pre_condition = 'stopForwardTraversal'
 else:
- self.pre_condition = 'hidden'""",
+ self.pre_condition = 'disabled'""",
     post_condition_rule = "" ,
 
     rollup_rule  = "",
