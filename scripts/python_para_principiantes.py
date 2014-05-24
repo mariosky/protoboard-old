@@ -377,7 +377,7 @@ program_11 = LearningActivity( name = 'Mutantes', slug = 'E10',
 program_11.save()
 
 
-program_12 = LearningActivity( name = 'Producto punto', slug = 'E10',
+program_12 = LearningActivity( name = 'Ordena la Lista', slug = 'E10',
     uri = "/program/PPP/12",
     parent = EjerciciosSec, root  = PPP,
     pre_condition_rule = "",
@@ -392,7 +392,7 @@ program_12 = LearningActivity( name = 'Producto punto', slug = 'E10',
 program_12.save()
 
 
-program_13 = LearningActivity( name = 'Ordena la Lista', slug = 'E10',
+program_13 = LearningActivity( name ='Producto punto' , slug = 'E10',
     uri = "/program/PPP/13",
     parent = EjerciciosSec, root  = PPP,
     pre_condition_rule = "",
@@ -402,7 +402,7 @@ program_13 = LearningActivity( name = 'Ordena la Lista', slug = 'E10',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 14
+    is_visible = True,    order_in_container = 15
     )
 program_13.save()
 

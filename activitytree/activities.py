@@ -548,10 +548,10 @@ def es_accion(pelicula):
              'instructions':u"""<p> Un sistema externo nos envía en una lista información sobre peliculas,
              aquí un ejemplo: <code> ['tt1877832', 'X-Men: Days of Future Past', 2014,
 			['Action', 'Adventure', 'Fantasy'], 8.1,  14740 ] </code>  los elementos corresponden secuencialmente a
-			Identificador, Titulo, Año, Lista de Generos y Calificación Promedio, Número de votos. Escribe un método
+			Identificador, Titulo, Año, Lista de Generos, Calificación Promedio y Número de votos. Escribe un método
 			llamdo <code> es_accion(pelicula) </code> que reciba una pelicula representada como lista y regrese
-			True si es pelicula de acción, y Falso si no lo es.Por ejemplo para la pelicula anterior regresaría
-			<code>True </code>, pero para la pelicula ['tt2004420', 'Neighbors', 2014, ['Comedy'], 7.2,  26920]
+			<code> True </code> si es pelicula de acción, y <code> False </code> si no lo es.Por ejemplo para la pelicula anterior regresaría
+			<code>True </code>, pero para la pelicula <code>['tt2004420', 'Neighbors', 2014, ['Comedy'], 7.2,  26920]</code>
 			  regresaría  <code> False </code>.</p>
             """,
             'unit_test':u"""
@@ -596,19 +596,19 @@ print json.dumps(result)
 '/program/PPP/11':
         {   'title':u"Mutantes",
             'initial_code':u"""
-def es_accion(pelicula):
+def activa_usuario(usr):
     pass
 """,
             'correct_code':u""" """,
              'instructions':u"""<p> Un sistema externo nos envía en una lista información sobre usuarios,
              aquí un ejemplo: <code> ['812202', 'Ana', 'Activo'] </code>  los elementos corresponden secuencialmente a
-			Identificador, Nombre y Status. Status tiene solo dos valores válidos:'Activo' y 'Inactivo'  Escribe un método
-			llamdo <code> activa_usuario(usr) </code> que reciba un usuario representado como lista, modifique su
-			estado a 'Activo' y regrese la lista</p>
+			Identificador, Nombre y Status. Status tiene solo dos valores válidos:<code> 'Activo'</code>  e <code> 'Inactivo'</code>   Escribe un método
+			llamdo <code> activa_usuario(usr) </code> que reciba a un usuario representado como lista, modifique su
+			estado a  <code>'Activo'</code> y regrese la lista.</p>
 
             <div class="alert alert-warning"> Para usuarios más avanzados: Como el usuario es una lista,
-          al pasarse como argumento la modificación se realiza por referencia, por lo que no es necesario regresar la
-          lista. Si está en chino no te preocupes, esto lo explicaremos más adelante.</div>
+          al pasarse como argumento la modificación se realiza a la  referencia por lo que no es necesario regresar la
+          lista. Si está en chino no te preocupes, ésto lo explicaremos más adelante.</div>
             """,
             'unit_test':u"""
 import sys
@@ -712,18 +712,19 @@ print json.dumps(result)
 '/program/PPP/13':
         {   'title':u"Producto punto",
             'initial_code':u"""
-def es_accion(pelicula):
+def producto(l1,l2):
     pass
 """,
             'correct_code':u""" """,
              'instructions':u"""<p> Escribe un método llamado <code> producto(l1, l2) </code> el cual reciba
               dos listas de enteros del mismo tamaño y regrese el producto escalar entre ellas. El producto escalar
-              se calcula de la siguiente forma: Digamos que  a = [a<sup>1</sup>,a<sup>2</sup> ... a<sup>n</sup>] y
-            b  =  [b<sup>1</sup>,b<sup>2</sup> ... b<sup>n</sup>] entonces
-             a · b = a<sup>1</sup>a<sup>1</sup> + a<sup>2</sup>a<sup>2</sup> + .. + a<sup>n</sup>a<sup>n</sup>
+              se calcula de la siguiente manera: Tenemos <b>a</b> = [a<sub>1</sub>, a<sub>2</sub> , ... ,a<sub>n</sub>] y
+            <b>b</b>  =  [b<sub>1</sub>, b<sub>2</sub> , ... , b<sub>n</sub>] entonces
+            <b> a</b> ·<b> b </b>= a<sub>1</sub>a<sub>1</sub> + a<sub>2</sub>a<sub>2</sub> + .. + a<sub>n</sub>a<sub>n</sub> Se suman
+             los productos de los elementos con el mismo indice, el primero con el primero, segundo con el segundo, etc.
 
             </p>
-
+          <div class="alert alert-warning"> Puedes utilizar <code>map</code> y <code>zip</code></div>
 
             """,
             'unit_test':u"""
@@ -745,9 +746,7 @@ class Test(unittest.TestCase):
     def setUp(self):
         pass
     def test_Action(self):
-        self.assertEqual(activa_usuario(['tt', 'X', 1, ['Action'], 1,  1 ]), True)
-    def test_Not_Action(self):
-        self.assertEqual(es_accion(['tt', 'X', 1, ['Otra'], 1,  1 ]), False)
+        self.assertEqual(producto([2, 1, 3], [2, 3, 1]), 10)
 suite = unittest.TestLoader().loadTestsFromTestCase(Test)
 Resultado = ResultadoPrueba()
 suite.run(Resultado)
