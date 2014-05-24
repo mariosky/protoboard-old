@@ -102,6 +102,13 @@ class UserLearningActivity(models.Model):
 
     def __unicode__(self):
         return self.user.username + ":" + self.learning_activity.name
+
+    def is_root(self):
+        if self.learning_activity.parent is None:
+            return True
+        else:
+            return False
+
     
     def eval_pre_condition_rule(self):
         self.pre_condition = ""

@@ -38,8 +38,8 @@ PPP = LearningActivity( name = 'Python para principiantes', slug = 'PPP',
     choice_exit = False,
 
     rollup_rule  = "satisfied IF All satisfied",
-    rollup_objective = False,
-    rollup_progress = False,
+    rollup_objective = True,
+    rollup_progress = True,
 
     is_container = True,
     is_visible = True,
@@ -68,8 +68,9 @@ intro = LearningActivity( name = 'Introducción', slug = 'Intro',
     post_condition_rule = "",
 
     flow = True,
-    forward_only = True,
+    forward_only = False,
     choice = True,
+    choice_exit = False,
 
 
     rollup_rule  = "satisfied IF All satisfied",
@@ -95,6 +96,7 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
     flow = True,
     forward_only = True,
     choice = True,
+    choice_exit = False,
 
 
     rollup_rule  = "satisfied IF All satisfied",
@@ -189,10 +191,11 @@ program_1.save()
 program_2 = LearningActivity( name = '¿Es par?', slug = 'E2',
     uri = "/program/PPP/2",
     parent = EjerciciosIntro, root  = PPP,
-#     pre_condition_rule = """if self.num_attempts == 0 :
-#  self.pre_condition = 'stopForwardTraversal'
-# else:
-#  self.pre_condition = 'disabled'""",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,

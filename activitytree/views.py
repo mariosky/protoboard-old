@@ -66,13 +66,14 @@ def activity(request,uri):
                                                    user = request.user )[0]
 
         if request.method == 'GET':
-            if 'nav' in request.GET and request.GET['nav'] == 'continue':
-                if requested_activity.learning_activity.parent is None:
-                    current_activity = s.get_current(requested_activity)
-                    if current_activity:
-                        requested_activity = current_activity
-                        return HttpResponseRedirect( requested_activity.learning_activity.uri)
+            if requested_activity.is_root() and 'nav' in request.GET and request.GET['nav'] == 'continue':
+                current_activity = s.get_current(requested_activity)
+                if current_activity:
+                    requested_activity = current_activity
+                    return HttpResponseRedirect( requested_activity.learning_activity.uri)
 
+                else:
+                    _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
             else:
                 # Exits last activity, and sets requested activity as current
                 # if choice_exit consider complete
@@ -93,10 +94,12 @@ def activity(request,uri):
 
             if request.POST['nav_event'] == 'next':
                 # Go TO NEXT ACTIVITY
-                next_uri = s.get_next(root)
+                s.exit( requested_activity, progress_status = progress_status, objective_status = objective_status)
+                next_uri = s.get_next(root, requested_activity)
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
-                next_uri = s.get_prev(root)
+                s.exit( requested_activity, progress_status = progress_status, objective_status = objective_status)
+                next_uri = s.get_prev(root, requested_activity)
 
             if next_uri is None:
                     #No more activities ?
@@ -104,7 +107,7 @@ def activity(request,uri):
 
             else:
 
-                s.exit( requested_activity, progress_status = progress_status, objective_status = objective_status)
+
                 next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
                 return HttpResponseRedirect(next_activity.learning_activity.uri)
 
@@ -184,23 +187,22 @@ def test(request, uri, objective_status = None):
             elif 'nav_event' in request.POST:
                 next_uri = None
 
-                if request.POST['nav_event'] == 'next' :
+                if request.POST['nav_event'] == 'next':
                     # Go TO NEXT ACTIVITY
-                    next_uri = s.get_next(root)
-                    progress_status = 'complete'
-
-
+                    next_uri = s.get_next(root, requested_activity)
 
                 elif request.POST['nav_event'] == 'prev':
                     # Go TO PREV ACTIVITY
-                    next_uri = s.get_prev(root)
+                    next_uri = s.get_prev(root, requested_activity)
 
                 if next_uri is None:
                         #No more activities ?
                     return HttpResponseRedirect( root.learning_activity.uri)
+
                 else:
                     next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
                     return HttpResponseRedirect(next_activity.learning_activity.uri)
+
 
        # Gets the current navegation tree as HTML
 
@@ -253,22 +255,26 @@ def program(request,uri):
 
 
             next_uri = None
-            if  request.POST['nav_event'] == 'next':
-                # Go TO NEXT ACTIVITY
-                next_uri = s.get_next(root)
 
+            if request.POST['nav_event'] == 'next':
+                # Go TO NEXT ACTIVITY
+                s.exit( requested_activity)
+                next_uri = s.get_next(root, requested_activity)
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
-                next_uri = s.get_prev(root)
+                s.exit( requested_activity)
+                next_uri = s.get_prev(root, requested_activity)
 
             if next_uri is None:
                     #No more activities ?
                 return HttpResponseRedirect( root.learning_activity.uri)
 
             else:
-                s.exit(requested_activity)
+
+
                 next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
                 return HttpResponseRedirect(next_activity.learning_activity.uri)
+
 
 
         # Gets the current navegation tree as HTML

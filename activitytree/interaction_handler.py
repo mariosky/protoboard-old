@@ -248,9 +248,9 @@ class SimpleSequencing(object):
         else:
             raise NotAllowed('Assign Activity Tree', "Only Root Nodes can be assigned")
 
-    def get_next(self, ula):
+    def get_next(self, ula, current):
 
-        current = self.get_current(ula)
+        #current = self.get_current(ula)
 
         if current:
             nav = self.get_nav(ula)
@@ -271,9 +271,9 @@ class SimpleSequencing(object):
         else:
             return None
 
-    def get_prev(self, ula):
+    def get_prev(self, ula, current):
 
-        current = self.get_current(ula)
+        #current = self.get_current(ula)
 
         if current:
             nav = self.get_nav(ula)
