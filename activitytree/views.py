@@ -228,6 +228,88 @@ def test(request, uri, objective_status = None):
         # Do something for anonymous users.
 
 
+def survey(request, uri, objective_status = None):
+    if request.user.is_authenticated():
+        s = SimpleSequencing()
+        # First, the requested_activity  exists??
+        # Gets the Learning Activity object from uri
+        requested_activity = _get_ula(request, s)
+
+        if not requested_activity:
+            return HttpResponseNotFound('<h1>Activity not found</h1>')
+
+        # Gets the root of the User Learning Activity
+        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
+        feedback = None
+
+        if request.method == 'GET':
+            # Exits last activity, and sets requested activity as current
+            # if choice_exit consider complete
+            _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
+
+        elif request.method == 'POST':
+            if 'check' in request.POST:
+
+                feedback = _check_survey(request.POST, activities[requested_activity.learning_activity.uri])
+
+                event = ULA_Event.objects.create(ULA=requested_activity,context=feedback)
+                event.save()
+
+                print feedback
+                # Exits the current Learning Activity
+                objective_measure = feedback['total_correct']
+                #if objective_measure >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
+                objective_status='satisfied'
+                #else:
+                #    objective_status='notSatisfied'
+
+                s.update(requested_activity, progress_status = None, objective_status = objective_status, objective_measure = objective_measure)
+
+
+            elif 'nav_event' in request.POST:
+                next_uri = None
+
+                if request.POST['nav_event'] == 'next' :
+                    # Go TO NEXT ACTIVITY
+                    next_uri = s.get_next(root, requested_activity)
+                    progress_status = 'complete'
+
+
+
+                elif request.POST['nav_event'] == 'prev':
+                    # Go TO PREV ACTIVITY
+                    next_uri = s.get_prev(root, requested_activity)
+
+                if next_uri is None:
+                        #No more activities ?
+                    return HttpResponseRedirect( root.learning_activity.uri)
+                else:
+                    next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
+                    return HttpResponseRedirect(next_activity.learning_activity.uri)
+
+       # Gets the current navegation tree as HTML
+
+        nav = s.get_nav(root)
+        navegation_tree = s.nav_to_html(nav)
+
+        content = activities[requested_activity.learning_activity.uri]
+        if feedback:
+            for q in content['questions']:
+                if q['id'] in feedback:
+                    q['feedback'] = feedback[q['id']]
+                    if q['interaction']  in ['choiceInteraction','simpleChoice']:
+                        q['feedback_options'] = zip(q['options'], feedback[q['id']]['user_answer'], feedback[q['id']]['checked'])
+
+        return render_to_response('activitytree/'+(requested_activity.learning_activity.uri).split('/')[1]+'.html',
+                                  {'navegation': navegation_tree,
+                                   'uri':requested_activity.learning_activity.uri,
+                                   'content':content,
+                                   'feedback':feedback},
+                                    context_instance=RequestContext(request))
+    else:      
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        # Do something for anonymous users.
+
 
 
 def program(request,uri):
@@ -426,7 +508,44 @@ def _check_quiz(post_dict, quiz):
 
     return checked
 
+def _check_survey(post_dict, quiz):
+    answerDict = dict(post_dict.iterlists())
+    checked = {}
+    for q in quiz['questions']:
+        id = q['id']
+        answer = q['answer']
+        interaction = q['interaction']
+        checked[id] = {}
 
+        if interaction in ['choiceInteraction','simpleChoice']:
+            if unicode(id) in answerDict:
+                user = answerDict[unicode(id)]
+                user_index = [ int(a.split("_")[-1]) for a in user]
+                user_answer = [int(i in user_index) for i in range(len(answer))]
+
+                if 1 in user_answer:
+                    checked[id]['correct'] = 1
+                else:
+                    checked[id]['correct'] = 0
+
+                checked[id]['checked'] = [ (user_answer[i]==answer[i]) and (answer[i]==1) for i in range(len(answer))]
+                checked[id]['user_answer']  = user_answer
+            else:
+                checked[id]['correct'] = 0
+                checked[id]['checked'] = [False for _ in range(len(answer))]
+                checked[id]['user_answer']  = [0 for _ in range(len(answer))]
+        elif interaction in ['textEntryInteraction']:
+            if unicode(id) in answerDict:
+                user_answer = answerDict[unicode(id)][0]
+                checked[id]['user_answer'] = user_answer
+
+                if user_answer in answer :
+                    checked[id]['correct'] = 1
+                else:
+                    checked[id]['correct'] = 0
+    checked['total_correct'] = sum([float(checked[key]['correct']) for key in checked if key not in ['checked']])
+
+    return checked
 
 @sensitive_post_parameters()
 @csrf_protect

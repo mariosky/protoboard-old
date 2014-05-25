@@ -10,6 +10,7 @@ urlpatterns = patterns('',
       (r'^activity/(?P<uri>\w+)$','activitytree.views.activity'),
       (r'^activity/video/(?P<uri>\w+)$','activitytree.views.activity'),
       (r'^test/(?P<uri>\w+)$','activitytree.views.test'),
+      (r'^survey/(?P<uri>\w+)$','activitytree.views.survey'),
 
       (r'^program/(?P<uri>\w(\/*))+$','activitytree.views.program'),
       (r'^execute_queue$','activitytree.views.execute_queue'),
