@@ -271,13 +271,15 @@ def survey(request, uri, objective_status = None):
 
                 if request.POST['nav_event'] == 'next' :
                     # Go TO NEXT ACTIVITY
+                    s.exit( requested_activity)
                     next_uri = s.get_next(root, requested_activity)
-                    progress_status = 'complete'
+
 
 
 
                 elif request.POST['nav_event'] == 'prev':
                     # Go TO PREV ACTIVITY
+                    s.exit( requested_activity)
                     next_uri = s.get_prev(root, requested_activity)
 
                 if next_uri is None:

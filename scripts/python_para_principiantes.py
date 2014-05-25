@@ -176,7 +176,11 @@ EjerciciosIntro.save()
 program_1 = LearningActivity( name = 'Imprime Hola', slug = 'E1',
     uri = "/program/PPP/1",
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -190,14 +194,20 @@ program_1.save()
 eesm_1 = LearningActivity( name = 'EESM 1', slug = 'EESM1',
     uri = '/survey/EESM1',
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
     rollup_progress = True,
+    choice_exit = False,
 
     is_container = False,
-    is_visible = True,    order_in_container = 4
+    is_visible = True,
+    order_in_container = 4
     )
 eesm_1.save()
 
@@ -209,7 +219,7 @@ program_2 = LearningActivity( name = '¿Es par?', slug = 'E2',
 if self.num_attempts == 0 :
     self.pre_condition = 'stopForwardTraversal'
 else:
-    self.pre_condition = 'disabled'""",
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -223,8 +233,11 @@ program_2.save()
 eesm_2 = LearningActivity( name = 'EESM 2', slug = 'EESM2',
     uri = '/survey/EESM2',
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
-    post_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
 
     rollup_objective = True,
     rollup_progress = True,
@@ -237,10 +250,11 @@ eesm_2.save()
 program_3 = LearningActivity( name = 'Suma dos números', slug = 'E3',
     uri = "/program/PPP/3",
     parent = EjerciciosIntro, root  = PPP,
-#     pre_condition_rule = """if self.num_attempts == 0 :
-#  self.pre_condition = 'stopForwardTraversal'
-# else:
-#  self.pre_condition = 'disabled'""",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -254,7 +268,11 @@ program_3.save()
 eesm_3 = LearningActivity( name = 'EESM 3', slug = 'EESM3',
     uri = '/survey/EESM3',
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -268,7 +286,11 @@ eesm_3.save()
 program_4 = LearningActivity( name = 'distancia()', slug = 'E4',
     uri = "/program/PPP/4",
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -282,7 +304,11 @@ program_4.save()
 eesm_4 = LearningActivity( name = 'EESM 4', slug = 'EESM4',
     uri = '/survey/EESM4',
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -296,7 +322,11 @@ eesm_4.save()
 program_5 = LearningActivity( name = 'mayor()', slug = 'E5',
     uri = "/program/PPP/5",
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -310,7 +340,11 @@ program_5.save()
 eesm_5 = LearningActivity( name = 'EESM 5', slug = 'EESM5',
     uri = '/survey/EESM5',
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -362,7 +396,11 @@ EjerciciosSec.save()
 program_6 = LearningActivity( name = 'Dame una lista', slug = 'E6',
     uri = "/program/PPP/6",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -376,7 +414,11 @@ program_6.save()
 eesm_6 = LearningActivity( name = 'EESM 6', slug = 'EESM6',
     uri = '/survey/EESM6',
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -391,7 +433,11 @@ eesm_6.save()
 program_7 = LearningActivity( name = 'Dame una tupla', slug = 'E7',
     uri = "/program/PPP/7",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -405,7 +451,11 @@ program_7.save()
 eesm_7 = LearningActivity( name = 'EESM 7', slug = 'EESM7',
     uri = '/survey/EESM7',
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -419,7 +469,11 @@ eesm_7.save()
 program_8 = LearningActivity( name = 'Solo una tajada', slug = 'E8',
     uri = "/program/PPP/8",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -434,7 +488,11 @@ program_8.save()
 eesm_8 = LearningActivity( name = 'EESM 8', slug = 'EESM8',
     uri = '/survey/EESM8',
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -448,7 +506,11 @@ eesm_8.save()
 program_9 = LearningActivity( name = 'Solo una tajadita', slug = 'E9',
     uri = "/program/PPP/9",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -462,7 +524,11 @@ program_9.save()
 eesm_9 = LearningActivity( name = 'EESM 9', slug = 'EESM9',
     uri = '/survey/EESM9',
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -476,7 +542,11 @@ eesm_9.save()
 program_10 = LearningActivity( name = '¡Pura Acción!', slug = 'E10',
     uri = "/program/PPP/10",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -490,7 +560,11 @@ program_10.save()
 eesm_10 = LearningActivity( name = 'EESM 10', slug = 'EESM10',
     uri = '/survey/EESM10',
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -505,7 +579,11 @@ eesm_10.save()
 program_11 = LearningActivity( name = 'Mutantes', slug = 'E10',
     uri = "/program/PPP/11",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -519,7 +597,11 @@ program_11.save()
 eesm_11 = LearningActivity( name = 'EESM 11', slug = 'EESM11',
     uri = '/survey/EESM11',
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -533,7 +615,11 @@ eesm_11.save()
 program_12 = LearningActivity( name = 'Ordena la Lista', slug = 'E10',
     uri = "/program/PPP/12",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -547,7 +633,11 @@ program_12.save()
 eesm_12 = LearningActivity( name = 'EESM 12', slug = 'EESM12',
     uri = '/survey/EESM12',
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -561,7 +651,11 @@ eesm_12.save()
 program_13 = LearningActivity( name ='Producto punto' , slug = 'E10',
     uri = "/program/PPP/13",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.num_attempts == 0 :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = ''""",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -575,7 +669,11 @@ program_13.save()
 eesm_13 = LearningActivity( name = 'EESM 13', slug = 'EESM13',
     uri = '/survey/EESM13',
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
