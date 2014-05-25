@@ -187,6 +187,20 @@ program_1 = LearningActivity( name = 'Imprime Hola', slug = 'E1',
     )
 program_1.save()
 
+eesm_1 = LearningActivity( name = 'EESM 1', slug = 'EESM1',
+    uri = '/survey/EESM1',
+    parent = EjerciciosIntro, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 4
+    )
+eesm_1.save()
+
 
 program_2 = LearningActivity( name = '¿Es par?', slug = 'E2',
     uri = "/program/PPP/2",
@@ -202,9 +216,23 @@ else:
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 4
+    is_visible = True,    order_in_container = 5
     )
 program_2.save()
+
+eesm_2 = LearningActivity( name = 'EESM 2', slug = 'EESM2',
+    uri = '/survey/EESM2',
+    parent = EjerciciosIntro, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 6
+    )
+eesm_2.save()
 
 program_3 = LearningActivity( name = 'Suma dos números', slug = 'E3',
     uri = "/program/PPP/3",
@@ -219,9 +247,23 @@ program_3 = LearningActivity( name = 'Suma dos números', slug = 'E3',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 5
+    is_visible = True,    order_in_container = 7
     )
 program_3.save()
+
+eesm_3 = LearningActivity( name = 'EESM 3', slug = 'EESM3',
+    uri = '/survey/EESM3',
+    parent = EjerciciosIntro, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 8
+    )
+eesm_3.save()
 
 program_4 = LearningActivity( name = 'distancia()', slug = 'E4',
     uri = "/program/PPP/4",
@@ -233,9 +275,23 @@ program_4 = LearningActivity( name = 'distancia()', slug = 'E4',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 6
+    is_visible = True,    order_in_container = 9
     )
 program_4.save()
+
+eesm_4 = LearningActivity( name = 'EESM 4', slug = 'EESM4',
+    uri = '/survey/EESM4',
+    parent = EjerciciosIntro, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 10
+    )
+eesm_4.save()
 
 program_5 = LearningActivity( name = 'mayor()', slug = 'E5',
     uri = "/program/PPP/5",
@@ -247,9 +303,23 @@ program_5 = LearningActivity( name = 'mayor()', slug = 'E5',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 7
+    is_visible = True,    order_in_container = 11
     )
 program_5.save()
+
+eesm_5 = LearningActivity( name = 'EESM 5', slug = 'EESM5',
+    uri = '/survey/EESM5',
+    parent = EjerciciosIntro, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 12
+    )
+eesm_5.save()
 
 
 
@@ -303,6 +373,20 @@ program_6 = LearningActivity( name = 'Dame una lista', slug = 'E6',
     )
 program_6.save()
 
+eesm_6 = LearningActivity( name = 'EESM 6', slug = 'EESM6',
+    uri = '/survey/EESM6',
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 9
+    )
+eesm_6.save()
+
 
 program_7 = LearningActivity( name = 'Dame una tupla', slug = 'E7',
     uri = "/program/PPP/7",
@@ -314,9 +398,23 @@ program_7 = LearningActivity( name = 'Dame una tupla', slug = 'E7',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 9
+    is_visible = True,    order_in_container = 10
     )
 program_7.save()
+
+eesm_7 = LearningActivity( name = 'EESM 7', slug = 'EESM7',
+    uri = '/survey/EESM7',
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 11
+    )
+eesm_7.save()
 
 program_8 = LearningActivity( name = 'Solo una tajada', slug = 'E8',
     uri = "/program/PPP/8",
@@ -328,10 +426,24 @@ program_8 = LearningActivity( name = 'Solo una tajada', slug = 'E8',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 10
+    is_visible = True,    order_in_container = 12
     )
 
 program_8.save()
+
+eesm_8 = LearningActivity( name = 'EESM 8', slug = 'EESM8',
+    uri = '/survey/EESM8',
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 13
+    )
+eesm_8.save()
 
 program_9 = LearningActivity( name = 'Solo una tajadita', slug = 'E9',
     uri = "/program/PPP/9",
@@ -343,9 +455,23 @@ program_9 = LearningActivity( name = 'Solo una tajadita', slug = 'E9',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 11
+    is_visible = True,    order_in_container = 14
     )
 program_9.save()
+
+eesm_9 = LearningActivity( name = 'EESM 9', slug = 'EESM9',
+    uri = '/survey/EESM9',
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 15
+    )
+eesm_9.save()
 
 program_10 = LearningActivity( name = '¡Pura Acción!', slug = 'E10',
     uri = "/program/PPP/10",
@@ -357,9 +483,23 @@ program_10 = LearningActivity( name = '¡Pura Acción!', slug = 'E10',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 12
+    is_visible = True,    order_in_container = 16
     )
 program_10.save()
+
+eesm_10 = LearningActivity( name = 'EESM 10', slug = 'EESM10',
+    uri = '/survey/EESM10',
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 17
+    )
+eesm_10.save()
 
 
 program_11 = LearningActivity( name = 'Mutantes', slug = 'E10',
@@ -372,10 +512,23 @@ program_11 = LearningActivity( name = 'Mutantes', slug = 'E10',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 13
+    is_visible = True,    order_in_container = 18
     )
 program_11.save()
 
+eesm_11 = LearningActivity( name = 'EESM 11', slug = 'EESM11',
+    uri = '/survey/EESM11',
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 19
+    )
+eesm_11.save()
 
 program_12 = LearningActivity( name = 'Ordena la Lista', slug = 'E10',
     uri = "/program/PPP/12",
@@ -387,10 +540,23 @@ program_12 = LearningActivity( name = 'Ordena la Lista', slug = 'E10',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 14
+    is_visible = True,    order_in_container = 20
     )
 program_12.save()
 
+eesm_12 = LearningActivity( name = 'EESM 12', slug = 'EESM12',
+    uri = '/survey/EESM12',
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 21
+    )
+eesm_12.save()
 
 program_13 = LearningActivity( name ='Producto punto' , slug = 'E10',
     uri = "/program/PPP/13",
@@ -402,9 +568,23 @@ program_13 = LearningActivity( name ='Producto punto' , slug = 'E10',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 15
+    is_visible = True,    order_in_container = 22
     )
 program_13.save()
+
+eesm_13 = LearningActivity( name = 'EESM 13', slug = 'EESM13',
+    uri = '/survey/EESM13',
+    parent = EjerciciosSec, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 23
+    )
+eesm_13.save()
 
 User.objects.filter(username='ana').delete()
 User.objects.filter(username='paul').delete()
