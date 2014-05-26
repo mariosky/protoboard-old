@@ -541,7 +541,7 @@ def _check_survey(post_dict, quiz):
                 user_answer = answerDict[unicode(id)][0]
                 checked[id]['user_answer'] = user_answer
 
-                if user_answer in answer :
+                if True :
                     checked[id]['correct'] = 1
                 else:
                     checked[id]['correct'] = 0

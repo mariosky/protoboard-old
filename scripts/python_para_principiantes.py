@@ -57,6 +57,20 @@ description= u"""
 cursoPPP = Course(short_description=description, root=PPP)
 cursoPPP.save()
 
+pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
+    uri = '/survey/EP',
+    parent = PPP, root  = PPP,
+    pre_condition_rule = "",
+    post_condition_rule = "",
+
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = False,
+    is_visible = True,    order_in_container = 0
+    )
+pretest.save()
+
 
 intro = LearningActivity( name = 'Introducción', slug = 'Intro',
     uri = "/activity/introduccion",
@@ -79,7 +93,7 @@ intro = LearningActivity( name = 'Introducción', slug = 'Intro',
 
     is_container = True,
     is_visible = True,
-    order_in_container = 0
+    order_in_container = 1
     )
 intro.save()
 

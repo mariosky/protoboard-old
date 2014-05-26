@@ -2942,6 +2942,67 @@ print json.dumps(result)
     'bye':""" """,
     'satisfied_at_least':3
                     },
+
+'/survey/EP':{
+    'questions':  [{'id': 8801,
+                    'interaction': 'choiceInteraction',
+                    'inline': 0 ,
+                    'title': "Pregunta Abierta",
+                    'question': u'¿Cuántos años tienes programando?',
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["0 años", "1 año", "2-4 años", "5 ó más años"],
+                    'answer': [1,1,0,0],
+                    'answer_text': "Solo son México y USA",
+                    'hints': ["España está en Europa", "Nicaragua es de Sudamérica"]
+                    },
+                    {
+                    'id':8802,
+                    'interaction': 'choiceInteraction',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "¿Cuántos cursos de programación has llevado?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["0 cursos","1 curso","2-4 cursos","5 ó más cursos"],
+                    'answer': [0,1,0,1],
+                    },
+                    {
+                    'id':8803,
+                    'interaction': 'simpleChoice',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "¿Te gusta programar?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Sí", "Más o menos", "No"],
+                    'type':"str",
+                    'answer': [1,0,0],
+                    },
+                    {
+                    'id':8804,
+                    'interaction': 'choiceInteraction',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "¿Qué paradigmas de programación manejas?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Programación Orientada a Objetos", "Programación Funcional", "Programación Declarativa",
+                    "Programación Imperativa", "Ninguno", "No sé"],
+                    'type':"str",
+                    'answer': [1,0,0,0,0,0],
+                    },
+                    ],
+    'intro':"""<h3>Experiencia en Programaci&oacute;n</h3>
+    <p>Antes de empezar el curso, dinos algo sobre tu experiencia en programación.</p>""",
+    'bye':"""""",
+     'satisfied_at_least':3
+                    },
+
 }
 
 
