@@ -264,7 +264,7 @@ def survey(request, uri, objective_status = None):
                 event = ULA_Event.objects.create(ULA=requested_activity,context=feedback)
                 event.save()
 
-                print feedback
+
                 # Exits the current Learning Activity
                 objective_measure = feedback['total_correct']
                 #if objective_measure >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
