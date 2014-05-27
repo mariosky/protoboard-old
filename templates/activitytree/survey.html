@@ -6,6 +6,12 @@
     <form id="learning_activity_form"    role="form"  action="{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
 <input type="hidden" name="number_questions" id="number_questions" value="{{ content.questions|length }}" />
+ {% if feedback %}
+
+        <div class="alert alert-success"> Tus respuestas se han grabado con &eacute;xito. Presiona Continuar. </div>
+{% endif %}
+
+
 
     {{ content.intro|safe }}
 
@@ -78,7 +84,7 @@
 
         {% if feedback %}
 
-      <p style="margin-top:30px; text-align:center;"><span style="font-weight:bold;color:#428BCA;">Tus respuestas se han grabado con &eacute;xito</span></p>
+
 
         <ul class="pager">
                      <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
@@ -105,7 +111,8 @@
 
 $(document).ready(function() {
     $("#learning_activity_form").submit(function(event) {
-	if($("#number_questions").val() != $(":radio:checked").length) {
+    //Consideramos radio y checkbox
+	if($("#number_questions").val() > $(":checkbox:checked").length+$(":radio:checked").length) {
 	    event.preventDefault();
 	    alert("Por favor, contesta todas las preguntas");
 	} else {

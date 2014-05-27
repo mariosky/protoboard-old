@@ -60,7 +60,11 @@ cursoPPP.save()
 pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
     uri = '/survey/EP',
     parent = PPP, root  = PPP,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if self.objective_status == 'notSatisfied' :
+    self.pre_condition = 'stopForwardTraversal'
+else:
+    self.pre_condition = 'disabled'""",
     post_condition_rule = "",
 
     rollup_objective = True,
