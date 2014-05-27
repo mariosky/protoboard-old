@@ -123,7 +123,7 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
 
     is_container = True,
     is_visible = True,
-    order_in_container = 1
+    order_in_container = 2
     )
 secuencias.save()
 
