@@ -329,7 +329,8 @@ print json.dumps(result)
 
  '/program/PPP/6':
         {   'title':u"Dame una lista",
-            'initial_code':u"""def regresa_lista():
+            'initial_code':u"""
+def regresa_lista():
     return None
 """,
             'correct_code':u""" """,
@@ -364,6 +365,7 @@ class Test(unittest.TestCase):
         self.assertEqual(regresa_lista()[2],12)
     def test_len(self):
         self.assertEqual(len(regresa_lista()),3)
+
 suite = unittest.TestLoader().loadTestsFromTestCase(Test)
 Resultado = ResultadoPrueba()
 suite.run(Resultado)

@@ -112,7 +112,7 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
     post_condition_rule = "",
 
     flow = True,
-    forward_only = True,
+    forward_only = False,
     choice = True,
     choice_exit = False,
 
@@ -386,7 +386,8 @@ secuencias_1 = LearningActivity( name = 'Video', slug = 'Intro',
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 0
+    is_visible = True,
+    order_in_container = 0
     )
 secuencias_1.save()
 
