@@ -15,39 +15,46 @@ from django.utils.http import is_safe_url
 from django.shortcuts import resolve_url
 from django.template import RequestContext
 
-
-
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,  FacebookSession
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
-from social.backends.google import GooglePlusAuth
+#from social.backends.google import GooglePlusAuth
+
+import urllib
+import urlparse
 
 from eval_code.RedisCola import Cola, Task
 import json
 from django.conf import settings
 
-def logout(request):
-    """Logs out user"""
-    auth_logout(request)
-    plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
-    plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
-    courses = Course.objects.all()
-    return render_to_response('activitytree/welcome.html', {'courses':courses,'plus_scope':plus_scope,'plus_id':plus_id}
-                              , RequestContext(request))
+# def logout(request):
+#     """Logs out user"""
+#     auth_logout(request)
+#     plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
+#     plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
+#     courses = Course.objects.all()
+#     return render_to_response('activitytree/welcome.html', {'courses':courses,'plus_scope':plus_scope,'plus_id':plus_id}
+#                              , RequestContext(request))
 
 def welcome(request):
-    plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
-    plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
+    # plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
+    # plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
     courses = Course.objects.all()
 
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
          return render_to_response('activitytree/welcome.html',
-            {'courses':courses,'plus_scope':plus_scope,'plus_id':plus_id},
+            {'courses':courses
+                #, 'plus_scope':plus_scope,'plus_id':plus_id
+            },
                 context_instance=RequestContext(request))
     else:
         return render_to_response('activitytree/welcome.html',
-            {'user_name':None,'courses':courses,'plus_scope':plus_scope,'plus_id':plus_id},
+            {'user_name':None,'courses':courses
+                #,'plus_scope':plus_scope,'plus_id':plus_id
+                 },
                 context_instance=RequestContext(request))
 
 def activity(request,uri):
@@ -549,51 +556,56 @@ def _check_survey(post_dict, quiz):
 
     return checked
 
-@sensitive_post_parameters()
-@csrf_protect
-@never_cache
-def login(request, template_name='registration/login.html',
-          redirect_field_name=REDIRECT_FIELD_NAME, authentication_form=AuthenticationForm,
-          current_app=None, extra_context=None):
-    """
-    Displays the login form and handles the login action.
-    """
-    redirect_to = request.REQUEST.get(redirect_field_name, '')
+# @sensitive_post_parameters()
+# @csrf_protect
+# @never_cache
+# def login(request, template_name='registration/login.html',
+#           redirect_field_name=REDIRECT_FIELD_NAME, authentication_form=AuthenticationForm,
+#           current_app=None, extra_context=None):
+#     """
+#     Displays the login form and handles the login action.
+#     """
+#     redirect_to = request.REQUEST.get(redirect_field_name, '')
+#
+#     if request.method == "POST":
+#         form = authentication_form(request, data=request.POST)
+#         if form.is_valid():
+#
+#             # Ensure the user-originating redirection url is safe.
+#             if not is_safe_url(url=redirect_to, host=request.get_host()):
+#                 redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+#
+#             # Okay, security check complete. Log the user in.
+#             auth_login(request, form.get_user())
+#
+#             return HttpResponseRedirect(redirect_to)
+#     else:
+#         form = authentication_form(request)
+#
+#
+#
+#     current_site = get_current_site(request)
+#
+#     from django.conf import settings
+#     plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
+#     plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
+#
+#     context = {
+#         'form': form,
+#         redirect_field_name: redirect_to,
+#         'site': current_site,
+#         'site_name': current_site.name,
+#         'plus_scope':plus_scope,'plus_id':plus_id
+#     }
+#     if extra_context is not None:
+#         context.update(extra_context)
+#     return TemplateResponse(request, template_name, context,
+#                             current_app=current_app)
+#
 
-    if request.method == "POST":
-        form = authentication_form(request, data=request.POST)
-        if form.is_valid():
+def login(request,template_name='registration/login.html',  redirect_field_name=REDIRECT_FIELD_NAME):
+    return TemplateResponse(request, template_name, current_app=None)
 
-            # Ensure the user-originating redirection url is safe.
-            if not is_safe_url(url=redirect_to, host=request.get_host()):
-                redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
-
-            # Okay, security check complete. Log the user in.
-            auth_login(request, form.get_user())
-
-            return HttpResponseRedirect(redirect_to)
-    else:
-        form = authentication_form(request)
-
-
-
-    current_site = get_current_site(request)
-
-    from django.conf import settings
-    plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
-    plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
-
-    context = {
-        'form': form,
-        redirect_field_name: redirect_to,
-        'site': current_site,
-        'site_name': current_site.name,
-        'plus_scope':plus_scope,'plus_id':plus_id
-    }
-    if extra_context is not None:
-        context.update(extra_context)
-    return TemplateResponse(request, template_name, context,
-                            current_app=current_app)
 
 
 
@@ -612,3 +624,64 @@ def ajax_vote(request, type, uri):
         return HttpResponse(json.dumps(response_data), mimetype="application/json")
     else:
         return HttpResponse(content="Ya voto?")
+
+
+
+def facebook_get_login(request):
+    state = request.session.session_key
+    url = """https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&state=%s""" % \
+              (settings.FACEBOOK_APP_ID ,settings.FACEBOOK_REDIRECT_URL,
+               state
+                )
+
+    return HttpResponseRedirect(url)
+
+def facebook_login(request):
+
+
+    if 'error' in request.GET:
+        return HttpResponseRedirect('/')
+
+
+    code = request.GET['code']
+    UID = request.GET['state']
+
+    args = { "client_id" : settings.FACEBOOK_APP_ID,
+             "redirect_uri" : settings.FACEBOOK_REDIRECT_URL ,
+             "client_secret" : settings.FACEBOOK_APP_SECRET,
+             "code" : code }
+
+    response = urllib.urlopen( "https://graph.facebook.com/oauth/access_token?" + urllib.urlencode(args))
+    response = urlparse.parse_qs(response.read())
+    access_token = response["access_token"][-1]
+    profile = json.load(urllib.urlopen(
+        "https://graph.facebook.com/me?" +
+        urllib.urlencode(dict(access_token=access_token))))
+    expires = response['expires'][0]
+
+    facebook_session = FacebookSession.objects.get_or_create(
+        access_token=access_token)[0]
+
+    facebook_session.expires = expires
+    facebook_session.save()
+
+    user = authenticate(token=access_token)
+    if user:
+        if user.is_active:
+            login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            error = 'AUTH_DISABLED'
+
+    if 'error_reason' in request.GET:
+        error = 'AUTH_DENIED'
+    ### TO DO Log Error
+    return HttpResponseRedirect('/')
+
+
+@login_required
+def logout_view(request):
+    # Log a user out using Django's logout function and redirect them
+    # back to the homepage.
+    logout(request)
+    return HttpResponseRedirect('/')

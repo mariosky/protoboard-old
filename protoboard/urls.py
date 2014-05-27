@@ -17,6 +17,12 @@ urlpatterns = patterns('',
       (r'^get_result$','activitytree.views.get_result'),
 
       (r'^ajax_vote/(?P<type>\w+)/(?P<uri>\w+)$','activitytree.views.ajax_vote'),
+      (r'^facebook/get_login/?$', 'activitytree.views.facebook_get_login'),
+      (r'^facebook/login/?$','activitytree.views.facebook_login'),
+      (r'^logout/?$', 'activitytree.views.logout_view'),
+
+
+
       (r'^login/$', 'activitytree.views.login', {'template_name': 'registration/login.html'}),
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout

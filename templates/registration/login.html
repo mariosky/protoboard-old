@@ -97,13 +97,13 @@
 
 <div class="row">
   <div class="col-md-6">
-      <a id="login-facebook-btn" class="btn btn-block btn-social btn-facebook disabled"> <i class="fa fa-facebook"></i>
+      <a id="login-facebook-btn" href="/facebook/get_login" class="btn btn-block btn-social btn-facebook "> <i class="fa fa-facebook"></i>
         Regístrate con Facebook</a></div>
   <div class="col-md-1"> </div>
 
 
   <div class="col-md-6">
-      <a id="loginGoogle" class="btn btn-block btn-social btn-google-plus"><i class="fa fa-google-plus"></i>
+      <a id="loginGoogle" class="btn btn-block btn-social btn-google-plus disabled"><i class="fa fa-google-plus"></i>
        Regístrate con Google </a>
   </div>
 </div>
@@ -119,6 +119,8 @@
 
 {% block scripts %}
 
+
+ {% comment %}
     <script type="text/javascript">
 
   window.___gcfg = {
@@ -138,7 +140,7 @@
         s.parentNode.insertBefore(po, s);
     })();
 
-   /* Executed when the APIs finish loading */
+   Executed when the APIs finish loading
  function render() {
 
    // Additional params including the callback, the rest of the params will
@@ -168,12 +170,15 @@
             $('#google-plus').submit();
         }
     };
+
 </script>
 
-    <form id="google-plus" method="post" action="{% url 'social:complete' "google-plus" %}">{% csrf_token %}
+   <form id="google-plus" method="post" action="{% url 'social:complete' "google-plus" %}">{% csrf_token %}
     <input id="at" type="hidden" name="access_token" value="" />
     <input id="code" type="hidden" name="code" value="" />
-</form>
 
+
+</form>
+ {% endcomment %}
 
 {% endblock scripts %}
