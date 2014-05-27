@@ -2945,7 +2945,7 @@ print json.dumps(result)
 
 '/survey/EP':{
     'questions':  [{'id': 8801,
-                    'interaction': 'choiceInteraction',
+                    'interaction': 'simpleChoice',
                     'inline': 0 ,
                     'title': "Pregunta Abierta",
                     'question': u'¿Cuántos años tienes programando?',
@@ -2959,7 +2959,7 @@ print json.dumps(result)
                     },
                     {
                     'id':8802,
-                    'interaction': 'choiceInteraction',
+                    'interaction': 'simpleChoice',
                     'inline': 0,
                     'title': "Pregunta Abierta",
                     'question': "¿Cuántos cursos de programación has llevado?",
