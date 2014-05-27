@@ -23,7 +23,7 @@ urlpatterns = patterns('',
 
 
 
-      (r'^login/$', 'activitytree.views.login', {'template_name': 'registration/login.html'}),
+      (r'^login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout
       (r'^accounts/login/$', 'activitytree.views.welcome'),

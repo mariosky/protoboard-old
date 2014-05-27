@@ -313,7 +313,7 @@ class FacebookSessionError(Exception):
         return u'%s: "%s"' % (self.type, self.message)
 
 class FacebookSession(models.Model):
-    access_token = models.CharField(max_length=200, unique=True)
+    access_token = models.TextField(unique=True)
     expires = models.IntegerField(null=True)
 
     user = models.ForeignKey(User, null=True)

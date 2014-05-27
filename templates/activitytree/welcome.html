@@ -58,10 +58,14 @@ body {
 
        <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            {% if user_name %}
-             <li><a class="navbar-user" href="#"> <img src="{{ user_image }}" alt=""/>  {{ user_name }}</a></li>
 
-             <li><a href="/logout">Log out</a></li>
+           {% if user.is_authenticated %}
+            <li><a href="#"></a></li>
+            <li><a href="#"> {{ user.first_name }} {{ user.last_name }}</a></li>
+            <li><a class="navbar-user" href="#"><img src="http://graph.facebook.com/{{user.email}}/picture?type=square"/>  </a></li>
+            <li><a href="/logout">Log out</a></li>
+
+
 
             {% else %}
 

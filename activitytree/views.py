@@ -58,6 +58,8 @@ def welcome(request):
                 context_instance=RequestContext(request))
 
 def activity(request,uri):
+    print request.user, request.user.is_authenticated()
+
     if request.user.is_authenticated():
         s = SimpleSequencing()
 
@@ -603,7 +605,7 @@ def _check_survey(post_dict, quiz):
 #                             current_app=current_app)
 #
 
-def login(request,template_name='registration/login.html',  redirect_field_name=REDIRECT_FIELD_NAME):
+def login_view(request,template_name='registration/login.html',  redirect_field_name=REDIRECT_FIELD_NAME):
     return TemplateResponse(request, template_name, current_app=None)
 
 
@@ -646,10 +648,13 @@ def facebook_login(request):
     code = request.GET['code']
     UID = request.GET['state']
 
+
     args = { "client_id" : settings.FACEBOOK_APP_ID,
              "redirect_uri" : settings.FACEBOOK_REDIRECT_URL ,
              "client_secret" : settings.FACEBOOK_APP_SECRET,
              "code" : code }
+
+    print code, args
 
     response = urllib.urlopen( "https://graph.facebook.com/oauth/access_token?" + urllib.urlencode(args))
     response = urlparse.parse_qs(response.read())
@@ -666,6 +671,7 @@ def facebook_login(request):
     facebook_session.save()
 
     user = authenticate(token=access_token)
+    print "Usuario",user
     if user:
         if user.is_active:
             login(request, user)
