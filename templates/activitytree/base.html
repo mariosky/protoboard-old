@@ -305,6 +305,8 @@ background-position: left top;
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+
+           {% comment %}
             {% if user_name %}
             <!-- <li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
@@ -313,6 +315,13 @@ background-position: left top;
             <li><a href="/logout">Log out</a></li>
 
            {% endif %}
+            {% endcomment %}
+
+           {% if user.is_authenticated %}
+
+                 <li><a class="navbar-user" href="#"><img src="http://graph.facebook.com/{{user.email}}/picture?type=square"/> {{ user.first_name }} </a></li>.
+
+            {% endif %}
 
             {% if not user_name %}
 
