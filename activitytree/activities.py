@@ -631,9 +631,8 @@ class Test(unittest.TestCase):
     def setUp(self):
         pass
     def test_Action(self):
-        self.assertEqual(activa_usuario(['tt', 'X', 1, ['Action'], 1,  1 ]), True)
-    def test_Not_Action(self):
-        self.assertEqual(es_accion(['tt', 'X', 1, ['Otra'], 1,  1 ]), False)
+        self.assertEqual(activa_usuario(['2', 'A', 'Inactivo']) , ['2', 'A', 'Activo'])
+
 suite = unittest.TestLoader().loadTestsFromTestCase(Test)
 Resultado = ResultadoPrueba()
 suite.run(Resultado)
