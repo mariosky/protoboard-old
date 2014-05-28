@@ -499,7 +499,7 @@ def recorta(pelicula):
              aquí un ejemplo: <code> ['tt1877832', 'X-Men: Days of Future Past', 2014,
 			['Action', 'Adventure', 'Fantasy'], 8.1,  14740 ] </code>  los elementos corresponden secuencialmente a
 			Identificador, Titulo, Año, Lista de Generos y Calificación Promedio, Número de votos. Escribe un método
-			llamdo <code> recorta(pelicula) </code> que reciba una pelicula representada como lista y regrese
+			llamado <code> recorta(pelicula) </code> que reciba una pelicula representada como lista y regrese
 			otra lista que solo incluya Titulo y Año. Por ejemplo para la pelicula anterior regresaría
 			<code> ['X-Men: Days of Future Past', 2014] </code> </p>
             """,
@@ -551,7 +551,7 @@ def es_accion(pelicula):
              aquí un ejemplo: <code> ['tt1877832', 'X-Men: Days of Future Past', 2014,
 			['Action', 'Adventure', 'Fantasy'], 8.1,  14740 ] </code>  los elementos corresponden secuencialmente a
 			Identificador, Titulo, Año, Lista de Generos, Calificación Promedio y Número de votos. Escribe un método
-			llamdo <code> es_accion(pelicula) </code> que reciba una pelicula representada como lista y regrese
+			llamado <code> es_accion(pelicula) </code> que reciba una pelicula representada como lista y regrese
 			<code> True </code> si es pelicula de acción, y <code> False </code> si no lo es.Por ejemplo para la pelicula anterior regresaría
 			<code>True </code>, pero para la pelicula <code>['tt2004420', 'Neighbors', 2014, ['Comedy'], 7.2,  26920]</code>
 			  regresaría  <code> False </code>.</p>
@@ -605,7 +605,7 @@ def activa_usuario(usr):
              'instructions':u"""<p> Un sistema externo nos envía en una lista información sobre usuarios,
              aquí un ejemplo: <code> ['812202', 'Ana', 'Activo'] </code>  los elementos corresponden secuencialmente a
 			Identificador, Nombre y Status. Status tiene solo dos valores válidos:<code> 'Activo'</code>  e <code> 'Inactivo'</code>   Escribe un método
-			llamdo <code> activa_usuario(usr) </code> que reciba a un usuario representado como lista, modifique su
+			llamado <code> activa_usuario(usr) </code> que reciba a un usuario representado como lista, modifique su
 			estado a  <code>'Activo'</code> y regrese la lista.</p>
 
             <div class="alert alert-warning"> Para usuarios más avanzados: Como el usuario es una lista,
