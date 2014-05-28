@@ -721,7 +721,7 @@ def producto(l1,l2):
               dos listas de enteros del mismo tamaño y regrese el producto escalar entre ellas. El producto escalar
               se calcula de la siguiente manera: Tenemos <b>a</b> = [a<sub>1</sub>, a<sub>2</sub> , ... ,a<sub>n</sub>] y
             <b>b</b>  =  [b<sub>1</sub>, b<sub>2</sub> , ... , b<sub>n</sub>] entonces
-            <b> a</b> ·<b> b </b>= a<sub>1</sub>a<sub>1</sub> + a<sub>2</sub>a<sub>2</sub> + .. + a<sub>n</sub>a<sub>n</sub> Se suman
+            <b> a</b> ·<b> b </b>= a<sub>1</sub>b<sub>1</sub> + a<sub>2</sub>b<sub>2</sub> + .. + a<sub>n</sub>b<sub>n</sub> Se suman
              los productos de los elementos con el mismo indice, el primero con el primero, segundo con el segundo, etc.
 
             </p>
