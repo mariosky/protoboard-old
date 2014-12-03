@@ -5,10 +5,171 @@ import datetime
 from lxml import etree
 #Exceptions
 
-
-
-
 TRANSFORM = """<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Author: Mario Garcia
+	File:
+	Date:
+	Purpose: Crear elementos de navegacion a partir de XML
+-->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" indent="yes" encoding="utf-8" />
+
+	<xsl:template match="/">
+	<nav id="nav_menu">
+	    <ul>
+			<xsl:apply-templates select="item"/>
+		</ul>
+	</nav>
+	</xsl:template>
+
+
+	<xsl:template match="item" >
+      	<xsl:choose>
+
+			<!-- CONTAINER-->
+			<xsl:when test="@is_container = 'True'">
+	            <li>
+	             <xsl:attribute name="class">
+	                    <xsl:if test="@is_visible = 'False'">hidden </xsl:if>
+	                    <xsl:if test="@pre_condition = 'disabled'"> disabled </xsl:if>
+						<xsl:value-of select="concat('container_', @objective_status)" />
+	             </xsl:attribute>
+
+
+
+	        		 <a href="{@uri}">
+
+        	    <xsl:choose>
+
+            <xsl:when test="@objective_status = 'notSatisfied'">
+                <i class="fa fa-folder-open"></i>&#160;
+            </xsl:when>
+            <xsl:when test="@objective_status = 'satisfied'" >
+                 <i class="fa fa-graduation-cap"></i> &#160;
+            </xsl:when>
+
+            </xsl:choose>
+
+
+
+
+
+
+
+	        		 <xsl:value-of select="@identifier" /> </a>
+
+                <ul>
+				<xsl:apply-templates select="item"/>
+			</ul>
+
+			    </li>
+			  </xsl:when>
+
+            <!-- ACTIVITY DISABLED -->
+			<xsl:when test="@pre_condition = 'disabled'">
+	            <li>
+		             <xsl:attribute name="class">
+			      		<xsl:if test="@pre_condition = 'disabled'">activity_disabled </xsl:if>
+						<xsl:if test="@is_visible = 'False'">hidden </xsl:if>
+			         </xsl:attribute>
+
+	        		 <a href="">
+	        		 <i class="fa fa-ban"></i> &#160;
+					   <xsl:value-of select="@identifier"/> (<xsl:value-of select="@objective_measure"/>)
+					 </a>
+			    </li>
+			</xsl:when>
+			<xsl:when test="@is_current = 'True'">
+	            <li class="activity_current">
+	        		<a href="{@uri}">
+
+	        		   <xsl:choose>
+
+        <xsl:when test="starts-with(@uri,'/activity/video/')">
+            <i class="fa fa-video-camera"></i> &#160;
+        </xsl:when>
+        <xsl:when test="starts-with(@uri,'/program/')" >
+             <i class="fa fa-coffee"></i> &#160;
+        </xsl:when>
+
+        <xsl:when test="starts-with(@uri,'/survey/')"  >
+             <i class="fa fa-question"></i> &#160;
+        </xsl:when>
+        <xsl:when test="starts-with(@uri,'/test/')"   >
+             <i class="fa fa-pencil-square-o"></i> &#160;
+        </xsl:when>
+        <xsl:when test="starts-with(@uri,'/activity/')" >
+             <i class="fa fa-book"></i> &#160;
+        </xsl:when>
+
+    </xsl:choose>
+						<xsl:value-of select="@identifier" />
+	       		 	</a>
+			    </li>
+			</xsl:when>
+
+
+
+          <xsl:when test="@objective_status = 'satisfied'">
+            <li class="activity_satisfied">
+        		<a href="{@uri}">
+        		<i class="fa fa-check-square-o"></i> &#160;
+					<xsl:value-of select="@identifier"/> (<xsl:value-of select="@objective_measure"/>)
+       		 	</a>
+		    </li>
+		  </xsl:when>
+
+		   <xsl:when test="@objective_status = 'notSatisfied'">
+            <li class="activity_notSatisfied">
+        		<a href="{@uri}">
+
+   <xsl:choose>
+
+        <xsl:when test="starts-with(@uri,'/activity/video/')">
+            <i class="fa fa-video-camera"></i> &#160;
+        </xsl:when>
+        <xsl:when test="starts-with(@uri,'/program/')" >
+             <i class="fa fa-coffee"></i> &#160;
+        </xsl:when>
+
+        <xsl:when test="starts-with(@uri,'/survey/')"  >
+             <i class="fa fa-question"></i> &#160;
+        </xsl:when>
+        <xsl:when test="starts-with(@uri,'/test/')"   >
+             <i class="fa fa-pencil-square-o"></i> &#160;
+        </xsl:when>
+        <xsl:when test="starts-with(@uri,'/activity/')" >
+             <i class="fa fa-book"></i> &#160;
+        </xsl:when>
+
+    </xsl:choose>
+					<xsl:value-of select="@identifier"/>
+       	            <xsl:if test="@recomended_value != 'None'">
+        	             [<xsl:value-of select="@recomended_value"/>]
+		            </xsl:if>
+       		    </a>
+		   </li>
+		  </xsl:when>
+
+
+
+            <xsl:otherwise>
+            <li class="{@identifier}"/>
+
+          </xsl:otherwise>
+        </xsl:choose>
+
+
+
+	</xsl:template>
+
+</xsl:stylesheet>
+"""
+
+
+
+TRANSFORM_OLD = """<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Author: Mario Garcia
 	File:
