@@ -36,6 +36,11 @@ body {
 	margin: 0;
     }
 
+  #main_container
+  {
+      padding-top: 60px;
+  }
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -334,7 +339,8 @@ background-position: left top;
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#nav_menu">protoboard.org</a>
+          <a class="navbar-brand" href="#nav_menu"> <i class="fa fa-sitemap"></i></a>
+          <a class="navbar-brand" href="/">protoboard.org</a>
         </div>
 
         <div  id="navbar" class=" collapse navbar-collapse">
@@ -377,12 +383,9 @@ background-position: left top;
 
 
 
-    <div class="container-fluid">
+    <div id="main_container" class="container-fluid">
 
-          <div class="header">
-				<a href="#nav_menu">Demo</a>
 
-			</div>
 
             {% block content %}
             <!--
