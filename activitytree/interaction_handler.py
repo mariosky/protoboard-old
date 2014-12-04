@@ -36,11 +36,9 @@ TRANSFORM = """<?xml version="1.0" encoding="utf-8"?>
 						<xsl:value-of select="concat('container_', @objective_status)" />
 	             </xsl:attribute>
 
+	        	<a href="{@uri}">
 
-
-	        		 <a href="{@uri}">
-
-        	    <xsl:choose>
+        	<xsl:choose>
 
             <xsl:when test="@objective_status = 'notSatisfied'">
                 <i class="fa fa-folder-open"></i>&#160;
@@ -50,12 +48,6 @@ TRANSFORM = """<?xml version="1.0" encoding="utf-8"?>
             </xsl:when>
 
             </xsl:choose>
-
-
-
-
-
-
 
 	        		 <xsl:value-of select="@identifier" /> </a>
 
@@ -81,7 +73,7 @@ TRANSFORM = """<?xml version="1.0" encoding="utf-8"?>
 			    </li>
 			</xsl:when>
 			<xsl:when test="@is_current = 'True'">
-	            <li class="activity_current">
+	            <li class="Selected">
 	        		<a href="{@uri}">
 
 	        		   <xsl:choose>
