@@ -357,16 +357,7 @@ background-position: left top;
 
             {% endif %}
 
-            {% comment %}
-
-                {% if user.is_authenticated %}
-
-                    <li><a class="navbar-user" href="#"> {{ user.first_name }} </a></li>.
-                     <li><a href="/logout">Log out</a></li>
-                {% endif %}
-            {% endcomment %}
-
-              {% if not user_name %}
+            {% if not user_name %}
 
             <li><a href="/login">Log in</a></li>
 
