@@ -345,7 +345,7 @@ class SimpleSequencing(object):
 
     def get_current_path(self, ula):
         current = self.get_current(ula)
-        return [la for la in self.get_curent_path(current)]
+        return [la for la in self.get_current_path(current)]
 
 
 
