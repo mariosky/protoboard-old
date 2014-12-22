@@ -125,7 +125,8 @@ def activity(request,uri):
         nav = s.get_nav(root)
         navegation_tree = s.nav_to_html(nav)
 
-        breadcrumbs = s.get_current_path(root)
+        breadcrumbs = s.get_current_path(requested_activity)
+
 
         ####
         ####
@@ -221,7 +222,8 @@ def test(request, uri, objective_status = None):
 
         nav = s.get_nav(root)
         navegation_tree = s.nav_to_html(nav)
-        breadcrumbs = s.get_current_path(root)
+        breadcrumbs = s.get_current_path(requested_activity)
+
 
 
         content = activities[requested_activity.learning_activity.uri]
