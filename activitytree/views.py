@@ -386,7 +386,7 @@ def program(request,uri):
         # Gets the current navegation tree as HTML
         nav = s.get_nav(root)
         navegation_tree = s.nav_to_html(nav)
-        breadcrumbs = s.get_current_path(root)
+        breadcrumbs = s.get_current_path(requested_activity)
 
 
 
