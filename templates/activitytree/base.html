@@ -383,11 +383,12 @@ background-position: left top;
          <ol class="breadcrumb">
             <li><a href="#nav_menu">  <i class="fa fa-navicon"></i> PPP  </a></li>
 
-             {%for link in breadcrumbs%}
+             {% for l in breadcrumbs %}
 
-            <li><a href="{{link.uri}}">link.name</a></li>
+            <li><a href="{{ l.uri }}">{{l.name}}</a></li>
 
              {%endfor%}
+
              <li class="active">Data</li>
 
 <       </ol>
