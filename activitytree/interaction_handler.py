@@ -343,9 +343,9 @@ class SimpleSequencing(object):
             yield current_la
             current_la = current_la.parent
 
-    def get_curent_path(self, ula):
+    def get_current_path(self, ula):
         current = self.get_current(ula)
-        return [la for la in self.get_curent_path(current.learning_activity)]
+        return [la for la in self.get_curent_path(current)]
 
 
 
