@@ -338,6 +338,15 @@ class SimpleSequencing(object):
         else:
             return None
 
+    def get_path(self,current_la):
+        while current_la.parent:
+            yield current_la
+            current_la = current_la.parent
+
+    def get_curent_path(self, ula):
+        current = self.get_current(ula)
+        return [la for la in self.get_curent_path(current.learning_activity)]
+
 
 
     def exit(self, ula, progress_status=None, objective_status=None, objective_measure=None, kmdynamics=None):
