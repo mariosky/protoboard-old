@@ -344,7 +344,7 @@ class SimpleSequencing(object):
             current = current.parent
 
     def get_current_path(self, current):
-        path = [la for la in self.get_path(current)]
+        path = [la for la in self.get_path(current.learning_activity)]
         path.reverse()
         return path
 
