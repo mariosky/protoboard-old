@@ -1,3 +1,4 @@
+
 {% extends "activitytree/base.html" %}
 
 
@@ -5,24 +6,59 @@
 {% block content %}
 
 
-    <div class = "row">
-
-      <h3> {{ video.title }} </h3>
-            <div class="video">
-                    <iframe width="640" height="510" src="{{ video.url }}" frameborder="0" allowfullscreen></iframe> </div>
-            </div>
-
-    <div class="row">
-
-         <form id="learning_activity_form"   role="form" action="{{uri}}" method = "POST">{% csrf_token %}
+   <div class = "row">
+        <div class="col-md-9">
 
 
-               <ul class="pager">
-                     <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
-                    <li class="next"><span class="nav_next">  Continuar &rarr;</span></li>
-               </ul>
+                <div class="video">
+                    <iframe width="640" height="510" src="{{ video.url }}" frameborder="0" allowfullscreen></iframe>
+                </div>
 
-       </form>
+
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+
+                <form id="learning_activity_form"   role="form" action="{{uri}}" method = "POST">{% csrf_token %}
+
+
+                   <ul class="pager">
+                        <li ><span class="nav_prev" > &larr; Anterior</span></li>
+                        <li ><span class="nav_next">  Continuar &rarr;</span></li>
+                    </ul>
+
+                </form>
+
+           </div>
+
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">{{ video.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                            Panel content
+                    </div>
+
+                </div>
+
+        </div>
+
 
     </div>
+   </div>
+   <div class = "row">
+   <div class="col-md-9">
+    <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">{{ video.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                            Panel content
+                    </div>
+
+                </div>
+   </div>
+   </div>
+
 {% endblock content %}
