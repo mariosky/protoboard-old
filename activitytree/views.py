@@ -125,6 +125,8 @@ def activity(request,uri):
         nav = s.get_nav(root)
         navegation_tree = s.nav_to_html(nav)
 
+        breadcrumbs = s.get_current_path(root)
+
         ####
         ####
         ####
@@ -137,7 +139,8 @@ def activity(request,uri):
 
                                   {'navegation': navegation_tree,
                                    'uri':requested_activity.learning_activity.uri,
-                                   'video':content},
+                                   'video':content,
+                                   'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
 
         else:
@@ -145,7 +148,8 @@ def activity(request,uri):
 
                                   {'navegation': navegation_tree,
                                    'uri':requested_activity.learning_activity.uri,
-                                   'content':content},
+                                   'content':content,
+                                   'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
 
         #####
