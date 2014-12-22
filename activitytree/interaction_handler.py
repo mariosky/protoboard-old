@@ -338,14 +338,14 @@ class SimpleSequencing(object):
         else:
             return None
 
-    def get_path(self,current_la):
-        while current_la.parent:
-            yield current_la
-            current_la = current_la.parent
+    def get_path(self,current):
+        while current.parent:
+            yield current
+            current = current.parent
 
     def get_current_path(self, ula):
         current = self.get_current(ula)
-        return [la for la in self.get_current_path(current)]
+        return [la for la in self.get_path(current)]
 
 
 
