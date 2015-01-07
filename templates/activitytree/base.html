@@ -386,18 +386,15 @@ background-position: left top;
          <ol class="breadcrumb">
 
              {% for l in breadcrumbs %}
-            {% if forloop.first %}
-            <li><a href="#nav_menu">  <i class="fa fa-navicon"></i> {{l.name}}  </a></li>
-            {%elif forloop.last%}
-             <li class="active">{{l.name}}</li>
-            {%elif%}
+                {% if forloop.first %}
+                    <li><a href="#nav_menu">  <i class="fa fa-navicon"></i> {{l.name}}  </a></li>
+                {% elif forloop.last%}
+                    <li class="active">{{l.name}}</li>
+                {%else%}
+                    <li><a href="{{ l.uri }}">{{l.name}}</a></li>
 
-            <li><a href="{{ l.uri }}">{{l.name}}</a></li>
-
-             {%endif%}
-             {%endfor%}
-
-
+                {% endif%}
+             {% endfor%}
        </ol>
      {% endif %}
 
