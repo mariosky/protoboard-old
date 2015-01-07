@@ -342,6 +342,8 @@ class SimpleSequencing(object):
         while current.parent:
             yield current
             current = current.parent
+        if not current.parent:
+            yield current
 
     def get_current_path(self, current):
         path = [la for la in self.get_path(current.learning_activity)]
