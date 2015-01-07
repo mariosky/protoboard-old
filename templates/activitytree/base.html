@@ -379,13 +379,10 @@ background-position: left top;
 
 
     <div id="main_container" class="container-fluid">
-     {% if breadcrumbs%}
+     {%if breadcrumbs%}
      <row>
-
-     {% if breadcrumbs%}
          <ol class="breadcrumb">
-
-             {% for l in breadcrumbs %}
+            {% for l in breadcrumbs %}
                 {% if forloop.first %}
                     <li><a href="#nav_menu">  <i class="fa fa-navicon"></i> {{l.name}}  </a></li>
                 {% elif forloop.last%}
@@ -394,12 +391,10 @@ background-position: left top;
                     <li><a href="{{ l.uri }}">{{l.name}}</a></li>
 
                 {% endif%}
-             {% endfor%}
+            {% endfor%}
        </ol>
-     {% endif %}
-
      </row>
-
+     {%endif%}
 
             {% block content %}
             <!--
