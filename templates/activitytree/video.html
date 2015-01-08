@@ -36,8 +36,8 @@
                     <div class="panel-heading">
                       <h3 class="panel-title">{{ video.title }}</h3>
                     </div>
-                    <div class="panel-body">
-                            Panel content
+                    <div id="rating-info" class="panel-body">
+
                     </div>
 
                 </div>
@@ -60,5 +60,11 @@
                 </div>
    </div>
    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+$('#rating-info').raty({ starType: 'i' });
+
 
 {% endblock content %}
