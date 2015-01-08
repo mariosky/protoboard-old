@@ -106,7 +106,7 @@ TRANSFORM = """<?xml version="1.0" encoding="utf-8"?>
           <xsl:when test="@objective_status = 'satisfied'">
             <li class="activity_satisfied">
         		<a href="{@uri}">
-        		<i class="fa fa-check-square-o"></i> &#160;
+        		<i class="fa fa-check"></i> &#160;
 					<xsl:value-of select="@identifier"/> (<xsl:value-of select="@objective_measure"/>)
        		 	</a>
 		    </li>
