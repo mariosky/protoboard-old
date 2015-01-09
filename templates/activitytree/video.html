@@ -65,7 +65,14 @@
          <script type="text/javascript" charset="utf-8">
 
 
-$('#rating-info').raty({ path: '{{MEDIA_URL}}images'}  );
+$('#rating-info').raty({ path: '{{MEDIA_URL}}images', score: 3}  );
+
+
+$('div').raty({
+  click: function(score, evt) {
+    alert('ID: ' + this.id + "\nscore: " + score + "\nevent: " + evt);
+  }
+});
 
    </script>
 {% endblock scripts %}
