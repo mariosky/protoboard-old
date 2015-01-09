@@ -68,7 +68,7 @@
 $('#rating-info').raty({ path: '{{MEDIA_URL}}images', score: 3}  );
 
 
-$('div').raty({
+$('#rating-info').raty({
   click: function(score, evt) {
     alert('ID: ' + this.id + "\nscore: " + score + "\nevent: " + evt);
   }
