@@ -337,10 +337,11 @@ $(document).ready(function() {
                         $("#result_panel_heading").html("Esperando resultados...");
                         poll();
 
-                     },
+                        },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);}
-                });
+                        alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
+                        }
+                    });
          }
          else
          {
