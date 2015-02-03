@@ -111,10 +111,7 @@ def activity(request,uri):
             if next_uri is None:
                     #No more activities ?
                 return HttpResponseRedirect( root.learning_activity.uri)
-
             else:
-
-
                 next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
                 return HttpResponseRedirect(next_activity.learning_activity.uri)
 
@@ -132,6 +129,7 @@ def activity(request,uri):
 
 
         content = activities[requested_activity.learning_activity.uri]
+
         if (requested_activity.learning_activity.uri).split('/')[2] =='video':
             print "VIDEO",(requested_activity.learning_activity.uri).split('/')[2]
             return render_to_response('activitytree/video.html',
@@ -142,6 +140,14 @@ def activity(request,uri):
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
 
+        elif requested_activity.learning_activity.is_container:
+            return render_to_response('activitytree/container.html',
+
+                                  {'navegation': requested_activity.get_children(),
+                                   'uri':requested_activity.learning_activity.uri,
+                                   'content':content,
+                                   'breadcrumbs':breadcrumbs},
+                                    context_instance=RequestContext(request))
         else:
             return render_to_response('activitytree/'+ (requested_activity.learning_activity.uri).split('/')[1]+'.html',
 
