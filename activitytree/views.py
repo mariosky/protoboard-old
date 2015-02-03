@@ -143,7 +143,8 @@ def activity(request,uri):
         elif requested_activity.learning_activity.is_container:
             return render_to_response('activitytree/container.html',
 
-                                  {'navegation': requested_activity.get_children(),
+                                  {'navegation': navegation_tree,
+                                   'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.uri,
                                    'content':content,
                                    'breadcrumbs':breadcrumbs},

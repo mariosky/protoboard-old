@@ -8,9 +8,9 @@
     <div class = "row">
 
 
-       {% for activity in navegation %}
+       {% for activity in children %}
 
-        <h1><a href="{{activity.learning_activity.uri}}"></a>  {{activity.learning_activity.name}}</a></h1>
+        <h3><a href="{{activity.learning_activity.uri}}">  {{activity.learning_activity.name}}</a></h3>
 
         {% endfor %}
 
