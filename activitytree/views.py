@@ -141,9 +141,10 @@ def activity(request,uri):
                                     context_instance=RequestContext(request))
 
         elif requested_activity.learning_activity.is_container:
+            XML = s.nav_to_xml(root=root)
             return render_to_response('activitytree/container.html',
 
-                                  {'navegation': navegation_tree,
+                                  {'navegation': XML,
                                    'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.uri,
                                    'content':content,
@@ -315,7 +316,9 @@ def survey(request, uri, objective_status = None):
        # Gets the current navegation tree as HTML
 
         nav = s.get_nav(root)
+
         navegation_tree = s.nav_to_html(nav)
+
         breadcrumbs = s.get_current_path(requested_activity)
 
         content = activities[requested_activity.learning_activity.uri]
