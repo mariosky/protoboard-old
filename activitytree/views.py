@@ -118,7 +118,7 @@ def activity(request,uri):
 
         # Gets the current navegation tree as HTML
         nav = s.get_nav(root)
-        XML = s.nav_to_xml(root=nav)
+        #XML = s.nav_to_xml(root=nav)
         navegation_tree = s.nav_to_html(nav)
 
         breadcrumbs = s.get_current_path(requested_activity)
@@ -146,7 +146,7 @@ def activity(request,uri):
             return render_to_response('activitytree/container.html',
 
                                   {'navegation': navegation_tree,
-                                   'XML_NAV':XML,
+                                   'XML_NAV':navegation_tree,
                                    'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.uri,
                                    'content':content,
