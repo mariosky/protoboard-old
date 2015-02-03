@@ -471,24 +471,7 @@ class SimpleSequencing(object):
         #Get children activities
         children = ula.get_children(recursive=False)
         if children:
-            #Process child nodes
-            for child in children:
-                child.children = []
-                child.eval_pre_condition_rule()
-
-                #IF Parent ForwardOnly is True, disable if already tried
-                #print child.learning_activity.uri, child.pre_condition
-                if child.pre_condition == 'stopForwardTraversal':
-                    ula.children.append(child)
-                    return ula
-                elif child.pre_condition == 'skip':
-                    pass
-                elif ula.learning_activity.forward_only and child.num_attempts > 0:
-                    child.pre_condition = 'disabled'
-                    ula.children.append(self.get_nav(child))
-                else:
-                    # disabled, hidden are still returned
-                    ula.children.append(self.get_nav(child))
+            #Process child nodes-*
             return ula
         else:
 
