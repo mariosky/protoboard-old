@@ -141,7 +141,7 @@ def activity(request,uri):
                                     context_instance=RequestContext(request))
 
         elif requested_activity.learning_activity.is_container:
-            XML = s.nav_to_xml(root=root)
+            XML = s.nav_to_xml(root=nav)
             return render_to_response('activitytree/container.html',
 
                                   {'navegation': XML,
