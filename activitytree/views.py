@@ -144,7 +144,8 @@ def activity(request,uri):
             XML = s.nav_to_xml(root=nav)
             return render_to_response('activitytree/container.html',
 
-                                  {'navegation': XML,
+                                  {'navegation': navegation_tree,
+                                   'XML_NAV':XML,
                                    'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.uri,
                                    'content':content,
