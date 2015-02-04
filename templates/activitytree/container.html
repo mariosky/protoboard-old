@@ -5,7 +5,7 @@
 {% block content %}
 
 
-    <div class = "row">
+    <div id="navlist" class = "row">
 
 
        {% for activity in children %}
@@ -54,6 +54,17 @@
 
     $( document ).ready(function() {
         XML_NAV = "{{XML_NAV|safe}}";
+        xmlDoc= $.parseXML(XML_NAV);
+        $xml = $(xmlDoc)
+        $current = $xml.find("item[is_current|='True']");
+        if ($current[0].getAttribute("is_container")=="True")
+        {
+            $current.children().each(function( index ) {
+                var activityName = $("<p></p>").text(this.getAttribute("identifier"));
+                $("#navlist").append(activityName );
+            });
+        }
+
     });
 
 </script>
