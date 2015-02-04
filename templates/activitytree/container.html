@@ -50,9 +50,11 @@
 
 {% block scripts %}
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
 
-XML_NAV ="{{XML_NAV|safe}}"
+    $( document ).ready(function() {
+        XML_NAV = "{{XML_NAV|safe}}";
+    });
 
 </script>
 
