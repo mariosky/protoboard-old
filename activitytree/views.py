@@ -119,6 +119,8 @@ def activity(request,uri):
         # Gets the current navegation tree as HTML
         nav = s.get_nav(root)
         XML = s.nav_to_xml(root=nav)
+        #Escape for javascript
+        XML.replace('"', r'\"')
         navegation_tree = s.nav_to_html(nav)
 
         breadcrumbs = s.get_current_path(requested_activity)
