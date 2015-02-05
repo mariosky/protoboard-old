@@ -59,10 +59,16 @@
         $current = $xml.find("item[is_current|='True']");
         if ($current[0].getAttribute("is_container")=="True")
         {
-            var icon = $("<i/>", {"class": "fa fa-folder-open"});
 
 
             $current.children().each(function( index ) {
+
+                var icon;
+                if (this.getAttribute("is_container")=="True")
+                    icon = $("<i/>", {"class": "fa fa-folder-open"});
+                else
+                    icon = $("<i/>", {"class": "fa fa-video-camera"});
+
                 var title = $("<a/>", {"href":this.getAttribute("uri")})
                         .append($("<h4/>", {"text":this.getAttribute("identifier")}).prepend(icon)
                 );
