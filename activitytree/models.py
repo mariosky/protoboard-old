@@ -99,6 +99,8 @@ class UserLearningActivity(models.Model):
 
     class Meta:
         unique_together = ("user", "learning_activity")
+    def to_JSON(self):
+        return "HOLA"
 
     def __unicode__(self):
         return self.user.username + ":" + self.learning_activity.name
