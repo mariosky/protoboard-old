@@ -60,8 +60,17 @@
         if ($current[0].getAttribute("is_container")=="True")
         {
             $current.children().each(function( index ) {
-                var activityName = $("<p></p>").text(this.getAttribute("identifier"));
-                $("#navlist").append(activityName );
+                var title= $("<h4/>", {"text":this.getAttribute("identifier")});
+                var caption = $("<div/>", {"class": "caption"});
+                caption.append(title);
+
+                var thumbnail = $("<div/>", {"class": "thumbnail"});
+                thumbnail.append(caption);
+                var column = $("<div/>", {"class": "col-xs-8 col-md-4"});
+                thumbnail.appendTo(column);
+
+                $("#navlist").append(column );
+
             });
         }
 
