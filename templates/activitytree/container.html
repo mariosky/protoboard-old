@@ -64,9 +64,8 @@
 
             $current.children().each(function( index ) {
                 var title = $("<a/>", {"href":this.getAttribute("uri")})
-                        .append(icon,
-                                $("<h4/>", {"text":this.getAttribute("identifier")})
-                        );
+                        .append($("<h4/>", {"text":this.getAttribute("identifier")}).append(icon)
+                );
 
 
                 var caption = $("<div/>", {"class": "caption"});
