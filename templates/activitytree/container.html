@@ -59,8 +59,16 @@
         $current = $xml.find("item[is_current|='True']");
         if ($current[0].getAttribute("is_container")=="True")
         {
+            var icon = $("<i/>", {"class": "fa fa-folder-open"});
+
+
             $current.children().each(function( index ) {
-                var title= $("<h4/>", {"text":this.getAttribute("identifier")});
+                var title = $("<a/>", {"href":this.getAttribute("uri")})
+                        .append(icon,
+                                $("<h4/>", {"text":this.getAttribute("identifier")})
+                        );
+
+
                 var caption = $("<div/>", {"class": "caption"});
                 caption.append(title);
 
@@ -72,6 +80,7 @@
                 $("#navlist").append(column );
 
             });
+
         }
 
     });
