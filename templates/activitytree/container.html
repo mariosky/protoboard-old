@@ -64,7 +64,7 @@
 
             $current.children().each(function( index ) {
                 var title = $("<a/>", {"href":this.getAttribute("uri")})
-                        .append($("<h4/>", {"text":this.getAttribute("identifier")}).append(icon)
+                        .append($("<h4/>", {"text":this.getAttribute("identifier")}).prepend(icon)
                 );
 
 
