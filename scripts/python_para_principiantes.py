@@ -27,8 +27,13 @@ from activitytree.interaction_handler import SimpleSequencing
 LearningActivity.objects.all().delete()
 
 
-PPP = LearningActivity( name = 'Python para principiantes', slug = 'PPP',
-    uri = "/activity/PPP",
+PPP = LearningActivity( name = 'Python Básico', slug = 'PB',
+    uri = "/activity/PB",
+    heading="Python Básico",
+    secondary_text = "",
+    description = "Tutorial del lenguaje Python, orientado a principiantes.",
+    image = "https://s3.amazonaws.com/learning-python/python-logo.png",
+
     parent = None,
     root   = None,
 
@@ -48,7 +53,7 @@ PPP = LearningActivity( name = 'Python para principiantes', slug = 'PPP',
 
 PPP.save()
 description= u"""
-          <p> Orientado a principiantes muy avanzados, que se maravillen con la simplicidad de este hola mundo: </p>
+          <p> Curso de Python básico, ¡Aprende desde cero!</p>
             <p><code>print "hola mundo"</code></p>
           <p> Python es utilizado por la  Nasa, Google, Instagram y por su puesto protoboard.org</p>
 """
@@ -60,11 +65,20 @@ cursoPPP.save()
 pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
     uri = '/survey/EP',
     parent = PPP, root  = PPP,
+
+    heading="¿Que experiencia tienes programando?",
+    secondary_text = "Encuesta",
+    description = "Antes de empezar algo sobre tu experiencia en programación",
+    image = "https://s3.amazonaws.com/learning-python/python-logo.png",
+
+
+
     pre_condition_rule = """
 if self.objective_status == 'notSatisfied' :
     self.pre_condition = 'stopForwardTraversal'
 else:
     self.pre_condition = 'disabled'""",
+
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -80,8 +94,11 @@ intro = LearningActivity( name = 'Introducción', slug = 'Intro',
     uri = "/activity/introduccion",
 #   lom =
     parent = PPP, root  = PPP,
-
-#    pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
+    heading="Introducción al lenguaje",
+    description = "Vemos las principales características del lenguaje y hacemos los primeros ejercicios.",
+    image = "https://s3.amazonaws.com/learning-python/smilingpython.gif",
+    secondary_text = "Unidad I",
+#   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
     pre_condition_rule = ""  ,
     post_condition_rule = "",
 
