@@ -71,7 +71,7 @@ pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
     description = "Antes de empezar algo sobre tu experiencia en programación",
     image = "https://s3.amazonaws.com/learning-python/python-logo.png",
 
-
+    choice_exit = False,
 
     pre_condition_rule = """
 if self.objective_status == 'notSatisfied' :
