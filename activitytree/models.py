@@ -28,7 +28,7 @@ class LearningActivity(models.Model):
     heading = models.CharField(max_length=128,blank=True)
     secondary_text = models.CharField(max_length=128,blank=True)
     description = models.TextField(blank=True)
-
+    image = models.URLField(blank=True)
     slug = models.SlugField(blank=True)
 
     uri = models.URLField(blank=True)
@@ -105,8 +105,6 @@ class UserLearningActivity(models.Model):
 
     class Meta:
         unique_together = ("user", "learning_activity")
-    def to_JSON(self):
-        return "HOLA"
 
     def __unicode__(self):
         return self.user.first_name + ":" + self.learning_activity.name
