@@ -17,7 +17,7 @@ activities = {
     {'title':u'Ejercicios en Protoboard',
      'url':u"http://www.youtube.com/embed/Htk9KAl1GxU?rel=0"} ,
 
-'/activity/PPP':u"""<h3 id="welcome">Bienvenidos</h3>
+'/activity/PB':u"""<h3 id="welcome">Bienvenidos</h3>
       <p> En este tutorial aprenderás los conceptos básicos de la programación en Python </p>
       <p> Orientado a principiantes muy avanzados, que se maravillen con la simplicidad de este hola mundo: </p>
             <p><code>print "hola mundo"</code></p>
