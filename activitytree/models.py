@@ -25,11 +25,16 @@ class UserProfile(models.Model):
 class LearningActivity(models.Model):
     """ Esta clase implementa los nodos del arbol de actividades """
     name = models.CharField(max_length=128)
+    heading = models.CharField(max_length=128,blank=True)
+    secondary_text = models.CharField(max_length=128,blank=True)
+    description = models.TextField(blank=True)
+
     slug = models.SlugField(blank=True)
-    
+
     uri = models.URLField(blank=True)
     lom = models.URLField(blank=True)
-    
+
+
     parent = models.ForeignKey(to ='LearningActivity',null=True,related_name = 'children')
     root   = models.ForeignKey(to ='LearningActivity',null=True)
     
@@ -55,6 +60,7 @@ class LearningActivity(models.Model):
     
     is_container = models.BooleanField()
     is_visible = models.BooleanField(default=True)
+
     order_in_container = models.PositiveIntegerField(default=0)
 
 
@@ -101,7 +107,7 @@ class UserLearningActivity(models.Model):
         unique_together = ("user", "learning_activity")
 
     def __unicode__(self):
-        return self.user.username + ":" + self.learning_activity.name
+        return self.user.first_name + ":" + self.learning_activity.name
 
     def is_root(self):
         if self.learning_activity.parent is None:
