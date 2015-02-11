@@ -79,7 +79,7 @@
                     rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                             uri: uri_string,
                             icon: "fa fa-folder-open",
-                            image:this.getAttribute("identifier"),
+                            image:this.getAttribute("image"),
                             description:this.getAttribute("description")
                     })
                 }
@@ -88,32 +88,32 @@
                         rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                             uri: uri_string,
                             icon: "fa fa-pencil-square-o",
-                            image:this.getAttribute("identifier")});
+                            image:this.getAttribute("image")});
 
                     }
                     else if (uri_string.lastIndexOf("/survey/", 0) === 0) {
                         rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                             uri: uri_string,
                             icon: "fa fa-question",
-                            image:this.getAttribute("identifier")});
+                            image:this.getAttribute("image")});
                     }
                     else if (uri_string.lastIndexOf("/activity/video/", 0) === 0) {
                         rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                             uri: uri_string,
                             icon: "fa fa-video-camera",
-                            image:this.getAttribute("identifier")});
+                            image:this.getAttribute("image")});
                     }
                     else if (uri_string.lastIndexOf("/activity/", 0) === 0) {
                         rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                             uri: uri_string,
                             icon: "fa fa-book",
-                            image:this.getAttribute("identifier")});
+                            image:this.getAttribute("image")});
                     }
                     else if (uri_string.lastIndexOf("/program/", 0) === 0) {
                         rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                             uri: uri_string,
                             icon: "fa fa-coffee",
-                            image:this.getAttribute("identifier")});
+                            image:this.getAttribute("image")});
                     }
                 }
                 $("#navlist").append(rendered);
