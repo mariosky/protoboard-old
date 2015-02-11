@@ -499,9 +499,8 @@ class SimpleSequencing(object):
 
 
     def nav_to_xml(self, node=None, s="", root=None):
-        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s">'
-        single_tag_template = '<item activity = "%s" uri = "%s" identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s"/>'
-
+        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s" heading ="%s" secondary_text="%s" description="%s" image ="%s">'
+        single_tag_template = open_tag_template[:-1]+'/>'
         if node is None:
             node = root
         vals = (node.learning_activity.id, node.learning_activity.uri, node.learning_activity.name, node.is_current,

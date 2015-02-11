@@ -85,7 +85,8 @@ else:
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 0
+    is_visible = True,
+    order_in_container = 0
     )
 pretest.save()
 
