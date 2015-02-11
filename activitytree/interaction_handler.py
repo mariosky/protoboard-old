@@ -507,7 +507,7 @@ class SimpleSequencing(object):
                 node.learning_activity.is_container, node.pre_condition,
                 node.recommendation_value,
                 node.objective_status, node.objective_measure,node.learning_activity.is_visible,
-                node.heading,node.secondary_text,node.description,node.image)
+                node.learning_activity.heading,node.learning_activity.secondary_text,node.learning_activity.description,node.learning_activity.image)
         if len(node.children) > 0:
 
             s += open_tag_template % vals
