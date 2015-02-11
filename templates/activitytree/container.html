@@ -75,14 +75,32 @@
                 {
                     rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                         uri:uri_string,
-                        icon:"fa fa-coffee"});
+                        icon:"fa fa-pencil-square-o"});
 
                 }
-                else
+                else if (uri_string.lastIndexOf("/survey/", 0) === 0)
+                {
+                    rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
+                        uri:uri_string,
+                        icon:"fa fa-question"});
+                }
+                else if (uri_string.lastIndexOf("/activity/video/", 0) === 0)
+                {
+                    rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
+                        uri:uri_string,
+                        icon:"fa fa-video-camera"});
+                }
+                else if (uri_string.lastIndexOf("/activity/", 0) === 0)
                 {
                     rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                         uri:uri_string,
                         icon:"fa fa-book"});
+                }
+                  else if (uri_string.lastIndexOf("/program/", 0) === 0)
+                {
+                    rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
+                        uri:uri_string,
+                        icon:"fa fa-coffee"});
                 }
 
                 $("#navlist").append(rendered);
