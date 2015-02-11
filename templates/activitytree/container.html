@@ -45,7 +45,7 @@
 		<div class="thumbnail">
 			<div class="caption">
 				<a href="/survey/EP">
-					<h4><i class="fa fa-video-camera"></i> {{name}} </h4>
+					<h4><i class="fa fa-video-camera"></i> [[name]] </h4>
 				</a>
 			</div>
 		</div>
@@ -55,6 +55,9 @@
 <script type="text/javascript" charset="utf-8">
 
     $( document ).ready(function() {
+
+        Mustache.tags = ['[[', ']]'];
+
         XML_NAV = "{{XML_NAV|safe}}";
         xmlDoc= $.parseXML(XML_NAV);
         $xml = $(xmlDoc)
