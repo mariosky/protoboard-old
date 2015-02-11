@@ -40,6 +40,18 @@
 
 {% block scripts %}
 
+<script id="container_template" type="x-tmpl-mustache">
+	<div class="col-xs-8 col-md-4">
+		<div class="thumbnail">
+			<div class="caption">
+				<a href="/survey/EP">
+					<h4><i class="fa fa-video-camera"></i> {{name}} </h4>
+				</a>
+			</div>
+		</div>
+	</div>
+</script>
+
 <script type="text/javascript" charset="utf-8">
 
     $( document ).ready(function() {
@@ -49,7 +61,8 @@
         $current = $xml.find("item[is_current|='True']");
         if ($current[0].getAttribute("is_container")=="True")
         {
-
+            var template = $('#container_template').html();
+            Mustache.parse(template);   // optional, speeds up future uses
 
             $current.children().each(function( index ) {
 
@@ -73,6 +86,9 @@
                 thumbnail.appendTo(column);
 
                 $("#navlist").append(column );
+
+                var rendered = Mustache.render(template, {name: "Luke"});
+                $("#navlist").append(rendered);
 
             });
 
