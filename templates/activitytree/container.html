@@ -90,7 +90,7 @@
 
                 $("#navlist").append(column );
 
-                var rendered = Mustache.render(template, {name: "Luke"});
+                var rendered = Mustache.render(template, {name: this.getAttribute("identifier")});
                 $("#navlist").append(rendered);
 
             });
