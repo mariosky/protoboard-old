@@ -49,6 +49,7 @@
 				<a href="[[uri]]">
 					<h4><i class="[[icon]]"></i> [[name]] </h4>
 				</a>
+				<p>[[description]]</p>
 			</div>
 		</div>
 	</div>
@@ -78,7 +79,8 @@
                     rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                             uri: uri_string,
                             icon: "fa fa-folder-open",
-                            image:this.getAttribute("identifier")
+                            image:this.getAttribute("identifier"),
+                            description:this.getAttribute("description")
                     })
                 }
                 else {
