@@ -44,7 +44,7 @@
 	<div class="col-xs-8 col-md-4">
 		<div class="thumbnail">
 			<div class="caption">
-				<a href="/survey/EP">
+				<a href="[[uri]]">
 					<h4><i class="fa fa-video-camera"></i> [[name]] </h4>
 				</a>
 			</div>
@@ -68,29 +68,9 @@
             Mustache.parse(template);   // optional, speeds up future uses
 
             $current.children().each(function( index ) {
-
-                var icon;
-                if (this.getAttribute("is_container")=="True")
-                    icon = $("<i/>", {"class": "fa fa-folder-open"});
-                else
-                    icon = $("<i/>", {"class": "fa fa-video-camera"});
-
-                var title = $("<a/>", {"href":this.getAttribute("uri")})
-                        .append($("<h4/>", {"text":" "+this.getAttribute("identifier")}).prepend(icon)
+                var rendered = Mustache.render(template, {name: this.getAttribute("identifier"),
+                    uri:this.getAttribute("identifier")}
                 );
-
-
-                var caption = $("<div/>", {"class": "caption"});
-                caption.append(title);
-
-                var thumbnail = $("<div/>", {"class": "thumbnail"});
-                thumbnail.append(caption);
-                var column = $("<div/>", {"class": "col-xs-8 col-md-4"});
-                thumbnail.appendTo(column);
-
-                $("#navlist").append(column );
-
-                var rendered = Mustache.render(template, {name: this.getAttribute("identifier")});
                 $("#navlist").append(rendered);
 
             });
