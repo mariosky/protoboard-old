@@ -45,7 +45,7 @@
 		<div class="thumbnail">
 			<div class="caption">
 				<a href="[[uri]]">
-					<h4><i class="fa fa-video-camera"></i> [[name]] </h4>
+					<h4><i class="[[icon]]"></i> [[name]] </h4>
 				</a>
 			</div>
 		</div>
@@ -64,13 +64,27 @@
         $current = $xml.find("item[is_current|='True']");
         if ($current[0].getAttribute("is_container")=="True")
         {
-            var template = $('#container_template').html();
-            Mustache.parse(template);   // optional, speeds up future uses
+            var container_template = $('#container_template').html();
+            Mustache.parse(container_template);   // optional, speeds up future uses
 
             $current.children().each(function( index ) {
-                var rendered = Mustache.render(template, {name: this.getAttribute("identifier"),
-                    uri:this.getAttribute("uri")}
-                );
+                var rendered ="";
+                var uri_string = this.getAttribute("uri");
+
+                if (uri_string.lastIndexOf("/test/", 0) === 0)
+                {
+                    rendered = Mustache.render(template, {name: this.getAttribute("identifier"),
+                        uri:uri_string,
+                        icon:"fa fa-coffee"});
+
+                }
+                else
+                {
+                    rendered = Mustache.render(template, {name: this.getAttribute("identifier"),
+                        uri:uri_string,
+                        icon:"fa fa-book"});
+                }
+
                 $("#navlist").append(rendered);
 
             });
