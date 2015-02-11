@@ -73,14 +73,14 @@
 
                 if (uri_string.lastIndexOf("/test/", 0) === 0)
                 {
-                    rendered = Mustache.render(template, {name: this.getAttribute("identifier"),
+                    rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                         uri:uri_string,
                         icon:"fa fa-coffee"});
 
                 }
                 else
                 {
-                    rendered = Mustache.render(template, {name: this.getAttribute("identifier"),
+                    rendered = Mustache.render(container_template, {name: this.getAttribute("identifier"),
                         uri:uri_string,
                         icon:"fa fa-book"});
                 }
