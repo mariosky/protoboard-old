@@ -68,8 +68,8 @@ pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
 
     heading="¿Que experiencia tienes programando?",
     secondary_text = "Encuesta",
-    description = "Antes de empezar algo sobre tu experiencia en programación",
-    image = "https://s3.amazonaws.com/learning-python/python-logo.png",
+    description = "Antes de empezar, dinos algo sobre tu experiencia en programación",
+    image = "https://s3.amazonaws.com/learning-python/survey.jpg",
 
     choice_exit = False,
 
@@ -97,7 +97,7 @@ intro = LearningActivity( name = 'Introducción', slug = 'Intro',
     parent = PPP, root  = PPP,
     heading="Introducción al lenguaje",
     description = "Vemos las principales características del lenguaje y hacemos los primeros ejercicios.",
-    image = "https://s3.amazonaws.com/learning-python/smilingpython.gif",
+    image = "https://s3.amazonaws.com/learning-python/python-logo.png",
     secondary_text = "Unidad I",
 #   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
     pre_condition_rule = ""  ,
@@ -123,6 +123,10 @@ intro.save()
 secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
     uri = "/activity/secuencias",
 #   lom =
+    image = "https://s3.amazonaws.com/learning-python/sequence.jpg",
+    heading="Objetos Tipo Secuencia",
+    description = "Aprenderás a utilizar las Listas, Tuplas y Cadenas",
+
     parent = PPP, root  = PPP,
 
 #    pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
@@ -151,6 +155,9 @@ tema_1 = LearningActivity( name = 'Introduccion', slug = 'Intro',
     parent = intro, root  = PPP,
     pre_condition_rule = "",
     post_condition_rule = "",
+    heading="Introducción al Lenguaje Python",
+    description = "Aprenderás cuales son las caracteristicas del lenguaje.",
+    image = "https://s3.amazonaws.com/learning-python/IntroVideo.jpg",
 
     rollup_objective = True,
     rollup_progress = True,
