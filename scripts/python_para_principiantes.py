@@ -68,7 +68,7 @@ pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
 
     heading="¿Que experiencia tienes programando?",
     secondary_text = "Encuesta",
-    description = "Antes de empezar, dinos algo sobre tu experiencia en programación",
+    description = "Antes de empezar, dinos algo sobre tu experiencia en programación.",
     image = "https://s3.amazonaws.com/learning-python/survey.jpg",
 
     choice_exit = False,
