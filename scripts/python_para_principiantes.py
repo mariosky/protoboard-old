@@ -152,12 +152,15 @@ secuencias.save()
 
 tema_1 = LearningActivity( name = 'Introduccion', slug = 'Intro',
     uri = '/activity/video/intro',
+
+    heading="Introducción al Lenguaje Python",
+    description = "Aprenderás cuales son las caracteristicas del lenguaje.",
+    image = "https://s3.amazonaws.com/learning-python/IntroVideo.png",
+
+
     parent = intro, root  = PPP,
     pre_condition_rule = "",
     post_condition_rule = "",
-    heading="Introducción al Lenguaje Python",
-    description = "Aprenderás cuales son las caracteristicas del lenguaje.",
-    image = "https://s3.amazonaws.com/learning-python/IntroVideo.jpg",
 
     rollup_objective = True,
     rollup_progress = True,
@@ -169,6 +172,12 @@ tema_1.save()
 
 tema_2 = LearningActivity( name = 'Ejercicios Basados en Pruebas', slug = 'Ejercicios',
     uri = '/activity/video/ejercicios_basados_en_pruebas',
+
+    heading="Ejercicios Basados en Pruebas",
+    description = "Explicamos la técnica básica de pruebas unitarias y su uso para especificar ejercicios de programación",
+    image = "https://s3.amazonaws.com/learning-python/pruebas.png",
+
+
     parent = intro, root  = PPP,
     pre_condition_rule = "",
     post_condition_rule = "",
@@ -183,6 +192,12 @@ tema_2.save()
 
 tema_3 = LearningActivity( name = 'Ejemplo de Ejercicios', slug = 'Ejemplo',
     uri = '/activity/video/ejemplo_ejercicio',
+
+    heading="Haciendo un Ejercicio",
+    description = "Aprendemos la manera de programar los ejercicios en Protoboard",
+    image = "https://s3.amazonaws.com/learning-python/ejercicioVideo.png",
+
+
     parent = intro, root  = PPP,
     pre_condition_rule = "",
     post_condition_rule = "",
@@ -201,6 +216,12 @@ EjerciciosIntro = LearningActivity( name = 'Ejercicios', slug = 'Ejercicios',
     parent = intro,
     root   = PPP,
 
+    heading="Ejercicios Básicos",
+    description = "Algunos ejercicios para calentar morores",
+    image = "https://s3.amazonaws.com/learning-python/cafe.png",
+
+
+
     flow = True,
     forward_only = False,
     choice = True,
@@ -218,6 +239,13 @@ EjerciciosIntro.save()
 
 program_1 = LearningActivity( name = 'Imprime Hola', slug = 'E1',
     uri = "/program/PPP/1",
+
+    heading="Imprime Hola",
+    description = "La versión básica del clásico Hola Mundo",
+    image = "https://s3.amazonaws.com/learning-python/images.png",
+
+
+
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = """
 if self.num_attempts == 0 :
@@ -255,6 +283,12 @@ program_2.save()
 
 program_3 = LearningActivity( name = 'Suma dos números', slug = 'E3',
     uri = "/program/PPP/3",
+
+    heading="Uno + Uno",
+    description = "Escribe una función que sume dos números",
+    image = "https://s3.amazonaws.com/learning-python/suma.png",
+
+
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = """
 if self.num_attempts == 0 :
