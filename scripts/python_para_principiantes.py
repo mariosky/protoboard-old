@@ -30,7 +30,7 @@ LearningActivity.objects.all().delete()
 PPP = LearningActivity( name = 'Python Básico', slug = 'PB',
     uri = "/activity/PB",
     heading="Python Básico",
-    secondary_text = "",
+    secondary_text = "Tutorial",
     description = "Tutorial del lenguaje Python, orientado a principiantes.",
     image = "https://s3.amazonaws.com/learning-python/python-logo.png",
 
@@ -67,7 +67,6 @@ pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
     parent = PPP, root  = PPP,
 
     heading="¿Que experiencia tienes programando?",
-    secondary_text = "Encuesta",
     description = "Antes de empezar, dinos algo sobre tu experiencia en programación.",
     image = "https://s3.amazonaws.com/learning-python/survey.jpg",
 
@@ -98,7 +97,7 @@ intro = LearningActivity( name = 'Introducción', slug = 'Intro',
     heading="Introducción al lenguaje",
     description = "Vemos las principales características del lenguaje y hacemos los primeros ejercicios.",
     image = "https://s3.amazonaws.com/learning-python/python-logo.png",
-    secondary_text = "Unidad I",
+    secondary_text = "Lección",
 #   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
     pre_condition_rule = ""  ,
     post_condition_rule = "",
@@ -126,6 +125,7 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
     image = "https://s3.amazonaws.com/learning-python/sequence.jpg",
     heading="Objetos Tipo Secuencia",
     description = "Aprenderás a utilizar las Listas, Tuplas y Cadenas",
+    secondary_text = "Lección",
 
     parent = PPP, root  = PPP,
 
@@ -156,7 +156,6 @@ tema_1 = LearningActivity( name = 'Introduccion', slug = 'Intro',
     heading="Introducción al Lenguaje Python",
     description = "Aprenderás cuales son las caracteristicas del lenguaje.",
     image = "https://s3.amazonaws.com/learning-python/IntroVideo.png",
-
 
     parent = intro, root  = PPP,
     pre_condition_rule = "",
@@ -190,7 +189,7 @@ tema_2 = LearningActivity( name = 'Ejercicios Basados en Pruebas', slug = 'Ejerc
     )
 tema_2.save()
 
-tema_3 = LearningActivity( name = 'Ejemplo de Ejercicios', slug = 'Ejemplo',
+tema_3 = LearningActivity( name = 'Como hacer los ejercicios', slug = 'Ejemplo',
     uri = '/activity/video/ejemplo_ejercicio',
 
     heading="Haciendo un Ejercicio",
@@ -218,6 +217,7 @@ EjerciciosIntro = LearningActivity( name = 'Ejercicios', slug = 'Ejercicios',
 
     heading="Ejercicios Básicos",
     description = "Algunos ejercicios para calentar morores",
+    secondary_text = "Ejercicios",
     image = "https://s3.amazonaws.com/learning-python/cafe.png",
 
 
