@@ -110,7 +110,7 @@
                     if (uri_string.lastIndexOf("/test/", 0) === 0) {
                         rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
-                            icon: "fa fa-pencil-square-o",
+                            icon: "fa fa-pencil",
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description")
                         });
@@ -119,7 +119,7 @@
                     else if (uri_string.lastIndexOf("/survey/", 0) === 0) {
                         rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
-                            icon: "fa fa-question",
+                            icon: "fa fa-pencil-square-o",
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description")});
                     }
