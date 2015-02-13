@@ -48,7 +48,7 @@
 		   </a>
 
 			<div class="caption">
-			   <h4><small><i class="[[icon]]"></i> Encuesta</small></h4>
+			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
 				<a href="[[uri]]" class="disabled">
 					<h4>[[name]] </h4>
 				</a>
@@ -111,7 +111,8 @@
                             uri: uri_string,
                             icon: "fa fa-folder-open",
                             image:this.getAttribute("image"),
-                            description:this.getAttribute("description")
+                            description:this.getAttribute("description"),
+                            activity_type:"Folder"
                     })
                 }
                 else {
@@ -120,7 +121,8 @@
                             uri: uri_string,
                             icon: "fa fa-pencil",
                             image:this.getAttribute("image"),
-                            description:this.getAttribute("description")
+                            description:this.getAttribute("description"),
+                            activity_type:"Quiz"
                         });
 
                     }
@@ -129,28 +131,32 @@
                             uri: uri_string,
                             icon: "fa fa-pencil-square-o",
                             image:this.getAttribute("image"),
-                            description:this.getAttribute("description")});
+                            description:this.getAttribute("description"),
+                            activity_type:"Encuesta"});
                     }
                     else if (uri_string.lastIndexOf("/activity/video/", 0) === 0) {
                         rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
                             icon: "fa fa-video-camera",
                             image:this.getAttribute("image"),
-                            description:this.getAttribute("description")});
+                            description:this.getAttribute("description"),
+                            activity_type:"Video"});
                     }
                     else if (uri_string.lastIndexOf("/activity/", 0) === 0) {
                         rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
                             icon: "fa fa-book",
                             image:this.getAttribute("image"),
-                            description:this.getAttribute("description")});
+                            description:this.getAttribute("description"),
+                            activity_type:"Lectura"});
                     }
                     else if (uri_string.lastIndexOf("/program/", 0) === 0) {
                         rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
                             icon: "fa fa-coffee",
                             image:this.getAttribute("image"),
-                            description:this.getAttribute("description")});
+                            description:this.getAttribute("description"),
+                            activity_type:"Ejercicio en Consola"});
                     }
                 }
                 $("#navlist").append(rendered);
