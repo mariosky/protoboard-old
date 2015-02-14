@@ -60,10 +60,53 @@
                              </div>
                          </div>
                      </div>
-                         <ul class="list-group">
+                     <ul class="list-group">
                             <li class="list-group-item">
                             <span class="badge">14</span>
-                            Cras justo odio
+                            Actividades totales
+                     </li>
+                         <ul class="list-group">
+                            <li class="list-group-item">
+                            <span class="badge">0</span>
+                            Actividades completas
+                            </li>
+                        </ul>
+
+                     <div class="row">
+                         <div class="col-md-4">
+                           <i class="fa fa-check fa-2x"></i><br/>
+                             <small>COMPLETO</small>
+                         </div>
+                         <div class="col-md-4">
+                               <i class="fa fa-lock fa-2x"></i><br/>
+                             <small>BLOQUEADO</small>
+                         </div>
+
+                     </div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="activity_template" type="x-tmpl-mustache">
+	<div class="col-xs-12 col-md-4">
+		<div class="thumbnail">
+		   <a href="[[uri]]">
+		       <img src="[[image]]" alt="...">
+		   </a>
+
+			<div class="caption">
+			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
+				<a href="[[uri]]" class="disabled">
+					<h4>[[name]] </h4>
+				</a>
+				<p>[[description]]</p>				      <div class="modal-footer" style="text-align: left">
+
+                     </div>
+                         <ul class="list-group">
+                            <li class="list-group-item">
+                            <span class="badge">0</span>
+                            Intentos:
                             </li>
                         </ul>
 
@@ -86,6 +129,7 @@
 	</div>
 </script>
 
+
 <script type="text/javascript" charset="utf-8">
 
     $( document ).ready(function() {
@@ -99,7 +143,10 @@
         if ($current[0].getAttribute("is_container")=="True")
         {
             var container_template = $('#container_template').html();
+            var activity_template = $('#activity_template').html();
+
             Mustache.parse(container_template);   // optional, speeds up future uses
+            Mustache.parse(activity_template);   // optional, speeds up future uses
 
             $current.children().each(function( index ) {
                 var rendered ="";
@@ -117,7 +164,7 @@
                 }
                 else {
                     if (uri_string.lastIndexOf("/test/", 0) === 0) {
-                        rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
+                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
                             icon: "fa fa-pencil",
                             image:this.getAttribute("image"),
@@ -127,7 +174,7 @@
 
                     }
                     else if (uri_string.lastIndexOf("/survey/", 0) === 0) {
-                        rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
+                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
                             icon: "fa fa-pencil-square-o",
                             image:this.getAttribute("image"),
@@ -135,7 +182,7 @@
                             activity_type:"Encuesta"});
                     }
                     else if (uri_string.lastIndexOf("/activity/video/", 0) === 0) {
-                        rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
+                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
                             icon: "fa fa-video-camera",
                             image:this.getAttribute("image"),
@@ -143,7 +190,7 @@
                             activity_type:"Video"});
                     }
                     else if (uri_string.lastIndexOf("/activity/", 0) === 0) {
-                        rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
+                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
                             icon: "fa fa-book",
                             image:this.getAttribute("image"),
@@ -151,7 +198,7 @@
                             activity_type:"Lectura"});
                     }
                     else if (uri_string.lastIndexOf("/program/", 0) === 0) {
-                        rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
+                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
                             uri: uri_string,
                             icon: "fa fa-coffee",
                             image:this.getAttribute("image"),
