@@ -165,7 +165,7 @@
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
                             activity_type:this.getAttribute("secondary_text"),
-                            id:this.getAttribute("id")
+                            id:this.getAttribute("activity")
                     })
                 }
                 else {
@@ -176,7 +176,7 @@
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
                             activity_type:"Quiz",
-                            id:this.getAttribute("id")
+                            id:this.getAttribute("activity")
                         });
 
                     }
@@ -187,7 +187,7 @@
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
                             activity_type:"Encuesta",
-                            id:this.getAttribute("id")
+                            id:this.getAttribute("activity")
                         });
                     }
                     else if (uri_string.lastIndexOf("/activity/video/", 0) === 0) {
@@ -197,7 +197,7 @@
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
                             activity_type:"Video",
-                            id:this.getAttribute("id")
+                            id:this.getAttribute("activity")
                         });
                     }
                     else if (uri_string.lastIndexOf("/activity/", 0) === 0) {
@@ -207,7 +207,7 @@
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
                             activity_type:"Lectura",
-                            id:this.getAttribute("id")
+                            id:this.getAttribute("activity")
                         });
                     }
                     else if (uri_string.lastIndexOf("/program/", 0) === 0) {
@@ -217,7 +217,7 @@
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
                             activity_type:"Ejercicio en Consola",
-                            id:this.getAttribute("id")
+                            id:this.getAttribute("activity")
                         });
                     }
 
