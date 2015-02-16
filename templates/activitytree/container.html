@@ -164,7 +164,8 @@
                             icon: "fa fa-folder-open",
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
-                            activity_type:this.getAttribute("secondary_text")
+                            activity_type:this.getAttribute("secondary_text"),
+                            id:this.getAttribute("id")
                     })
                 }
                 else {
@@ -174,7 +175,8 @@
                             icon: "fa fa-pencil",
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
-                            activity_type:"Quiz"
+                            activity_type:"Quiz",
+                            id:this.getAttribute("id")
                         });
 
                     }
@@ -184,7 +186,9 @@
                             icon: "fa fa-pencil-square-o",
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
-                            activity_type:"Encuesta"});
+                            activity_type:"Encuesta",
+                            id:this.getAttribute("id")
+                        });
                     }
                     else if (uri_string.lastIndexOf("/activity/video/", 0) === 0) {
                         rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
@@ -192,7 +196,9 @@
                             icon: "fa fa-video-camera",
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
-                            activity_type:"Video"});
+                            activity_type:"Video",
+                            id:this.getAttribute("id")
+                        });
                     }
                     else if (uri_string.lastIndexOf("/activity/", 0) === 0) {
                         rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
@@ -200,7 +206,9 @@
                             icon: "fa fa-book",
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
-                            activity_type:"Lectura"});
+                            activity_type:"Lectura",
+                            id:this.getAttribute("id")
+                        });
                     }
                     else if (uri_string.lastIndexOf("/program/", 0) === 0) {
                         rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
@@ -208,7 +216,9 @@
                             icon: "fa fa-coffee",
                             image:this.getAttribute("image"),
                             description:this.getAttribute("description"),
-                            activity_type:"Ejercicio en Consola"});
+                            activity_type:"Ejercicio en Consola",
+                            id:this.getAttribute("id")
+                        });
                     }
 
 

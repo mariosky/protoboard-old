@@ -243,7 +243,7 @@ program_1 = LearningActivity( name = 'Imprime Hola', slug = 'E1',
     heading="Imprime Hola",
     description = "La versión básica del clásico Hola Mundo",
     image = "https://s3.amazonaws.com/learning-python/images.png",
-
+ 
 
 
     parent = EjerciciosIntro, root  = PPP,
