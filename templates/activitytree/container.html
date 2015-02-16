@@ -237,7 +237,8 @@
                 if (recommended_value) {
                     $('#rating-' + this.getAttribute("activity")).raty({
                         path: '{{MEDIA_URL}}images',
-                        score: recommended_value
+                        score: recommended_value,
+                        readOnly: true
                     });
                 }
 
