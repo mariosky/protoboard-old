@@ -30,6 +30,8 @@
 				<option value="20"> Para nada </option>
 	        </select>
 
+	        x-tmpl-mustache
+
         </div> -->
        </form>
 
@@ -40,7 +42,7 @@
 
 {% block scripts %}
 
-<script id="container_template" type="x-tmpl-mustache">
+<script id="container_template" type="text/javascript">
 	<div class="col-xs-12 col-md-4">
 		<div class="thumbnail">
 		   <a href="[[uri]]">
@@ -91,7 +93,7 @@
 	</div>
 </script>
 
-<script id="activity_template" type="x-tmpl-mustache">
+<script id="activity_template" type="text/javascript">
 	<div class="col-xs-12 col-md-4">
 		<div class="thumbnail">
 		   <a href="[[uri]]">

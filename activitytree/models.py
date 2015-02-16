@@ -93,7 +93,7 @@ class UserLearningActivity(models.Model):
     user = models.ForeignKey(User)
     learning_activity = models.ForeignKey(to ='LearningActivity')
     pre_condition = models.CharField(max_length=32,default = "",blank=True)
-    recommendation_value = models.PositiveSmallIntegerField(null=True, default = None)
+    recommendation_value = models.PositiveSmallIntegerField(null=True, default = 0)
     progress_status = models.CharField(max_length=16,default = "incomplete",blank=True)
     objective_status = models.CharField(max_length=16,default = "notSatisfied",blank=True)
     objective_measure = models.FloatField( null=True, default = None)
@@ -359,7 +359,12 @@ class FacebookSession(models.Model):
 
 
 
-            
+class LearningActivityRating(models.Model):
+    user = models.ForeignKey(User)
+    learning_activity = models.ForeignKey(UserLearningActivity)
+    time=models.DateTimeField(auto_now=True)
+    rating = models.PositiveSmallIntegerField()
+    context = models.PositiveSmallIntegerField()
             
             
             

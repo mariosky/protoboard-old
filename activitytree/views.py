@@ -17,7 +17,7 @@ from django.template import RequestContext
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,  FacebookSession
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,  FacebookSession, LearningActivityRating
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
@@ -437,6 +437,10 @@ def execute_queue(request):
         return HttpResponse(json.dumps(result), mimetype='application/javascript')
 
 
+
+
+
+
 @csrf_protect
 def get_result(request):
     if request.method == 'POST':
@@ -605,6 +609,18 @@ def ajax_vote(request, type, uri):
     else:
         return HttpResponse(content="Ya voto?")
 
+@csrf_protect
+def rate_object(request):
+    if request.method == 'POST':
+        vote=json.loads(request.body)
+        la = LearningActivity.objects.get(uri=vote["uri"] )
+
+
+        rating = LearningActivityRating(user=request.user,learning_activity=la,rating= vote["rating"], context=0)
+        rating.save()
+
+        result= {"result":"added" , "error": None, "id": None}
+        return HttpResponse(json.dumps(result), mimetype='application/javascript')
 
 
 def facebook_get_login(request):
