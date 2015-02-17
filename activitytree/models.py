@@ -361,7 +361,7 @@ class FacebookSession(models.Model):
 
 class LearningActivityRating(models.Model):
     user = models.ForeignKey(User)
-    learning_activity = models.ForeignKey(UserLearningActivity)
+    learning_activity = models.ForeignKey(LearningActivity)
     time=models.DateTimeField(auto_now=True)
     rating = models.PositiveSmallIntegerField()
     context = models.PositiveSmallIntegerField()
