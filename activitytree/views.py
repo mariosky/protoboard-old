@@ -616,7 +616,7 @@ def rate_object(request):
         la = LearningActivity.objects.get(uri=vote["uri"] )
 
 
-        rating = LearningActivityRating(user=request.user.pk,learning_activity=la,rating= vote["rating"], context=0)
+        rating = LearningActivityRating(user=request.user,learning_activity=la,rating= vote["rating"], context=0)
         rating.save()
 
         result= {"result":"added" , "error": None, "id": None}
