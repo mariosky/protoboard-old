@@ -71,10 +71,17 @@
                             Actividades totales
                      </li>
                          <ul class="list-group">
+                            [[#children_activities]]
+
                             <li class="list-group-item">
-                            <span class="badge">0</span>
-                            Actividades completas
+
+
+                            [[heading]]
+
+
                             </li>
+                            [[/children_activities]]
+
                         </ul>
 
                      <div class="row">
@@ -158,6 +165,24 @@
 
     }
 
+    function get_children_activities( element)
+    {
+        var children = [];
+        element.children().each(function (index) {
+
+            var uri_string = this.getAttribute("uri");
+            var icon = get_icon(uri_string);
+            children.append( {
+                heading: this.getAttribute("heading"),
+                uri:uri_string,
+                icon:icon.icon
+            });
+
+        });
+
+        return children;
+    }
+
     $( document ).ready(function() {
 
         Mustache.tags = ['[[', ']]'];
@@ -188,7 +213,8 @@
                         description: this.getAttribute("description"),
                         activity_type: this.getAttribute("secondary_text"),
                         id: this.getAttribute("activity"),
-                        rating: recommended_value
+                        rating: recommended_value,
+                        children_activities:get_children_activities(this)
 
                     })
                 }
