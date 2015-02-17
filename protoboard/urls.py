@@ -16,7 +16,7 @@ urlpatterns = patterns('',
       (r'^execute_queue$','activitytree.views.execute_queue'),
       (r'^get_result$','activitytree.views.get_result'),
 
-      (r'^ajax_vote/(?P<type>\w+)/(?P<uri>\w+)$','activitytree.views.ajax_vote'),
+      (r'^rate_object$','activitytree.views.rate_object'),
       (r'^facebook/get_login/?$', 'activitytree.views.facebook_get_login'),
       (r'^facebook/login/?$','activitytree.views.facebook_login'),
       (r'^logout/?$', 'activitytree.views.logout_view'),
