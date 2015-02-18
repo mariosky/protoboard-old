@@ -131,8 +131,8 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
     parent = PPP, root  = PPP,
 
 #    pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
-    pre_condition_rule = """
-if self.get_ula_attr('Introducción',’objective_status’) =='satisfied':
+    pre_condition_rule = u"""
+if self.get_ula_attr('Introducción',’objective_status’) == 'satisfied':
     self.pre_condition = ‘’
 else:
     self.pre_condition = 'disabled'
