@@ -129,7 +129,6 @@ class UserLearningActivity(models.Model):
             super(UserLearningActivity, self).save()
 
 
-
     def get_objective_measure(self,activity_name):   ###      REVISAR
         activity = UserLearningActivity.objects.select_related('user','learning_activity').filter(user = self.user,
             learning_activity = LearningActivity.objects.filter(name=activity_name))
