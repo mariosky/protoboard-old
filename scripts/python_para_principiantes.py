@@ -91,7 +91,7 @@ else:
 pretest.save()
 
 
-intro = LearningActivity( name = 'Introducción', slug = 'Intro',
+intro = LearningActivity( name = 'Introduccion', slug = 'Intro',
     uri = "/activity/introduccion",
 #   lom =
     parent = PPP, root  = PPP,
@@ -132,7 +132,7 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
 
 #    pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
     pre_condition_rule = u"""
-if self.get_ula_attr('Introducción',’objective_status’) == 'satisfied':
+if self.get_ula_attr('Introduccion',’objective_status’) == 'satisfied':
     self.pre_condition = ‘’
 else:
     self.pre_condition = 'disabled'
