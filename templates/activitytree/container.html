@@ -60,7 +60,7 @@
                      <div class="list-group">
 
                      [[#children_activities]]
-                            <a href="[[uri]]" class="list-group-item [[#disabled]] disabled [[/disabled]]">
+                            <a href="[[uri]]" class="list-group-item [[#disabled]] disabled [[/disabled]] [[#objective_status]] list-group-item-success [[/objective_status]]  ">
                               <i class="[[icon]]"></i> [[heading]]
                             </a>
 
@@ -145,7 +145,7 @@
                      [[#objective_status]]
                          <div class="col-md-4">
                            <i class="fa fa-check fa-2x"></i><br/>
-                             <small>COMPLETO</small>
+
                          </div>
                      [[/objective_status]]
                          <div class="col-md-4">
@@ -214,7 +214,8 @@
                 heading: this.getAttribute("heading"),
                 uri:uri_string,
                 icon:icon.icon,
-                disabled:(this.getAttribute("pre_condition")=="disabled")
+                disabled:(this.getAttribute("pre_condition")=="disabled"),
+                objective_status:(this.getAttribute("objective_status")=="satisfied")
             };
 
         });
