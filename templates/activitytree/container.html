@@ -140,14 +140,12 @@
                         </ul>
 
                      <div class="row">
+                     [[#objective_status]]
                          <div class="col-md-4">
                            <i class="fa fa-check fa-2x"></i><br/>
                              <small>COMPLETO</small>
                          </div>
-                         <div class="col-md-4">
-                               <i class="fa fa-lock fa-2x"></i><br/>
-                             <small>BLOQUEADO</small>
-                         </div>
+                     [[#objective_status]]
                          <div class="col-md-4">
                               <i class="fa fa-puzzle-piece fa-2x"></i><br/>
                              <small>0/15</small>
@@ -263,7 +261,8 @@
                         activity_type: this.getAttribute("secondary_text"),
                         id: this.getAttribute("activity"),
                         rating: recommended_value,
-                        children_activities:get_children_activities(this)
+                        children_activities:get_children_activities(this),
+                        objective_status:(this.getAttribute("objective_status")=="satisfied")
 
                     });
                 }
@@ -285,7 +284,8 @@
                              description: this.getAttribute("description"),
                              activity_type: activity_type.activity_type,
                              id: this.getAttribute("activity"),
-                             rating: recommended_value
+                             rating: recommended_value,
+                             objective_status:(this.getAttribute("objective_status")=="satisfied")
                          });
 
 
