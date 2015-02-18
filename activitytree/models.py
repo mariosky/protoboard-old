@@ -137,6 +137,13 @@ class UserLearningActivity(models.Model):
             return 0
         else:
             return activity[0].objective_measure
+
+    def get_ula_attr(self, activity_name, attr):
+        activity = UserLearningActivity.objects.select_related('user','learning_activity').filter(user = self.user,
+            learning_activity = LearningActivity.objects.filter(name=activity_name))
+        return getattr(activity,attr)
+
+
             
     def get_children(self, recursive = False):
         l=[]
