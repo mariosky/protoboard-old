@@ -60,7 +60,7 @@
                      <div class="list-group">
 
                      [[#children_activities]]
-                            <a href="[[uri]]" class="list-group-item [[#disabled]] disabled [[/disabled]] [[#objective_status]] list-group-item-success [[/objective_status]]  ">
+                            <a href="[[uri]]" class="list-group-item [[#disabled]] disabled [[/disabled]]">
                               <i class="[[icon]]"></i> [[heading]]
                             </a>
 
@@ -210,6 +210,10 @@
 
             var uri_string = this.getAttribute("uri");
             var icon = get_icon(uri_string);
+            if (this.getAttribute("objective_status")=="satisfied")
+                {
+                    icon.icon = "fa fa-check"
+                }
             children[children.length] =  {
                 heading: this.getAttribute("heading"),
                 uri:uri_string,
