@@ -221,7 +221,7 @@
         if ($current[0].getAttribute("is_container")=="True") {
             var container_template = $('#container_template').html();
             var activity_template = $('#activity_template').html();
-
+            var disabled_activity_template = $('#disabled_activity_template').html();
             Mustache.parse(container_template);   // optional, speeds up future uses
             Mustache.parse(activity_template);   // optional, speeds up future uses
 
