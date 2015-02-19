@@ -274,10 +274,12 @@ program_2 = LearningActivity( name = '¿Es par?', slug = 'E2',
     uri = "/program/PPP/2",
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
+if self.get_ula_attr('Imprime Hola','objective_status') == 'satisfied':
+    self.pre_condition = ''
 else:
-    self.pre_condition = ''""",
+    self.pre_condition = 'disabled'
+""",
+    description = "Haz una función que te diga si es un número par. Necesario completar: Imprime Hola ",
     post_condition_rule = "",
     choice_exit = False,
     rollup_objective = True,
