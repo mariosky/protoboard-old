@@ -253,11 +253,7 @@ program_1 = LearningActivity( name = 'Imprime Hola', slug = 'E1',
 
 
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     choice_exit = False,
