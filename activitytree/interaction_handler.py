@@ -357,7 +357,8 @@ class SimpleSequencing(object):
         atree = ActivityTree.objects.get(user=ula.user, root_activity=ula.learning_activity.get_root())
 
         if not ula.is_current:
-            raise NotAllowed('Set Current', "Can only exit a current activity")
+            #raise NotAllowed('Set Current', "Can only exit a current activity")
+            pass
         else:
             ula.is_current = False
             atree.current_activity = None
