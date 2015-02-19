@@ -314,11 +314,14 @@ class SimpleSequencing(object):
         # Is there a current activity?
         # If its the same don't do anything
         # If is different raise error
+
+        #If there is a current activity don´t do anything
         if atree.current_activity:
-            if atree.current_activity == ula:
-                return
-            else:
-                raise NotAllowed('Set Current', "Another activity is already the current activity")
+            return
+            #if atree.current_activity == ula:
+            #    return
+            #else:
+            #    raise NotAllowed('Set Current', "Another activity is already the current activity")
 
         # Set current activity if everything is fine 
         atree.current_activity = ula
