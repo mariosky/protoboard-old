@@ -317,11 +317,11 @@ class SimpleSequencing(object):
 
         #If there is a current activity don't do anything
         if atree.current_activity:
-            return
-            #if atree.current_activity == ula:
-            #    return
-            #else:
-            #    raise NotAllowed('Set Current', "Another activity is already the current activity")
+            #return
+            if atree.current_activity == ula:
+                return
+            else:
+                raise NotAllowed('Set Current', "Another activity is already the current activity")
 
         # Set current activity if everything is fine 
         atree.current_activity = ula
@@ -360,8 +360,8 @@ class SimpleSequencing(object):
         atree = ActivityTree.objects.get(user=ula.user, root_activity=ula.learning_activity.get_root())
 
         if not ula.is_current:
-            #raise NotAllowed('Set Current', "Can only exit a current activity")
-            pass
+            raise NotAllowed('Set Current', "Can only exit a current activity")
+            #pass
         else:
             ula.is_current = False
             atree.current_activity = None

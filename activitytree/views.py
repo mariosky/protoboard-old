@@ -14,6 +14,7 @@ from django.contrib.sites.models import get_current_site
 from django.utils.http import is_safe_url
 from django.shortcuts import resolve_url
 from django.template import RequestContext
+from django.db import transaction
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -57,6 +58,7 @@ def welcome(request):
                  },
                 context_instance=RequestContext(request))
 
+@transaction.atomic
 def activity(request,uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
@@ -173,7 +175,7 @@ def activity(request,uri):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.    
 
-
+@transaction.atomic
 def test(request, uri, objective_status = None):
     if request.user.is_authenticated():
         s = SimpleSequencing()
@@ -255,7 +257,7 @@ def test(request, uri, objective_status = None):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.
 
-
+@transaction.atomic
 def survey(request, uri, objective_status = None):
     if request.user.is_authenticated():
         s = SimpleSequencing()
@@ -347,7 +349,7 @@ def survey(request, uri, objective_status = None):
         # Do something for anonymous users.
 
 
-
+@transaction.atomic
 def program(request,uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
