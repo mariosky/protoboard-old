@@ -315,7 +315,7 @@ class SimpleSequencing(object):
         # If its the same don't do anything
         # If is different raise error
 
-        #If there is a current activity don´t do anything
+        #If there is a current activity don't do anything
         if atree.current_activity:
             return
             #if atree.current_activity == ula:
