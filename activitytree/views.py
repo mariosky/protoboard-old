@@ -594,21 +594,6 @@ def login_view(request,template_name='registration/login.html',  redirect_field_
 
 
 
-def ajax_vote(request, type, uri):
-    activity_uri = request.path[len('/ajax_vote'):]
-    if request.user.is_authenticated():
-        if request.method == 'POST':
-            activity = UserLearningActivity.objects.filter(learning_activity__uri = activity_uri ,user = request.user )[0]
-            activity.user_rating = int(request.POST['rate'])
-            activity.save()
-
-        vals = UserLearningActivity.objects.filter(learning_activity__uri = activity_uri).aggregate(Avg('user_rating'),Count('user_rating'))
-        response_data = {'avg': vals['user_rating__avg'], 'votes': vals['user_rating__count']}
-
-        return HttpResponse(json.dumps(response_data), mimetype="application/json")
-    else:
-        return HttpResponse(content="Ya voto?")
-
 @csrf_protect
 def rate_object(request):
     if request.method == 'POST':

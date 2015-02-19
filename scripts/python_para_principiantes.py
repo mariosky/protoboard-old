@@ -260,6 +260,7 @@ else:
     self.pre_condition = ''""",
     post_condition_rule = "",
 
+    choice_exit = False,
     rollup_objective = True,
     rollup_progress = True,
 
@@ -278,7 +279,7 @@ if self.num_attempts == 0 :
 else:
     self.pre_condition = ''""",
     post_condition_rule = "",
-
+    choice_exit = False,
     rollup_objective = True,
     rollup_progress = True,
 
@@ -302,6 +303,8 @@ if self.num_attempts == 0 :
 else:
     self.pre_condition = ''""",
     post_condition_rule = "",
+
+    choice_exit = False,
 
     rollup_objective = True,
     rollup_progress = True,
