@@ -559,12 +559,15 @@ def execute_queue(request):
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
         task_id = server.enqueue(**task)
 
-        ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["method"], user=request.user )
-        s = SimpleSequencing()
-        s.update(ula)
+        if request.user.is_authenticated():
+            ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["method"], user=request.user )
+            s = SimpleSequencing()
+            s.update(ula)
+            ## Mouse Dynamics
+            event = ULA_Event.objects.create(ULA=ula,context=rpc)
+            event.save()
+
         rpc['task_id']=task_id
-        event = ULA_Event.objects.create(ULA=ula,context=rpc)
-        event.save()
 
         result= {"result":"added" , "error": None, "id": task_id}
         return HttpResponse(json.dumps(result), mimetype='application/javascript')
@@ -590,10 +593,11 @@ def get_result(request):
 
                 string_json = json.loads( t.result[0])
                 if string_json['result'] == 'Success':
-                    ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0], user=request.user)
+                    if request.user.is_authenticated():
+                        ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0], user=request.user)
 
-                    s = SimpleSequencing()
-                    s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=100)
+                        s = SimpleSequencing()
+                        s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=100)
                 result = json.dumps({'result':string_json, 'outcome': t.result[1]})
                 return HttpResponse(result , mimetype='application/javascript')
 
