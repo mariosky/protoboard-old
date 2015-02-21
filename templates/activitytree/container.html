@@ -30,6 +30,8 @@
 				<option value="20"> Para nada </option>
 	        </select>
 
+	        x-tmpl-mustache
+
         </div> -->
        </form>
 
@@ -54,38 +56,60 @@
 				</a>
 				<div id="rating-[[id]]" class="raty"> </div>
 				<p>[[description]]</p>
-				     <div class="modal-footer" style="text-align: left">
 
-                         <div class="progress">
-                             <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                                  aria-valuemax="100" style="width: 70%;">
-                                 <span class="sr-only">0% Complete</span>
-                             </div>
-                         </div>
+                     <div class="list-group">
+
+                     [[#children_activities]]
+                            <a href="[[uri]]" class="list-group-item [[#disabled]] disabled [[/disabled]]">
+                              <i class="[[icon]]"></i> [[heading]]
+                            </a>
+
+                     [[/children_activities]]
                      </div>
-                     <ul class="list-group">
-                            <li class="list-group-item">
-                            <span class="badge">14</span>
-                            Actividades totales
-                     </li>
-                         <ul class="list-group">
-                            <li class="list-group-item">
-                            <span class="badge">0</span>
-                            Actividades completas
-                            </li>
-                        </ul>
 
                      <div class="row">
+                     [[#objective_status]]
                          <div class="col-md-4">
                            <i class="fa fa-check fa-2x"></i><br/>
                              <small>COMPLETO</small>
                          </div>
-                         <div class="col-md-4">
+                     [[/objective_status]]
+                     </div>
+			</div>
+		</div>
+	</div>
+</script>
+
+
+<script id="disabled_container_template" type="x-tmpl-mustache">
+	<div class="col-xs-12 col-md-4">
+		<div class="thumbnail">
+		   <a href="[[uri]]">
+		       <img src="[[image]]" alt="...">
+		   </a>
+
+			<div class="caption">
+			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
+					<h4>[[name]] </h4>
+				<div id="rating-[[id]]" class="raty"> </div>
+				<p>[[description]]</p>
+
+                     <div class="list-group">
+
+                     [[#children_activities]]
+                            <a href="[[uri]]" class="list-group-item disabled">
+                              <i class="[[icon]]"></i> [[heading]]
+                            </a>
+
+                     [[/children_activities]]
+                     </div>
+
+                     <div class="row">
+                        <div class="col-md-4">
                                <i class="fa fa-lock fa-2x"></i><br/>
                              <small>BLOQUEADO</small>
                          </div>
-
-                     </div>
+                  </div>
 			</div>
 		</div>
 	</div>
@@ -103,7 +127,9 @@
 				<a href="[[uri]]" class="disabled">
 					<h4>[[name]] </h4>
 				</a>
+				[[#rating]]
 				<div id="rating-[[id]]" class="raty"> </div>
+				[[/rating]]
 				<p>[[description]]</p>
 				<div class="modal-footer" style="text-align: left">
 
@@ -116,14 +142,12 @@
                         </ul>
 
                      <div class="row">
+                     [[#objective_status]]
                          <div class="col-md-4">
                            <i class="fa fa-check fa-2x"></i><br/>
-                             <small>COMPLETO</small>
+
                          </div>
-                         <div class="col-md-4">
-                               <i class="fa fa-lock fa-2x"></i><br/>
-                             <small>BLOQUEADO</small>
-                         </div>
+                     [[/objective_status]]
                          <div class="col-md-4">
                               <i class="fa fa-puzzle-piece fa-2x"></i><br/>
                              <small>0/15</small>
@@ -134,8 +158,74 @@
 	</div>
 </script>
 
+<script id="disabled_activity_template" type="x-tmpl-mustache">
+	<div class="col-xs-12 col-md-4">
+		<div class="thumbnail">
+		   	<div class="caption">
+			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
+
+					<h4>[[name]] </h4>
+				[[#rating]]
+				<div id="rating-[[id]]" class="raty"> </div>
+				[[/rating]]
+				<p class="text-muted">[[description]]</p>
+				<div class="modal-footer" style="text-align: left">
+
+                     <div class="row">
+                         <div class="col-md-12">
+                               <i class="fa fa-lock fa-2x"></i>
+
+                         </div>
+                     </div>
+			</div>
+		</div>
+	</div>
+</script>
+
+
 
 <script type="text/javascript" charset="utf-8">
+
+
+    function get_icon(uri_string)
+    {
+
+        if (uri_string.lastIndexOf("/test/", 0) === 0)
+            return {icon:"fa fa-pencil",activity_type: "Quiz"} ;
+        else if (uri_string.lastIndexOf("/survey/", 0) === 0)
+            return {icon:"fa fa-pencil-square-o",activity_type: "Encuesta"} ;
+        else if (uri_string.lastIndexOf("/activity/video/", 0) === 0)
+            return {icon:"fa fa-video-camera",activity_type: "Video"} ;
+        else if (uri_string.lastIndexOf("/activity/", 0) === 0)
+            return {icon:"fa fa-book",activity_type: "Lectura"} ;
+        else if (uri_string.lastIndexOf("/program/", 0) === 0)
+            return {icon:"fa fa-coffee",activity_type: "Ejercicio en Consola"} ;
+
+    }
+
+    function get_children_activities( element)
+    {
+        var children = [];
+        $(element).children().each(function (index) {
+
+            var uri_string = this.getAttribute("uri");
+            var icon = get_icon(uri_string);
+            if (this.getAttribute("objective_status")=="satisfied")
+                {
+                    icon.icon = "fa fa-check"
+                }
+            children[children.length] =  {
+                heading: this.getAttribute("heading"),
+                uri:uri_string,
+                icon:icon.icon,
+                disabled:(this.getAttribute("pre_condition")=="disabled"),
+                objective_status:(this.getAttribute("objective_status")=="satisfied")
+            };
+
+        });
+
+        return children;
+    }
 
     $( document ).ready(function() {
 
@@ -145,82 +235,82 @@
         xmlDoc= $.parseXML(XML_NAV);
         $xml = $(xmlDoc)
         $current = $xml.find("item[is_current|='True']");
-        if ($current[0].getAttribute("is_container")=="True")
-        {
+        if ($current[0].getAttribute("is_container")=="True") {
             var container_template = $('#container_template').html();
             var activity_template = $('#activity_template').html();
-
+            var disabled_activity_template = $('#disabled_activity_template').html();
+            var disabled_container_template = $('#disabled_activity_template').html();
             Mustache.parse(container_template);   // optional, speeds up future uses
             Mustache.parse(activity_template);   // optional, speeds up future uses
 
-            $current.children().each(function( index ) {
-                var rendered ="";
+            $current.children().each(function (index) {
+                var rendered = "";
                 var uri_string = this.getAttribute("uri");
+                var recommended_value = this.getAttribute("recomended_value");
+                if (recommended_value == "None" || recommended_value == "0" )
+                    recommended_value = 0;
 
-                if (this.getAttribute("is_container") =="True")
+                var template;
+
+                if (this.getAttribute("is_container") == "True")
                 {
-                    rendered = Mustache.render(container_template, {name: this.getAttribute("heading"),
-                            uri: uri_string,
-                            icon: "fa fa-folder-open",
-                            image:this.getAttribute("image"),
-                            description:this.getAttribute("description"),
-                            activity_type:this.getAttribute("secondary_text")
-                    })
-                }
-                else {
-                    if (uri_string.lastIndexOf("/test/", 0) === 0) {
-                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
-                            uri: uri_string,
-                            icon: "fa fa-pencil",
-                            image:this.getAttribute("image"),
-                            description:this.getAttribute("description"),
-                            activity_type:"Quiz"
-                        });
 
-                    }
-                    else if (uri_string.lastIndexOf("/survey/", 0) === 0) {
-                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
-                            uri: uri_string,
-                            icon: "fa fa-pencil-square-o",
-                            image:this.getAttribute("image"),
-                            description:this.getAttribute("description"),
-                            activity_type:"Encuesta"});
-                    }
-                    else if (uri_string.lastIndexOf("/activity/video/", 0) === 0) {
-                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
-                            uri: uri_string,
-                            icon: "fa fa-video-camera",
-                            image:this.getAttribute("image"),
-                            description:this.getAttribute("description"),
-                            activity_type:"Video"});
-                    }
-                    else if (uri_string.lastIndexOf("/activity/", 0) === 0) {
-                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
-                            uri: uri_string,
-                            icon: "fa fa-book",
-                            image:this.getAttribute("image"),
-                            description:this.getAttribute("description"),
-                            activity_type:"Lectura"});
-                    }
-                    else if (uri_string.lastIndexOf("/program/", 0) === 0) {
-                        rendered = Mustache.render(activity_template, {name: this.getAttribute("heading"),
-                            uri: uri_string,
-                            icon: "fa fa-coffee",
-                            image:this.getAttribute("image"),
-                            description:this.getAttribute("description"),
-                            activity_type:"Ejercicio en Consola"});
-                    }
+                     if (this.getAttribute("pre_condition")=="disabled")
+                       template = disabled_container_template;
+                     else
+                       template = container_template;
+
+                    rendered = Mustache.render(template, {name: this.getAttribute("heading"),
+                        uri: uri_string,
+                        icon: "fa fa-folder-open",
+                        image: this.getAttribute("image"),
+                        description: this.getAttribute("description"),
+                        activity_type: this.getAttribute("secondary_text"),
+                        id: this.getAttribute("activity"),
+                        rating: recommended_value,
+                        children_activities:get_children_activities(this),
+                        objective_status:(this.getAttribute("objective_status")=="satisfied")
+
+                    });
+                }
+
+
+                else
+                {
+                     var activity_type = get_icon(uri_string);
+
+                     if (this.getAttribute("pre_condition")=="disabled")
+                       template = disabled_container_template;
+                     else
+                       template = container_template;
+
+                    rendered = Mustache.render(template, {name: this.getAttribute("heading"),
+                             uri: uri_string,
+                             icon: activity_type.icon,
+                             image: this.getAttribute("image"),
+                             description: this.getAttribute("description"),
+                             activity_type: activity_type.activity_type,
+                             id: this.getAttribute("activity"),
+                             rating: recommended_value,
+                             objective_status:(this.getAttribute("objective_status")=="satisfied")
+                         });
 
 
                 }
+
                 $("#navlist").append(rendered);
+                if (recommended_value) {
+                    $('#rating-' + this.getAttribute("activity")).raty({
+                        path: '{{MEDIA_URL}}images',
+                        score: recommended_value,
+                        readOnly: true
+                    });
+                }
+
 
             });
 
-            $('.raty').raty({
-    path: '{{MEDIA_URL}}images',
-    score: 3});
-            }
+        }
 
     });
 

@@ -60,18 +60,17 @@
 
 $('#rating-info').raty({
     path: '{{MEDIA_URL}}images',
-    score: 3,
+    score: 0,
     click: function(score, evt)
             {
             alert('ID: ' + this.id + "\nscore: " + score + "\nevent: " + evt);
 
              $.ajax(
                 {
-                    url: '/execute_queue',
+                    url: '/rate_object',
                     type: "POST",
                     contentType: "application/json",
-                    data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code], "id": 1 ,
-                    "keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse }),
+                    data: JSON.stringify({"uri": "{{ uri }}", "rating": score ,"user":"{{user.id}}"  }),
                     dataType: "json",
                     success: function(data, textStatus, jqXHR) {
                         alert ("Success");

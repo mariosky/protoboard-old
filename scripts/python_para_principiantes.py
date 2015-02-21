@@ -76,7 +76,8 @@ pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
 if self.objective_status == 'notSatisfied' :
     self.pre_condition = 'stopForwardTraversal'
 else:
-    self.pre_condition = 'disabled'""",
+    self.pre_condition = 'skip'
+""",
 
     post_condition_rule = "",
 
@@ -90,7 +91,7 @@ else:
 pretest.save()
 
 
-intro = LearningActivity( name = 'Introducción', slug = 'Intro',
+intro = LearningActivity( name = 'Introduccion', slug = 'Intro',
     uri = "/activity/introduccion",
 #   lom =
     parent = PPP, root  = PPP,
@@ -130,7 +131,12 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
     parent = PPP, root  = PPP,
 
 #    pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
-    pre_condition_rule = ""  ,
+    pre_condition_rule = """
+if self.get_ula_attr('Introduccion','objective_status') == 'satisfied':
+    self.pre_condition = ''
+else:
+    self.pre_condition = 'disabled'
+""",
     post_condition_rule = "",
 
     flow = True,
@@ -243,17 +249,14 @@ program_1 = LearningActivity( name = 'Imprime Hola', slug = 'E1',
     heading="Imprime Hola",
     description = "La versión básica del clásico Hola Mundo",
     image = "https://s3.amazonaws.com/learning-python/images.png",
-
+ 
 
 
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
+    choice_exit = False,
     rollup_objective = True,
     rollup_progress = True,
 
@@ -267,12 +270,14 @@ program_2 = LearningActivity( name = '¿Es par?', slug = 'E2',
     uri = "/program/PPP/2",
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
+if self.get_ula_attr('Imprime Hola','objective_status') == 'satisfied':
+    self.pre_condition = ''
 else:
-    self.pre_condition = ''""",
+    self.pre_condition = 'disabled'
+""",
+    description = "Haz una función que te diga si es un número par. Necesario completar: Imprime Hola ",
     post_condition_rule = "",
-
+    choice_exit = False,
     rollup_objective = True,
     rollup_progress = True,
 
@@ -296,6 +301,8 @@ if self.num_attempts == 0 :
 else:
     self.pre_condition = ''""",
     post_condition_rule = "",
+
+    choice_exit = False,
 
     rollup_objective = True,
     rollup_progress = True,
@@ -527,64 +534,6 @@ else:
 program_13.save()
 
 
-
-User.objects.filter(username='ana').delete()
-User.objects.filter(username='paul').delete()
-
-j = User.objects.create_user('ana', 'lennon@thebeatles.com', '1234')
-j.is_active = True
-j.save()
-
-p = User.objects.create_user('paul', 'paul@thebeatles.com', '1234')
-p.is_active = True
-p.save()
-
-lsj=LearningStyleInventory(visual=12,verbal=11,aural=15,physical=9,logical=11,
-                          social=9, solitary=10, user = j)
-lsj.save()
-
-lsp=LearningStyleInventory(visual=12,verbal=11,aural=20,physical=9,logical=11,
-                          social=9, solitary=7, user = p)
-lsp.save()
-
-
-s = SimpleSequencing()
-s.assignActivityTree(j,PPP)
-s.assignActivityTree(p,PPP)
-
-
-estudiantes = [
-('edgar',          '1234',17,13,16,12,14,16, 9),
-('osuna',       '1234',15,12,14,18,14,19, 8),
-('malu',         '1234', 7,10, 4, 8,17,14,16),
-('jose',        '1234',17, 6,16,13,14,11, 8),
-('david',         '1234',15,10,13,14,17,15,11),
-('juan',    '1234',11,13,11,10,13,18, 8),
-('cota',              '1234',13, 7,18,14,12,10,13),
-('omar',            '1234', 7, 3, 7,12,16,17, 6),
-('santana',           '1234',10, 9,13,13,13,14,13),
-('hector',  '1234', 1,11,11,11,18,13,13),
-('edie',           '1234',14, 6,16,12,12,13,12),
-('baby',      '1234',15,18,20,17,13,18,17),
-('saul',            '1234',13,11,14,11,14,14,13),
-('brenda',             '1234',17,13,20,12,14,11,16),
-('samara',         '1234',14,15,13,12,15,16,12),
-('daniel',      '1234', 9, 8,15,11,13,14,13),
-('jorge',           '1234',17,12,14,17,19,18,14),
-('mike',             '1234',15,16,17,18,18,13,11),
-('luis',            '1234',11, 7,11,10,11,12, 6),
-('anguiano.ae22@hotmail.com',       '1234',12,10,12,13,10,18,10)]
-
-for e in estudiantes:
-    User.objects.filter(username=e[0]).delete()
-    u = User.objects.create_user(e[0],e[0], e[1])
-    u.is_active = True
-    u.save()
-    lsu=LearningStyleInventory(visual=e[2],verbal=e[3],aural=e[4],physical=e[5],logical=e[6],
-                          social=e[7], solitary=e[8], user = u)
-    lsu.save()
-    ss = SimpleSequencing()
-    ss.assignActivityTree(u,PPP)
 
 
 import os

@@ -314,7 +314,10 @@ class SimpleSequencing(object):
         # Is there a current activity?
         # If its the same don't do anything
         # If is different raise error
+
+        #If there is a current activity don't do anything
         if atree.current_activity:
+            #return
             if atree.current_activity == ula:
                 return
             else:
@@ -358,6 +361,7 @@ class SimpleSequencing(object):
 
         if not ula.is_current:
             raise NotAllowed('Set Current', "Can only exit a current activity")
+            #pass
         else:
             ula.is_current = False
             atree.current_activity = None

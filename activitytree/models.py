@@ -93,7 +93,7 @@ class UserLearningActivity(models.Model):
     user = models.ForeignKey(User)
     learning_activity = models.ForeignKey(to ='LearningActivity')
     pre_condition = models.CharField(max_length=32,default = "",blank=True)
-    recommendation_value = models.PositiveSmallIntegerField(null=True, default = None)
+    recommendation_value = models.PositiveSmallIntegerField(null=True, default = 0)
     progress_status = models.CharField(max_length=16,default = "incomplete",blank=True)
     objective_status = models.CharField(max_length=16,default = "notSatisfied",blank=True)
     objective_measure = models.FloatField( null=True, default = None)
@@ -129,7 +129,6 @@ class UserLearningActivity(models.Model):
             super(UserLearningActivity, self).save()
 
 
-
     def get_objective_measure(self,activity_name):   ###      REVISAR
         activity = UserLearningActivity.objects.select_related('user','learning_activity').filter(user = self.user,
             learning_activity = LearningActivity.objects.filter(name=activity_name))
@@ -137,6 +136,13 @@ class UserLearningActivity(models.Model):
             return 0
         else:
             return activity[0].objective_measure
+
+    def get_ula_attr(self, activity_name, attr):
+        activity = UserLearningActivity.objects.select_related('user','learning_activity').filter(user = self.user,
+            learning_activity = LearningActivity.objects.filter(name=activity_name))
+        return getattr(activity[0],attr)
+
+
             
     def get_children(self, recursive = False):
         l=[]
@@ -359,7 +365,12 @@ class FacebookSession(models.Model):
 
 
 
-            
+class LearningActivityRating(models.Model):
+    user = models.ForeignKey(User)
+    learning_activity = models.ForeignKey(LearningActivity)
+    time=models.DateTimeField(auto_now=True)
+    rating = models.PositiveSmallIntegerField()
+    context = models.PositiveSmallIntegerField()
             
             
             
