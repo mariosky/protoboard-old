@@ -250,7 +250,40 @@ def activity(request,uri):
 
 
     else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        try:
+            la = LearningActivity.objects.filter(uri=request.path)[0]
+        except ObjectDoesNotExist:
+            return HttpResponseNotFound('<h1>Activity not found</h1>')
+
+        # Check if public, all public for now
+        if False:
+            return HttpResponseRedirect('/login/?next=%s' % request.path)
+
+        content = activities[la.uri]
+        if (la.uri).split('/')[2] =='video':
+            print "VIDEO",(la.uri).split('/')[2]
+            return render_to_response('activitytree/video.html',
+
+                                  {'navegation': None,
+                                   'uri':la.uri,
+                                   'video':content,
+                                   'breadcrumbs':None},
+                                    context_instance=RequestContext(request))
+
+        elif la.is_container:
+            return HttpResponseRedirect('/login/?next=%s' % request.path)
+
+
+        else:
+            return render_to_response('activitytree/'+ (la.uri).split('/')[1]+'.html',
+
+                                  {'navegation': None,
+                                   'uri':la.uri,
+                                   'content':content,
+                                   'breadcrumbs':None},
+                                    context_instance=RequestContext(request))
+
+
         # Do something for anonymous users.    
 
 @transaction.atomic
