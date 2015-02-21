@@ -1,9 +1,11 @@
 from django.conf.urls import patterns, include, url
 
-from django.contrib import admin
+#from django.contrib import admin
+#admin.autodiscover()
+
 
 from activitytree.views import ActivityView
-admin.autodiscover()
+
 
 urlpatterns = patterns('',
     # Example:
