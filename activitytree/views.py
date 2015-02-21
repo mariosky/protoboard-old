@@ -77,10 +77,10 @@ class ActivityView(View):
 
                 else:
                     _set_current(request,requested_activity, root, self.s, objective_status=None, progress_status=None)
-            else:
+        else:
                 # Exits last activity, and sets requested activity as current
                 # if choice_exit consider complete
-                _set_current(request,requested_activity, root, self.s, objective_status=None, progress_status=None)
+            _set_current(request,requested_activity, root, self.s, objective_status=None, progress_status=None)
         nav = self.s.get_nav(root)
         XML_ = self.s.nav_to_xml(root=nav)
         #Escape for javascript
