@@ -5,14 +5,7 @@ from django.shortcuts import render_to_response
 from django.template.response import TemplateResponse
 from django.db.models import Avg, Count
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.forms import AuthenticationForm
-from django.views.decorators.debug import sensitive_post_parameters
-from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout, get_user_model
-from django.contrib.sites.models import get_current_site
-from django.utils.http import is_safe_url
-from django.shortcuts import resolve_url
 from django.template import RequestContext
 
 from django.contrib.auth import authenticate, login, logout
@@ -21,7 +14,8 @@ from activitytree.models import Course,ActivityTree,UserLearningActivity, Learni
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
-#from social.backends.google import GooglePlusAuth
+from django.views.generic import View
+
 
 import urllib
 import urlparse
@@ -56,6 +50,80 @@ def welcome(request):
                 #,'plus_scope':plus_scope,'plus_id':plus_id
                  },
                 context_instance=RequestContext(request))
+
+
+class ActivityView(View):
+    s = SimpleSequencing()
+
+    def get(self, request):
+        if request.user.is_authenticated():
+            requested_activity = _get_ula(request, self.s)
+        if not requested_activity:
+            return HttpResponseNotFound('<h1>Activity not found</h1>')
+
+        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root(),
+                                                   user = request.user )[0]
+
+        if requested_activity.is_root() and 'nav' in request.GET and request.GET['nav'] == 'continue':
+                current_activity = self.s.get_current(requested_activity)
+                if current_activity:
+                    requested_activity = current_activity
+                    return HttpResponseRedirect( requested_activity.learning_activity.uri)
+
+                else:
+                    _set_current(request,requested_activity, root, self.s, objective_status=None, progress_status=None)
+            else:
+                # Exits last activity, and sets requested activity as current
+                # if choice_exit consider complete
+                _set_current(request,requested_activity, root, self.s, objective_status=None, progress_status=None)
+        nav = self.s.get_nav(root)
+        XML_ = self.s.nav_to_xml(root=nav)
+        #Escape for javascript
+        XML=XML_.replace('"', r'\"')
+        navegation_tree = self.s.nav_to_html(nav)
+
+        breadcrumbs = self.s.get_current_path(requested_activity)
+
+
+        ####
+        ####
+        ####
+
+
+        content = activities[requested_activity.learning_activity.uri]
+
+        if requested_activity.learning_activity.uri.split('/')[2] =='video':
+            print "VIDEO",(requested_activity.learning_activity.uri).split('/')[2]
+            return render_to_response('activitytree/video.html',
+
+                                  {'navegation': navegation_tree,
+                                   'uri':requested_activity.learning_activity.uri,
+                                   'video':content,
+                                   'breadcrumbs':breadcrumbs},
+                                    context_instance=RequestContext(request))
+
+        elif requested_activity.learning_activity.is_container:
+
+            return render_to_response('activitytree/container.html',
+
+                                  {'navegation': navegation_tree,
+                                   'XML_NAV':XML,
+                                   'children': requested_activity.get_children(),
+                                   'uri':requested_activity.learning_activity.uri,
+                                   'content':content,
+                                   'breadcrumbs':breadcrumbs},
+                                    context_instance=RequestContext(request))
+        else:
+            return render_to_response('activitytree/'+ (requested_activity.learning_activity.uri).split('/')[1]+'.html',
+
+                                  {'navegation': navegation_tree,
+                                   'uri':requested_activity.learning_activity.uri,
+                                   'content':content,
+                                   'breadcrumbs':breadcrumbs},
+                                    context_instance=RequestContext(request))
+
+        return HttpResponse('result')
+
 
 def activity(request,uri):
     if request.user.is_authenticated():
