@@ -15,8 +15,13 @@ from django.utils.http import is_safe_url
 from django.shortcuts import resolve_url
 from django.template import RequestContext
 
+
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.generic import View
+
+
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,  FacebookSession
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
