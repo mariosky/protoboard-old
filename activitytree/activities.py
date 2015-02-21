@@ -29,6 +29,11 @@ activities = {
    </p>
 
     """ ,
+'/activity2/introduccion': u""" <h3>Introducción</h3>
+  <p> Empezamos con una serie de videos introductorios al tutorial y después EJERCICIOS.
+   </p>
+
+    """ ,
 
 '/activity/secuencias': u""" <h3>Secuencias</h3>
   <p> Tutorial de objetos tipo secuencia, muy útilies y faciles de entender.
