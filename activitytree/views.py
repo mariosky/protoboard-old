@@ -14,6 +14,7 @@ from django.contrib.sites.models import get_current_site
 from django.utils.http import is_safe_url
 from django.shortcuts import resolve_url
 from django.template import RequestContext
+from django.db import transaction
 
 
 
@@ -252,7 +253,7 @@ def activity(request,uri):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.    
 
-
+@transaction.atomic
 def test(request, uri, objective_status = None):
     if request.user.is_authenticated():
         s = SimpleSequencing()
@@ -334,7 +335,7 @@ def test(request, uri, objective_status = None):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.
 
-
+@transaction.atomic
 def survey(request, uri, objective_status = None):
     if request.user.is_authenticated():
         s = SimpleSequencing()
@@ -426,7 +427,7 @@ def survey(request, uri, objective_status = None):
         # Do something for anonymous users.
 
 
-
+@transaction.atomic
 def program(request,uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
@@ -738,6 +739,21 @@ def facebook_login(request):
         error = 'AUTH_DENIED'
     ### TO DO Log Error
     return HttpResponseRedirect('/')
+
+@csrf_protect
+def rate_object(request):
+    if request.method == 'POST':
+        vote=json.loads(request.body)
+        la = LearningActivity.objects.get(uri=vote["uri"] )
+
+
+        rating = LearningActivityRating(user=request.user,learning_activity=la,rating= vote["rating"], context=0)
+        rating.save()
+
+        result= {"result":"added" , "error": None, "id": None}
+        return HttpResponse(json.dumps(result), mimetype='application/javascript')
+
+
 
 
 @login_required
