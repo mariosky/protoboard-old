@@ -66,7 +66,7 @@ def welcome(request):
 class ActivityView(View):
     s = SimpleSequencing()
 
-    def get(self, request):
+    def get(self, request, uri):
         if request.user.is_authenticated():
             requested_activity = _get_ula(request, self.s)
         if not requested_activity:
