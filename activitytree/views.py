@@ -364,7 +364,8 @@ def test(request, uri, objective_status = None):
                                    'feedback':feedback,
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
-    else:      
+    else:
+
         return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.
 
@@ -523,7 +524,26 @@ def program(request,uri):
                                   context_instance=RequestContext(request))
 
     else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        try:
+            la = LearningActivity.objects.filter(uri=request.path)[0]
+        except ObjectDoesNotExist:
+            return HttpResponseNotFound('<h1>Activity not found</h1>')
+            # Check if public, all public for now
+        if False:
+            return HttpResponseRedirect('/login/?next=%s' % request.path)
+
+        content = activities[la.uri]
+        if request.method == 'GET':
+            return render_to_response('activitytree/program.html', {'program_quiz':activities[la.uri],
+                                                                'activity_uri':la.uri,
+                                                                'navegation': None,
+                                   'breadcrumbs':None
+                                                                },
+                                  context_instance=RequestContext(request))
+
+
+
+        #return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.
 
 @csrf_protect
