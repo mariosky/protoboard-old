@@ -114,6 +114,8 @@ class UserLearningActivity(models.Model):
             return True
         else:
             return False
+    def get_atree(self):
+        return ActivityTree.objects.get(user=self.user, root_activity=self.get_root())
 
     
     def eval_pre_condition_rule(self):

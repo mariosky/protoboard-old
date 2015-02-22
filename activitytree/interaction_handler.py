@@ -301,23 +301,10 @@ class NotAllowed(Error):
 
 class SimpleSequencing(object):
     def set_current(self, ula):
-        #if ula.learning_activity.root is None:
-        #    raise NotAllowed('Set Current', "The root container cannot be the current activity")
-        #if ula.learning_activity.is_container:
-        #    raise NotAllowed('Set Current', "A container cannot be the current activity")
-
-        if ula.learning_activity.root is not None:
-            atree = ActivityTree.objects.get(user=ula.user, root_activity=ula.learning_activity.root)
-        else:
-            atree = ActivityTree.objects.get(user=ula.user, root_activity=ula.learning_activity)
-
-        # Is there a current activity?
-        # If its the same don't do anything
-        # If is different raise error
+        atree = ula.get_atree()
 
         #If there is a current activity don't do anything
         if atree.current_activity:
-            #return
             if atree.current_activity == ula:
                 return
             else:
@@ -330,11 +317,7 @@ class SimpleSequencing(object):
         atree.save()
 
     def get_current(self, ula):
-        if ula.learning_activity.root is not None:
-            atree = ActivityTree.objects.get(user=ula.user, root_activity=ula.learning_activity.root)
-        else:
-            atree = ActivityTree.objects.get(user=ula.user, root_activity=ula.learning_activity)
-
+        atree = ula.get_atree()
 
         if atree.current_activity:
             return atree.current_activity
@@ -532,12 +515,4 @@ class SimpleSequencing(object):
         result = transform(root)
         return unicode(result)
 
-        #from Ft.Xml.Xslt import Processor
-        #processor = Processor.Processor()
-
-        #from Ft.Xml import InputSource
-        #transform = InputSource.DefaultFactory.fromString(TRANSFORM, "http://spam.com/identity.xslt")
-        #source = InputSource.DefaultFactory.fromString(str(nav),"http://spam.com/doc.xml")
-        #processor.appendStylesheet(transform)
-        #return processor.run(source)
         
