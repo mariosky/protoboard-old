@@ -65,35 +65,48 @@ def welcome(request):
 
 
 def activity(request,uri):
+
+    learning_activity = _get_learning_activity(request)
+    if learning_activity is None:
+        return HttpResponseNotFound('<h1>Activity not found</h1>')
+
+
     if request.user.is_authenticated():
         s = SimpleSequencing()
-
-        #NAVIGATION REQUEST:
-
-        # First, the requested_activity  exists??
-        # Gets the Learning Activity object from uri
-        requested_activity = _get_ula(request, s)
-
-        if not requested_activity:
-            return HttpResponseNotFound('<h1>Activity not found</h1>')
-
-        # Gets the root of the User Learning Activity
-        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root(),
-                                                   user = request.user )[0]
-
+        requested_activity = _get_ula(request)
         if request.method == 'GET':
+
+            if not requested_activity : # The requested_activity was not found
+            # Maybe a
+            # 'start' REQUEST?
+                if 'nav' in request.GET and request.GET['nav'] == 'start':
+                    if learning_activity and learning_activity.root is None:
+                        s.assignActivityTree(request.user,la)
+                        requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
+                        _set_current(request,requested_activity, learning_activity)
+                    #If is not a root learning activity then sorry, not found
+                    else:
+                        return HttpResponseNotFound('<h1>Activity not found</h1>')
+            else:
+                return HttpResponseNotFound('<h1>Activity not found</h1>')
+
+            # We have a valid requested_activity, lets handle OTHER NAVIGATION REQUEST
+
+            #Get root of activity tree
+            root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root(),
+                                                       user = request.user )[0]
+            # 'continue' REQUEST?
             if requested_activity.is_root() and 'nav' in request.GET and request.GET['nav'] == 'continue':
                 current_activity = s.get_current(requested_activity)
                 if current_activity:
                     requested_activity = current_activity
                     return HttpResponseRedirect( requested_activity.learning_activity.uri)
-
                 else:
                     _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
+            #Else is a
+            # 'choice' REQUEST
             else:
-                # Exits last activity, and sets requested activity as current
-                # if choice_exit consider complete
-                _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
+                _set_current(request,requested_activity, root, s)
 
         if request.method == 'POST' and 'nav_event' in request.POST:
 
@@ -175,8 +188,6 @@ def activity(request,uri):
         #####
         #####
         #####
-
-
 
     else:
         try:
@@ -535,10 +546,19 @@ def get_result(request):
         else:
             return HttpResponse(json.dumps({'outcome':-1}) , mimetype='application/javascript')
 
-
-def _get_ula(request, s):
+def _get_learning_activity(request):
     try:
         la = LearningActivity.objects.filter(uri=request.path)[0]
+    except ObjectDoesNotExist:
+        return None
+    return la
+
+
+def _get_ula(request):
+    try:
+        la = _get_learning_activity(request)
+        if la is None:
+            return None
     except ObjectDoesNotExist:
         return None
 
@@ -549,15 +569,10 @@ def _get_ula(request, s):
         #User does not have a tracking activity tree
         #If the requested activity is the root of a tree
         #register the user to it
-        if la and la.root is None:
-            s.assignActivityTree(request.user,la)
-            requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
-        #If is not a root learning activity then sorry, not found
-        else:
-            return None
+        return None
     return requested_activity
 
-def _set_current(request,requested_activity, root, s,objective_status, progress_status):
+def _set_current(request,requested_activity, root, s,objective_status=None, progress_status=None):
     # Sets the requested  Learning Activity as current
 
     atree = ActivityTree.objects.get(user=request.user,root_activity=root.learning_activity.get_root())
