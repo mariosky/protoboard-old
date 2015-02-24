@@ -185,7 +185,7 @@ def activity(request,uri):
                                    'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.uri,
                                    'content':content,
-                                    'root':requested_activity.learning_activity.get_root().uri,
+                                   'root':requested_activity.learning_activity.get_root().uri,
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
         else:
