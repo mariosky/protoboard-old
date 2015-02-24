@@ -84,7 +84,7 @@ def activity(request,uri):
             # 'start' REQUEST?
                 if 'nav' in request.GET and request.GET['nav'] == 'start':
                     if learning_activity and learning_activity.root is None:
-                        s.assignActivityTree(request.user,la)
+                        s.assignActivityTree(request.user,learning_activity)
                         requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
                         _set_current(request,requested_activity, learning_activity)
                     #If is not a root learning activity then sorry, not found
@@ -245,7 +245,7 @@ def test(request, uri, objective_status = None):
         s = SimpleSequencing()
         # First, the requested_activity  exists??
         # Gets the Learning Activity object from uri
-        requested_activity = _get_ula(request, s)
+        requested_activity = _get_ula(request)
 
         if not requested_activity:
             return HttpResponseNotFound('<h1>Activity not found</h1>')
@@ -328,7 +328,7 @@ def survey(request, uri, objective_status = None):
         s = SimpleSequencing()
         # First, the requested_activity  exists??
         # Gets the Learning Activity object from uri
-        requested_activity = _get_ula(request, s)
+        requested_activity = _get_ula(request)
 
         if not requested_activity:
             return HttpResponseNotFound('<h1>Activity not found</h1>')
@@ -420,7 +420,7 @@ def program(request,uri):
         s = SimpleSequencing()
         # First, the requested_activity  exists??
         # Gets the Learning Activity object from uri
-        requested_activity = _get_ula(request, s)
+        requested_activity = _get_ula(request)
 
         if not requested_activity:
             return HttpResponseNotFound('<h1>Activity not found</h1>')
