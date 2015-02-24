@@ -65,7 +65,6 @@ def welcome(request):
 
 
 def activity(request,uri):
-
     learning_activity = _get_learning_activity(request)
     root=None
     if learning_activity is None:
@@ -130,18 +129,21 @@ def activity(request,uri):
                 progress_status = 'complete'
                 objective_status = 'satisfied'
 
-
+            # 'next' REQUEST
             if request.POST['nav_event'] == 'next':
                 # Go TO NEXT ACTIVITY
                 s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
                 next_uri = s.get_next(root, current_activity)
+
+            # 'prev' REQUEST
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
                 s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
                 next_uri = s.get_prev(root, current_activity)
 
+            #No more activities ?
             if next_uri is None:
-                    #No more activities ?
+
                 return HttpResponseRedirect( root.learning_activity.uri)
             else:
                 next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
@@ -264,7 +266,7 @@ def test(request, uri, objective_status = None):
 
                 feedback = _check_quiz(request.POST, activities[requested_activity.learning_activity.uri])
                 print feedback
-                # Exits the current Learning Activity
+                # Updates the current Learning Activity
                 objective_measure = feedback['total_correct']
                 if objective_measure >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
                     objective_status='satisfied'
@@ -272,27 +274,6 @@ def test(request, uri, objective_status = None):
                     objective_status='notSatisfied'
 
                 s.update(requested_activity, progress_status = None, objective_status = objective_status, objective_measure = objective_measure)
-
-
-            elif 'nav_event' in request.POST:
-                next_uri = None
-
-                if request.POST['nav_event'] == 'next':
-                    # Go TO NEXT ACTIVITY
-                    next_uri = s.get_next(root, requested_activity)
-
-                elif request.POST['nav_event'] == 'prev':
-                    # Go TO PREV ACTIVITY
-                    next_uri = s.get_prev(root, requested_activity)
-
-                if next_uri is None:
-                        #No more activities ?
-                    return HttpResponseRedirect( root.learning_activity.uri)
-
-                else:
-                    next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
-                    return HttpResponseRedirect(next_activity.learning_activity.uri)
-
 
        # Gets the current navegation tree as HTML
 
@@ -351,7 +332,7 @@ def survey(request, uri, objective_status = None):
                 event.save()
 
 
-                # Exits the current Learning Activity
+                # Updates the current Learning Activity
                 objective_measure = feedback['total_correct']
                 #if objective_measure >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
                 objective_status='satisfied'
@@ -360,31 +341,7 @@ def survey(request, uri, objective_status = None):
 
                 s.update(requested_activity, progress_status = None, objective_status = objective_status, objective_measure = objective_measure)
 
-
-            elif 'nav_event' in request.POST:
-                next_uri = None
-
-                if request.POST['nav_event'] == 'next' :
-                    # Go TO NEXT ACTIVITY
-                    s.exit( requested_activity)
-                    next_uri = s.get_next(root, requested_activity)
-
-
-
-
-                elif request.POST['nav_event'] == 'prev':
-                    # Go TO PREV ACTIVITY
-                    s.exit( requested_activity)
-                    next_uri = s.get_prev(root, requested_activity)
-
-                if next_uri is None:
-                        #No more activities ?
-                    return HttpResponseRedirect( root.learning_activity.uri)
-                else:
-                    next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
-                    return HttpResponseRedirect(next_activity.learning_activity.uri)
-
-       # Gets the current navegation tree as HTML
+      # Gets the current navegation tree as HTML
 
         nav = s.get_nav(root)
 
@@ -431,48 +388,18 @@ def program(request,uri):
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
             # if choice_exit consider complete
-            _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
-
-        if request.method == 'POST' and 'nav_event' in request.POST:
-        # We are going to exit activity, get objective measure
-            #objective_measure = float(request.POST['objective_measure'])
-
-
-
-            next_uri = None
-
-            if request.POST['nav_event'] == 'next':
-                # Go TO NEXT ACTIVITY
-                s.exit( requested_activity)
-                next_uri = s.get_next(root, requested_activity)
-            elif request.POST['nav_event'] == 'prev':
-                # Go TO PREV ACTIVITY
-                s.exit( requested_activity)
-                next_uri = s.get_prev(root, requested_activity)
-
-            if next_uri is None:
-                    #No more activities ?
-                return HttpResponseRedirect( root.learning_activity.uri)
-
-            else:
-
-
-                next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
-                return HttpResponseRedirect(next_activity.learning_activity.uri)
-
-
+            _set_current(request,requested_activity, root, s)
 
         # Gets the current navegation tree as HTML
         nav = s.get_nav(root)
         navegation_tree = s.nav_to_html(nav)
         breadcrumbs = s.get_current_path(requested_activity)
 
-
-
         return render_to_response('activitytree/program.html', {'program_quiz':activities[requested_activity.learning_activity.uri],
                                                                 'activity_uri':requested_activity.learning_activity.uri,
                                                                 'navegation': navegation_tree,
-                                   'breadcrumbs':breadcrumbs
+                                                                'breadcrumbs':breadcrumbs,
+                                                                'root':requested_activity.learning_activity.get_root().uri
                                                                 },
                                   context_instance=RequestContext(request))
 
