@@ -183,7 +183,7 @@ def activity(request,uri):
                                   {'navegation': navegation_tree,
                                    'XML_NAV':XML,
                                    'children': requested_activity.get_children(),
-                                   'uri':requested_activity.learning_activity.root.uri,
+                                   'uri':requested_activity.learning_activity.uri,
                                    'content':content,
                                     'root':requested_activity.learning_activity.get_root().uri,
                                    'breadcrumbs':breadcrumbs},
