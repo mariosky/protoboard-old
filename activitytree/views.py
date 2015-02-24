@@ -173,7 +173,7 @@ def activity(request,uri):
                                    'uri':requested_activity.learning_activity.uri,
                                    'video':content,
                                    'breadcrumbs':breadcrumbs,
-                                   'root':requested_activity.learning_activity.root.uri},
+                                   'root':requested_activity.learning_activity.get_root().uri},
                                     context_instance=RequestContext(request))
 
         elif requested_activity.learning_activity.is_container:
@@ -185,7 +185,7 @@ def activity(request,uri):
                                    'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.root.uri,
                                    'content':content,
-                                    'root':requested_activity.learning_activity.root.uri,
+                                    'root':requested_activity.learning_activity.get_root().uri,
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
         else:
@@ -193,7 +193,7 @@ def activity(request,uri):
 
                                   {'navegation': navegation_tree,
                                    'uri':requested_activity.learning_activity.uri,
-                                   'root':requested_activity.learning_activity.root.uri,
+                                   'root':requested_activity.learning_activity.get_root().uri,
                                    'content':content,
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
