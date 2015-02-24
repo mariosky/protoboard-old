@@ -23,7 +23,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 
 
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,  FacebookSession
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
@@ -63,83 +63,12 @@ def welcome(request):
                  },
                 context_instance=RequestContext(request))
 
-class ActivityView(View):
-    s = SimpleSequencing()
-
-    def get(self, request, uri):
-        if request.user.is_authenticated():
-            requested_activity = _get_ula(request, self.s)
-        if not requested_activity:
-            return HttpResponseNotFound('<h1>Activity not found</h1>')
-
-        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root(),
-                                                   user = request.user )[0]
-
-        if requested_activity.is_root() and 'nav' in request.GET and request.GET['nav'] == 'continue':
-                current_activity = self.s.get_current(requested_activity)
-                if current_activity:
-                    requested_activity = current_activity
-                    return HttpResponseRedirect( requested_activity.learning_activity.uri)
-
-                else:
-                    _set_current(request,requested_activity, root, self.s, objective_status=None, progress_status=None)
-        else:
-                # Exits last activity, and sets requested activity as current
-                # if choice_exit consider complete
-            _set_current(request,requested_activity, root, self.s, objective_status=None, progress_status=None)
-        nav = self.s.get_nav(root)
-        XML_ = self.s.nav_to_xml(root=nav)
-        #Escape for javascript
-        XML=XML_.replace('"', r'\"')
-        navegation_tree = self.s.nav_to_html(nav)
-
-        breadcrumbs = self.s.get_current_path(requested_activity)
-
-
-        ####
-        ####
-        ####
-
-
-        content = activities[requested_activity.learning_activity.uri]
-
-        if requested_activity.learning_activity.uri.split('/')[2] =='video':
-            print "VIDEO",(requested_activity.learning_activity.uri).split('/')[2]
-            return render_to_response('activitytree/video.html',
-
-                                  {'navegation': navegation_tree,
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'video':content,
-                                   'breadcrumbs':breadcrumbs},
-                                    context_instance=RequestContext(request))
-
-        elif requested_activity.learning_activity.is_container:
-
-            return render_to_response('activitytree/container.html',
-
-                                  {'navegation': navegation_tree,
-                                   'XML_NAV':XML,
-                                   'children': requested_activity.get_children(),
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'content':content,
-                                   'breadcrumbs':breadcrumbs},
-                                    context_instance=RequestContext(request))
-        else:
-            return render_to_response('activitytree/'+ (requested_activity.learning_activity.uri).split('/')[1]+'.html',
-
-                                  {'navegation': navegation_tree,
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'content':content,
-                                   'breadcrumbs':breadcrumbs},
-                                    context_instance=RequestContext(request))
-
-        return HttpResponse('result')
-
-
 
 def activity(request,uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
+
+        #NAVIGATION REQUEST:
 
         # First, the requested_activity  exists??
         # Gets the Learning Activity object from uri
