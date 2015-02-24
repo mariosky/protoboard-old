@@ -76,6 +76,7 @@ def activity(request,uri):
         requested_activity = _get_ula(request)
         if request.method == 'GET':
 
+            # The requested_activity was NOT FOUND
             if not requested_activity : # The requested_activity was not found
             # Maybe a
             # 'start' REQUEST?
@@ -87,7 +88,7 @@ def activity(request,uri):
                     #If is not a root learning activity then sorry, not found
                     else:
                         return HttpResponseNotFound('<h1>Activity not found</h1>')
-            else:
+            #Else NOT FOUND
                 return HttpResponseNotFound('<h1>Activity not found</h1>')
 
             # We have a valid requested_activity, lets handle OTHER NAVIGATION REQUEST
