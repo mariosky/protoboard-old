@@ -67,14 +67,16 @@ def welcome(request):
 def activity(request,uri):
 
     learning_activity = _get_learning_activity(request)
+    root=None
     if learning_activity is None:
         return HttpResponseNotFound('<h1>Learning Activity not found</h1>')
 
 
     if request.user.is_authenticated():
         s = SimpleSequencing()
-        requested_activity = _get_ula(request)
+        requested_activity = None
         if request.method == 'GET':
+            requested_activity = _get_ula(request)
 
             # The requested_activity was NOT FOUND
             if not requested_activity : # The requested_activity was not found
@@ -110,8 +112,15 @@ def activity(request,uri):
                 _set_current(request,requested_activity, root, s)
 
         if request.method == 'POST' and 'nav_event' in request.POST:
+            #Get root of activity tree
+            root = _get_ula(request)
+            if not root or not root.is_root():
+                return HttpResponseNotFound('<h1>Activity not found</h1>')
 
-            if requested_activity.learning_activity.is_container:
+            current_activity = s.get_current(root)
+
+
+            if current_activity.learning_activity.is_container:
                 progress_status = None
                 objective_status = None
             else:
@@ -124,12 +133,12 @@ def activity(request,uri):
 
             if request.POST['nav_event'] == 'next':
                 # Go TO NEXT ACTIVITY
-                s.exit( requested_activity, progress_status = progress_status, objective_status = objective_status)
-                next_uri = s.get_next(root, requested_activity)
+                s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
+                next_uri = s.get_next(root, current_activity)
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
-                s.exit( requested_activity, progress_status = progress_status, objective_status = objective_status)
-                next_uri = s.get_prev(root, requested_activity)
+                s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
+                next_uri = s.get_prev(root, current_activity)
 
             if next_uri is None:
                     #No more activities ?
@@ -163,7 +172,8 @@ def activity(request,uri):
                                   {'navegation': navegation_tree,
                                    'uri':requested_activity.learning_activity.uri,
                                    'video':content,
-                                   'breadcrumbs':breadcrumbs},
+                                   'breadcrumbs':breadcrumbs,
+                                   'root':requested_activity.learning_activity.root.uri},
                                     context_instance=RequestContext(request))
 
         elif requested_activity.learning_activity.is_container:
@@ -173,8 +183,9 @@ def activity(request,uri):
                                   {'navegation': navegation_tree,
                                    'XML_NAV':XML,
                                    'children': requested_activity.get_children(),
-                                   'uri':requested_activity.learning_activity.uri,
+                                   'uri':requested_activity.learning_activity.root.uri,
                                    'content':content,
+                                    'root':requested_activity.learning_activity.root.uri,
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
         else:
@@ -182,6 +193,7 @@ def activity(request,uri):
 
                                   {'navegation': navegation_tree,
                                    'uri':requested_activity.learning_activity.uri,
+                                   'root':requested_activity.learning_activity.root.uri,
                                    'content':content,
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
@@ -208,7 +220,7 @@ def activity(request,uri):
                                   {'navegation': None,
                                    'uri':la.uri,
                                    'video':content,
-                                   'breadcrumbs':None},
+                                   'breadcrumbs':None },
                                     context_instance=RequestContext(request))
 
         elif la.is_container:
