@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include, url
 #admin.autodiscover()
 
 
-from activitytree.views import ActivityView
+
 
 
 urlpatterns = patterns('',
@@ -12,7 +12,6 @@ urlpatterns = patterns('',
       (r'^$','activitytree.views.welcome'),
       (r'^welcome/$','activitytree.views.welcome'),
       (r'^activity/(?P<uri>\w+)$','activitytree.views.activity'),
-#      (r'^activity/(?P<uri>\w+)$',ActivityView.as_view()),
       (r'^activity/video/(?P<uri>\w+)$','activitytree.views.activity'),
       (r'^test/(?P<uri>\w+)$','activitytree.views.test'),
       (r'^survey/(?P<uri>\w+)$','activitytree.views.survey'),
