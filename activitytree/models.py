@@ -369,6 +369,7 @@ class FacebookSession(models.Model):
 
 
 
+
 class LearningActivityRating(models.Model):
     user = models.ForeignKey(User)
     learning_activity = models.ForeignKey(LearningActivity)
