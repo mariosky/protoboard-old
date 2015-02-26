@@ -88,6 +88,8 @@ class LearningActivity(models.Model):
         return self.name
         
 
+
+
 from decimal import Decimal
 class UserLearningActivity(models.Model):
     user = models.ForeignKey(User)
@@ -373,9 +375,7 @@ class LearningActivityRating(models.Model):
     time=models.DateTimeField(auto_now=True)
     rating = models.PositiveSmallIntegerField()
     context = models.PositiveSmallIntegerField()
-            
-            
-            
+
             
             
             
