@@ -85,7 +85,7 @@ def activity(request,uri):
                     if learning_activity and learning_activity.root is None:
                         s.assignActivityTree(request.user,learning_activity)
                         requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
-                        _set_current(request,requested_activity, learning_activity)
+                        _set_current(request,requested_activity, learning_activity,s)
                     #If is not a root learning activity then sorry, not found
                     else:
                         return HttpResponseNotFound('<h1>Activity not found</h1>')
@@ -104,7 +104,7 @@ def activity(request,uri):
                     requested_activity = current_activity
                     return HttpResponseRedirect( requested_activity.learning_activity.uri)
                 else:
-                    _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
+                    _set_current(request,requested_activity, root, s)
             #Else is a
             # 'choice' REQUEST
             else:
