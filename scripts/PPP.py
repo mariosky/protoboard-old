@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
 
 
-from activitytree.models import LearningStyleInventory, LearningActivity, Course, UserLearningActivity,Root, Cluster
+from activitytree.models import LearningStyleInventory, LearningActivity, Course, UserLearningActivity,RootActivity, ClusterActivity
 from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
 
