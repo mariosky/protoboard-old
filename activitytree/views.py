@@ -23,7 +23,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 
 
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULAEvent,  FacebookSession
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
@@ -85,7 +85,7 @@ def activity(request,uri):
                     if learning_activity and learning_activity.root is None:
                         s.assignActivityTree(request.user,learning_activity)
                         requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
-                        _set_current(request,requested_activity, learning_activity,s)
+                        _set_current(request,requested_activity, learning_activity)
                     #If is not a root learning activity then sorry, not found
                     else:
                         return HttpResponseNotFound('<h1>Activity not found</h1>')
@@ -104,7 +104,7 @@ def activity(request,uri):
                     requested_activity = current_activity
                     return HttpResponseRedirect( requested_activity.learning_activity.uri)
                 else:
-                    _set_current(request,requested_activity, root, s)
+                    _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
             #Else is a
             # 'choice' REQUEST
             else:
@@ -328,7 +328,7 @@ def survey(request, uri, objective_status = None):
 
                 feedback = _check_survey(request.POST, activities[requested_activity.learning_activity.uri])
 
-                event = ULAEvent.objects.create(ULA=requested_activity,context=feedback)
+                event = ULA_Event.objects.create(ULA=requested_activity,context=feedback)
                 event.save()
 
 
@@ -444,7 +444,7 @@ def execute_queue(request):
             s = SimpleSequencing()
             s.update(ula)
             ## Mouse Dynamics
-            event = ULAEvent.objects.create(ULA=ula,context=rpc)
+            event = ULA_Event.objects.create(ULA=ula,context=rpc)
             event.save()
 
         rpc['task_id']=task_id
