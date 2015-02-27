@@ -3,7 +3,7 @@
 {% block content %}
 
 
-    <form id="learning_activity_form"    role="form"  action="{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+    <form id="learning_activity_form"    role="form"  action="{{ root }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
 
     {{ content.intro|safe }}

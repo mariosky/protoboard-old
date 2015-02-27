@@ -41,11 +41,7 @@ class LearningActivity(models.Model):
     pre_condition_rule  = models.TextField(blank=True)
     post_condition_rule = models.TextField(blank=True)
     
-    flow = models.BooleanField(default=True)
-    forward_only = models.BooleanField(default=False)
-    choice = models.BooleanField(default=True)
-    choice_exit = models.BooleanField(default=True)
-    
+
     match_rule = models.TextField(blank=True)
     filter_rule = models.TextField(blank=True)
     rollup_rule  = models.TextField(blank=True)
@@ -86,7 +82,10 @@ class LearningActivity(models.Model):
         
     def __unicode__(self):
         return self.name
-        
+
+
+
+
 
 
 

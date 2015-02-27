@@ -296,7 +296,8 @@ def test(request, uri, objective_status = None):
                                    'uri':requested_activity.learning_activity.uri,
                                    'content':content,
                                    'feedback':feedback,
-                                   'breadcrumbs':breadcrumbs},
+                                   'breadcrumbs':breadcrumbs,
+                                    'root':root},
                                     context_instance=RequestContext(request))
     else:
 
@@ -364,7 +365,8 @@ def survey(request, uri, objective_status = None):
                                    'uri':requested_activity.learning_activity.uri,
                                    'content':content,
                                    'feedback':feedback,
-                                   'breadcrumbs':breadcrumbs},
+                                   'breadcrumbs':breadcrumbs,
+                                   'root':root},
                                     context_instance=RequestContext(request))
     else:      
         return HttpResponseRedirect('/login/?next=%s' % request.path)
