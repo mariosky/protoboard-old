@@ -93,7 +93,7 @@ class ClusterActivity(LearningActivity):
     choice = models.BooleanField(default=True)
     view_style = models.CharField(max_length=2, choices=VIEW_STYLE_CHOICES)
 
-class RootActivity(LearningActivity):
+class RootActivity(ClusterActivity):
     short_description = models.TextField()
     long_description = models.TextField()
     big_image = models.ImageField(upload_to='courses', blank=True)
