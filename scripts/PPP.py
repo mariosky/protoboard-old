@@ -27,7 +27,7 @@ from activitytree.interaction_handler import SimpleSequencing
 LearningActivity.objects.all().delete()
 
 
-PPP = Root( name = 'Python Básico', slug = 'PB',
+PPP = RootActivity( name = 'Python Básico', slug = 'PB',
     uri = "/activity/PB",
     heading="Python Básico",
     secondary_text = "Tutorial",
@@ -95,7 +95,7 @@ else:
 pretest.save()
 
 
-intro = Cluster( name = 'Introduccion', slug = 'Intro',
+intro = ClusterActivity( name = 'Introduccion', slug = 'Intro',
     uri = "/activity/introduccion",
 #   lom =
     parent = PPP, root  = PPP,
@@ -123,7 +123,7 @@ intro = Cluster( name = 'Introduccion', slug = 'Intro',
 intro.save()
 
 
-secuencias = Cluster( name = 'Secuencias', slug = 'Intro',
+secuencias = ClusterActivity( name = 'Secuencias', slug = 'Intro',
     uri = "/activity/secuencias",
 #   lom =
     image = "https://s3.amazonaws.com/learning-python/sequence.jpg",
@@ -219,7 +219,7 @@ tema_3 = LearningActivity( name = 'Como hacer los ejercicios', slug = 'Ejemplo',
 tema_3.save()
 
 
-EjerciciosIntro = Cluster( name = 'Ejercicios', slug = 'Ejercicios',
+EjerciciosIntro = ClusterActivity( name = 'Ejercicios', slug = 'Ejercicios',
     uri = "/activity/EjerciciosIntro",
     parent = intro,
     root   = PPP,
@@ -368,7 +368,7 @@ secuencias_1 = LearningActivity( name = 'Video', slug = 'Intro',
     )
 secuencias_1.save()
 
-EjerciciosSec = Cluster( name = 'Ejercicios', slug = 'Ejercicios',
+EjerciciosSec = ClusterActivity( name = 'Ejercicios', slug = 'Ejercicios',
     uri = "/activity/EjerciciosSec",
     parent = secuencias,
     root   = PPP,
