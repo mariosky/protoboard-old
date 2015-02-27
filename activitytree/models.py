@@ -83,7 +83,7 @@ class LearningActivity(models.Model):
     def __unicode__(self):
         return self.name
         
-class Cluster(LearningActivity):
+class ClusterActivity(LearningActivity):
     VIEW_STYLE_CHOICES = (
     ('GR', 'Grid'),
     ('LI', 'List'),
@@ -93,7 +93,7 @@ class Cluster(LearningActivity):
     choice = models.BooleanField(default=True)
     view_style = models.CharField(max_length=2, choices=VIEW_STYLE_CHOICES)
 
-class Root(LearningActivity):
+class RootActivity(LearningActivity):
     short_description = models.TextField()
     long_description = models.TextField()
     big_image = models.ImageField(upload_to='courses', blank=True)
