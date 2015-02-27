@@ -23,7 +23,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 
 
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,  FacebookSession
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULAEvent,  FacebookSession
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
@@ -328,7 +328,7 @@ def survey(request, uri, objective_status = None):
 
                 feedback = _check_survey(request.POST, activities[requested_activity.learning_activity.uri])
 
-                event = ULA_Event.objects.create(ULA=requested_activity,context=feedback)
+                event = ULAEvent.objects.create(ULA=requested_activity,context=feedback)
                 event.save()
 
 
@@ -444,7 +444,7 @@ def execute_queue(request):
             s = SimpleSequencing()
             s.update(ula)
             ## Mouse Dynamics
-            event = ULA_Event.objects.create(ULA=ula,context=rpc)
+            event = ULAEvent.objects.create(ULA=ula,context=rpc)
             event.save()
 
         rpc['task_id']=task_id

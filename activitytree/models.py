@@ -317,7 +317,7 @@ class ActivityTree(models.Model):
 #
 # Se puede cambiar a CouchDB, MongoDB, Redis, etc.
 #
-class ULA_Event(models.Model):
+class ULAEvent(models.Model):
     ULA = models.ForeignKey(UserLearningActivity)
     time_stamp = models.TimeField(auto_now=True)
     context = models.TextField()
