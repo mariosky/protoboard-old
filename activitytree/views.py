@@ -23,7 +23,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 
 
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,  FacebookSession
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.activities import activities
 
