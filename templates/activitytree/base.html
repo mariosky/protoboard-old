@@ -448,7 +448,7 @@ background-position: left top;
 
             $( ".nav_next" ).bind( "click", function( event ) {
 
-                   var form =  $("#learning_activity_form");
+                   var form =  $("#nav_form");
                    form.append( $('<input>').attr({ type: 'hidden',
                                                     name: 'nav_event',
                                                     value:'next'
@@ -461,7 +461,7 @@ background-position: left top;
              });
 
             $( ".nav_prev" ).bind( "click", function( event ) {
-                   var form =  $("#learning_activity_form");
+                   var form =  $("#nav_form");
                    form.append( $('<input>').attr({ type: 'hidden',
                                                     name: 'nav_event',
                                                     value:'prev'

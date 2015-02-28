@@ -3,7 +3,7 @@
 {% block content %}
 
 
-    <form id="learning_activity_form"    role="form"  action="{{ root }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+    <form id="learning_activity_form"    role="form"  action="{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
 <input type="hidden" name="number_questions" id="number_questions" value="{{ content.questions|length }}" />
  {% if feedback %}
@@ -86,10 +86,7 @@
 
 
 
-        <ul class="pager">
-                     <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
-                    <li class="next"><span class="nav_next">  Continuar &rarr;</span></li>
-        </ul>
+
 
 
     {% else %}
@@ -102,6 +99,14 @@
 
 
 	</form>
+
+<form id="nav_form"    role="form"  action="{{ root }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+
+     <ul class="pager">
+                     <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
+                    <li class="next"><span class="nav_next">  Continuar &rarr;</span></li>
+        </ul>
+</form>
 
 {% endblock content %}
 
