@@ -66,12 +66,13 @@ def welcome(request):
 
 def activity(request,uri):
     learning_activity = _get_learning_activity(request)
-    root=None
+
     if learning_activity is None:
         return HttpResponseNotFound('<h1>Learning Activity not found</h1>')
 
 
     if request.user.is_authenticated():
+        root=None
         s = SimpleSequencing()
         requested_activity = None
         if request.method == 'GET':
