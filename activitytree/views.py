@@ -65,34 +65,36 @@ def welcome(request):
 
 def dashboard(request,uri):
     if request.user.is_authenticated():
-        s = SimpleSequencing()
-        # First, the requested_activity  exists??
-        # Gets the Learning Activity object from uri
-        requested_activity = _get_ula('/%s'%(uri))
-
-        if not requested_activity:
-            return HttpResponseNotFound('<h1>Activity not found</h1>')
-
-        # Gets the root of the User Learning Activity
-        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
-
         if request.method == 'GET':
-            # Exits last activity, and sets requested activity as current
-            # if choice_exit consider complete
-            _set_current(request,requested_activity, root, s)
 
-        # Gets the current navegation tree as HTML
-        nav = s.get_nav(root)
-        navegation_tree = s.nav_to_html(nav)
-        breadcrumbs = s.get_current_path(requested_activity)
+            s = SimpleSequencing()
+            requested_uri= '/%s'%(uri)
+            # First, the requested_activity  exists??
+            # Gets the Learning Activity object from uri
+            requested_activity = _get_ula(requested_uri)
 
-        return render_to_response('activitytree/dashboard.html', {'program_quiz':activities[requested_activity.learning_activity.uri],
-                                                                'activity_uri':requested_activity.learning_activity.uri,
-                                                                'navegation': navegation_tree,
-                                                                'breadcrumbs':breadcrumbs,
-                                                                'root':requested_activity.learning_activity.get_root().uri
-                                                                },
-                                  context_instance=RequestContext(request))
+            if not requested_activity:
+                return HttpResponseNotFound('<h1>Activity not found</h1>')
+
+            # Gets the root of the User Learning Activity
+            root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
+
+                # Exits last activity, and sets requested activity as current
+                # if choice_exit consider complete
+
+
+            # Gets the current navegation tree as HTML
+            nav = s.get_nav(root)
+            navegation_tree = s.nav_to_html(nav)
+            breadcrumbs = s.get_current_path(requested_activity)
+
+            return render_to_response('activitytree/dashboard.html', {'program_quiz':activities[requested_activity.learning_activity.uri],
+                                                                    'activity_uri':requested_activity.learning_activity.uri,
+                                                                    'navegation': navegation_tree,
+                                                                    'breadcrumbs':breadcrumbs,
+                                                                    'root':requested_activity.learning_activity.get_root().uri
+                                                                    },
+                                      context_instance=RequestContext(request))
 
 
 
