@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     # Example:
       (r'^$','activitytree.views.welcome'),
       (r'^welcome/$','activitytree.views.welcome'),
+      (r'^dashboard/(?P<uri>\w+)$','activitytree.views.dashboard'),
+
       (r'^activity/(?P<uri>\w+)$','activitytree.views.activity'),
       (r'^activity/video/(?P<uri>\w+)$','activitytree.views.activity'),
       (r'^test/(?P<uri>\w+)$','activitytree.views.test'),

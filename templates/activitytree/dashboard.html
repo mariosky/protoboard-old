@@ -1,0 +1,187 @@
+{% extends "activitytree/base.html" %}
+
+
+
+{% block content %}
+
+
+<div class="row">
+<div class="col-md-4">
+
+    <div class="panel panel-info">
+        <div class="panel-heading"><h3 class="panel-title"> Mi Avance </h3></div>
+
+        <div id="progress" class="list-group">
+
+
+
+
+        </div>
+
+
+
+  </div>
+
+
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script id="container_template" type="x-tmpl-mustache">
+ <a href="[[uri]]" class="list-group-item ">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="list-group-item-text"><i class="fa [[icon]]"></i>
+                         [[heading]]
+                         </p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="progress [[progress_type]]">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="[[progress]]" aria-valuemin="0"
+                                 aria-valuemax="100" style="width: [[progress]]%;">[[progress]]%
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </a>
+
+</script>
+
+
+
+<script type="text/javascript" charset="utf-8">
+
+
+    function get_icon(uri_string)
+    {
+
+        if (uri_string.lastIndexOf("/test/", 0) === 0)
+            return {icon:"fa fa-pencil",activity_type: "Quiz"} ;
+        else if (uri_string.lastIndexOf("/survey/", 0) === 0)
+            return {icon:"fa fa-pencil-square-o",activity_type: "Encuesta"} ;
+        else if (uri_string.lastIndexOf("/activity/video/", 0) === 0)
+            return {icon:"fa fa-video-camera",activity_type: "Video"} ;
+        else if (uri_string.lastIndexOf("/activity/", 0) === 0)
+            return {icon:"fa fa-book",activity_type: "Lectura"} ;
+        else if (uri_string.lastIndexOf("/program/", 0) === 0)
+            return {icon:"fa fa-coffee",activity_type: "Ejercicio en Consola"} ;
+
+    }
+
+    function get_children_activities( element)
+    {
+        var children = [];
+        $(element).children().each(function (index) {
+
+            var uri_string = this.getAttribute("uri");
+            var icon = get_icon(uri_string);
+            if (this.getAttribute("objective_status")=="satisfied")
+                {
+                    icon.icon = "fa fa-check"
+                }
+            children[children.length] =  {
+                heading: this.getAttribute("heading"),
+                uri:uri_string,
+                icon:icon.icon,
+                disabled:(this.getAttribute("pre_condition")=="disabled"),
+                objective_status:(this.getAttribute("objective_status")=="satisfied")
+            };
+
+        });
+
+        return children;
+    }
+
+    $( document ).ready(function() {
+
+        Mustache.tags = ['[[', ']]'];
+
+        XML_NAV = "{{XML_NAV|safe}}";
+        xmlDoc= $.parseXML(XML_NAV);
+        $xml = $(xmlDoc)
+        $current = $xml.find("item[is_current|='True']");
+        if ($current[0].getAttribute("is_container")=="True") {
+            var container_template = $('#container_template').html();
+            var activity_template = $('#activity_template').html();
+            var disabled_activity_template = $('#disabled_activity_template').html();
+            var disabled_container_template = $('#disabled_activity_template').html();
+            Mustache.parse(container_template);   // optional, speeds up future uses
+            Mustache.parse(activity_template);   // optional, speeds up future uses
+
+            $current.children().each(function (index) {
+                var rendered = "";
+                var uri_string = this.getAttribute("uri");
+                var recommended_value = this.getAttribute("recomended_value");
+                if (recommended_value == "None" || recommended_value == "0" )
+                    recommended_value = 0;
+
+                var template;
+
+                if (this.getAttribute("is_container") == "True")
+                {
+
+                     if (this.getAttribute("pre_condition")=="disabled")
+                       template = disabled_container_template;
+                     else
+                       template = container_template;
+
+                    rendered = Mustache.render(template, {name: this.getAttribute("heading"),
+                        uri: uri_string,
+                        icon: "fa fa-folder-open",
+                        image: this.getAttribute("image"),
+                        description: this.getAttribute("description"),
+                        activity_type: this.getAttribute("secondary_text"),
+                        id: this.getAttribute("activity"),
+                        rating: recommended_value,
+                        children_activities:get_children_activities(this),
+                        objective_status:(this.getAttribute("objective_status")=="satisfied")
+
+                    });
+                }
+
+
+                else
+                {
+                     var activity_type = get_icon(uri_string);
+
+                     if (this.getAttribute("pre_condition")=="disabled")
+                       template = disabled_container_template;
+                     else
+                       template = container_template;
+
+                    rendered = Mustache.render(template, {name: this.getAttribute("heading"),
+                             uri: uri_string,
+                             icon: activity_type.icon,
+                             image: this.getAttribute("image"),
+                             description: this.getAttribute("description"),
+                             activity_type: activity_type.activity_type,
+                             id: this.getAttribute("activity"),
+                             rating: recommended_value,
+                             objective_status:(this.getAttribute("objective_status")=="satisfied")
+                         });
+
+
+                }
+
+                $("#navlist").append(rendered);
+                if (recommended_value) {
+                    $('#rating-' + this.getAttribute("activity")).raty({
+                        path: '{{MEDIA_URL}}images',
+                        score: recommended_value,
+                        readOnly: true
+                    });
+                }
+
+
+            });
+
+        }
+
+    });
+
+</script>
+
+{% endblock scripts %}
