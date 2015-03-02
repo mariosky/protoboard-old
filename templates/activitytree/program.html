@@ -225,16 +225,17 @@ $(document).ready(function() {
     </script>
 
  <script type="text/javascript" charset="utf-8">
+     /*
         $( document ).ready(function() {
 	  $( ".nav_next" ).unbind( "click");
 	  $( ".nav_prev" ).unbind( "click");
           $( ".nav_next" ).bind( "click", function( event ) {
 	    var kmdynamics = JSON.stringify({"keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse});
                    var form =  $("#learning_activity_form");
-                   form.append( $('<input>').attr({ type: 'hidden',
-                                                    name: 'nav_event',
-                                                    value:'next'
-                                                  }));
+                  // form.append( $('<input>').attr({ type: 'hidden',
+                  //                                  name: 'nav_event',
+                  //                                  value:'next'
+                  //                                }));
 	           //Keyboard & Mouse Dynamics
 	           form.append( $('<input>').attr({ type: 'hidden',
 	                                            name: 'kmdynamics',
@@ -249,10 +250,10 @@ $(document).ready(function() {
             $( ".nav_prev" ).bind( "click", function( event ) {
 	      var kmdynamics = JSON.stringify({"keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse});
                    var form =  $("#learning_activity_form");
-                   form.append( $('<input>').attr({ type: 'hidden',
-                                                    name: 'nav_event',
-                                                    value:'prev'
-                                                  }));
+               //    form.append( $('<input>').attr({ type: 'hidden',
+               //                                     name: 'nav_event',
+               //                                     value:'prev'
+               //                                   }));
 	           //Keyboard & Mouse Dynamics
 	           form.append( $('<input>').attr({ type: 'hidden',
 	                                            name: 'kmdynamics',
@@ -262,7 +263,9 @@ $(document).ready(function() {
 
             });
         });
+         */
 </script>
+
 
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
