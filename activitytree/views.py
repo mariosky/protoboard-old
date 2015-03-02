@@ -68,10 +68,10 @@ def dashboard(request,uri):
         if request.method == 'GET':
 
             s = SimpleSequencing()
-            requested_uri= '/%s'%(uri)
+            request.path= '/%s'%(uri)
             # First, the requested_activity  exists??
             # Gets the Learning Activity object from uri
-            requested_activity = _get_ula(requested_uri)
+            requested_activity = _get_ula(request)
 
             if not requested_activity:
                 return HttpResponseNotFound('<h1>Activity not found</h1>')
