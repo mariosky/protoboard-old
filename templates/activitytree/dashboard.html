@@ -80,6 +80,22 @@
         return children;
     }
 
+    function get_percentage(element)
+       {
+           var percentage = 0.0;
+           if (element.getAttribute("objective_status")=="satisfied")
+           {
+               percentage = 100.00
+           }
+           else {
+
+               var d = $(element).find("item[objective_status~='satisfied']").length/ $(element).find("item").length;
+               percentage = Math.round(d*100);
+
+           }
+           return percentage;
+       }
+
     $( document ).ready(function() {
 
         Mustache.tags = ['[[', ']]'];
@@ -111,11 +127,13 @@
                      {
                        icon  = "fa fa-folder-open";
                      }
+
                     rendered = Mustache.render(progress_template, {
                         heading: this.getAttribute("heading"),
                         uri: this.getAttribute("uri"),
                         icon: icon,
-                        item_class:item_class
+                        item_class:item_class,
+                        percentage:get_percentage(this)
 
 
                     });
