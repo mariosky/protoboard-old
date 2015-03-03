@@ -113,6 +113,7 @@
                 var uri_string = this.getAttribute("uri");
                 var icon;
                 var item_class;
+                var progress_type="";
 
                 //Only top-level containers
                 if (this.getAttribute("is_container") == "True")
@@ -127,13 +128,24 @@
                      {
                        icon  = "fa fa-folder-open";
                      }
+                    var percentage = get_percentage(this);
+                    if (percentage > 90)
+                    {
+                        progress_type="progress-bar-success";
+                    }
+                    else if (percentage <= 20){
+                        progress_type="progress-bar-danger";
+                    }
+
+
 
                     rendered = Mustache.render(progress_template, {
                         heading: this.getAttribute("heading"),
                         uri: this.getAttribute("uri"),
                         icon: icon,
                         item_class:item_class,
-                        progress:get_percentage(this)
+                        progress:percentage,
+                        progress_type:progress_type
 
 
                     });
