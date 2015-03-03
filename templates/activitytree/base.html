@@ -361,7 +361,7 @@ background-position: left top;
           <ul class="nav navbar-nav navbar-right">
 
             {% if user.is_authenticated %}
-            <li><a href="/dashboard/{{root}}">Dashboard</a></li>
+            <li><a href="/dashboard{{root}}">Dashboard</a></li>
             <li><a href="#"> {{ user.first_name }} {{ user.last_name }}</a></li>
             <li><a class="navbar-user" href="#"><img src="http://graph.facebook.com/{{user.email}}/picture?type=square"/>  </a></li>
             <li><a href="/logout">Log out</a></li>
