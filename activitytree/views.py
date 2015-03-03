@@ -85,14 +85,15 @@ def dashboard(request,uri):
 
             # Gets the current navegation tree as HTML
             nav = s.get_nav(root)
-            navegation_tree = s.nav_to_html(nav)
-            breadcrumbs = s.get_current_path(requested_activity)
+            XML_ = s.nav_to_xml(root=nav)
+            #Escape for javascript
+            XML=XML_.replace('"', r'\"')
 
-            return render_to_response('activitytree/dashboard.html', {'program_quiz':activities[requested_activity.learning_activity.uri],
-                                                                    'activity_uri':requested_activity.learning_activity.uri,
-                                                                    'navegation': navegation_tree,
-                                                                    'breadcrumbs':breadcrumbs,
-                                                                    'root':requested_activity.learning_activity.get_root().uri
+            return render_to_response('activitytree/dashboard.html', {'XML_NAV':XML,
+                                   'children': requested_activity.get_children(),
+                                   'uri':requested_activity.learning_activity.uri,
+                                   'root':requested_activity.learning_activity.get_root().uri,
+                                    'root':requested_activity.learning_activity.get_root().uri
                                                                     },
                                       context_instance=RequestContext(request))
 
