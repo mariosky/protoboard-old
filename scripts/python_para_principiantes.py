@@ -76,7 +76,7 @@ pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
 if self.objective_status == 'notSatisfied' :
     self.pre_condition = 'stopForwardTraversal'
 else:
-    self.pre_condition = 'skip'
+    self.pre_condition = 'hidden'
 """,
 
     post_condition_rule = "",
