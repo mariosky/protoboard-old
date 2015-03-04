@@ -302,11 +302,11 @@ def test(request, uri, objective_status = None):
 
         elif request.method == 'POST':
             if 'check' in request.POST:
+                quiz = activities[requested_activity.learning_activity.uri]
 
-                feedback = _check_quiz(request.POST, activities[requested_activity.learning_activity.uri])
-                print feedback
+                feedback = _check_quiz(request.POST, quiz)
                 # Updates the current Learning Activity
-                objective_measure = feedback['total_correct']
+                objective_measure = float(feedback['total_correct'])/float(quiz['questions'])
                 if objective_measure >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
                     objective_status='satisfied'
                 else:

@@ -1106,7 +1106,6 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
                                 "Agentes"],
                     'answer': [0,1,0,0],
                     }
-
                     ],
     'intro':"""<h3>Evaluación Final</h3>
     <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
