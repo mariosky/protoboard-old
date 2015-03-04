@@ -150,7 +150,7 @@
                      [[/objective_status]]
                          <div class="col-md-4">
                               <i class="fa fa-puzzle-piece fa-2x"></i><br/>
-                             <small>0/15</small>
+                             <small>[[objective_measure]]</small>
                          </div>
                      </div>
 			</div>
@@ -293,7 +293,9 @@
                              id: this.getAttribute("activity"),
                              rating: recommended_value,
                              num_attempts:this.getAttribute("num_attempts"),
-                             objective_status:(this.getAttribute("objective_status")=="satisfied")
+                             objective_status:(this.getAttribute("objective_status")=="satisfied"),
+                             objective_measure:this.getAttribute("objective_measure")
+
                          });
 
 
