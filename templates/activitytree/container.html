@@ -146,18 +146,21 @@
                          </div>
                      [[/objective_status]]
 
+                     [[#show_attempts]]
                         <div class="col-md-4 text-center">
                               <span class="h3">[[num_attempts]]</span>
                               <br/>
 
                              <small>INTENTOS</small>
                          </div>
-
+                     [[/show_attempts]]
+                      [[#show_objective_measure]]
                          <div class="col-md-4 text-center">
                               <span class="h3">[[objective_measure]]</span>
 
                              <small>CALIFICACIÓN</small>
                          </div>
+                      [[/show_objective_measure]]
 
 
 
@@ -286,12 +289,21 @@
 
                 else
                 {
-                     var activity_type = get_icon(uri_string);
+                    var activity_type = get_icon(uri_string);
 
-                     if (this.getAttribute("pre_condition")=="disabled")
-                       template = disabled_activity_template;
-                     else
-                       template = activity_template;
+                    if (this.getAttribute("pre_condition")=="disabled")
+                      template = disabled_activity_template;
+                    else
+                      template = activity_template;
+
+
+                    var show_attempts = 1;
+
+                    var is_satisfied = this.getAttribute("objective_status")=="satisfied";
+                    var has_objective_measure = this.getAttribute("objective_measure")!="None";
+
+
+
 
                     rendered = Mustache.render(template, {name: this.getAttribute("heading"),
                              uri: uri_string,
@@ -302,8 +314,11 @@
                              id: this.getAttribute("activity"),
                              rating: recommended_value,
                              num_attempts:this.getAttribute("num_attempts"),
-                             objective_status:(this.getAttribute("objective_status")=="satisfied"),
-                             objective_measure:this.getAttribute("objective_measure")
+                             objective_status:is_satisfied,
+                             objective_measure:this.getAttribute("objective_measure"),
+                             show_objective_measure:has_objective_measure,
+                             show_attempts:show_attempts
+
 
                          });
 
