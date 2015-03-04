@@ -488,7 +488,7 @@ class SimpleSequencing(object):
 
 
     def nav_to_xml(self, node=None, s="", root=None):
-        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s" heading ="%s" secondary_text="%s" description="%s" image ="%s">'
+        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s" heading ="%s" secondary_text="%s" description="%s" image ="%s" num_attempts="%s" attempt_limit="%s">'
         single_tag_template = open_tag_template[:-1]+'/>'
         if node is None:
             node = root
@@ -496,7 +496,8 @@ class SimpleSequencing(object):
                 node.learning_activity.is_container, node.pre_condition,
                 node.recommendation_value,
                 node.objective_status, node.objective_measure,node.learning_activity.is_visible,
-                node.learning_activity.heading,node.learning_activity.secondary_text,node.learning_activity.description,node.learning_activity.image)
+                node.learning_activity.heading,node.learning_activity.secondary_text,node.learning_activity.description,node.learning_activity.image,
+                node.num_attempts,node.learning_activity.attempt_limit)
         if len(node.children) > 0:
 
             s += open_tag_template % vals
