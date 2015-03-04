@@ -312,7 +312,7 @@ def test(request, uri, objective_status = None):
                 else:
                     objective_status='notSatisfied'
 
-                s.update(requested_activity, progress_status = None, objective_status = objective_status, objective_measure = objective_measure)
+                s.update(requested_activity, objective_status = objective_status, objective_measure = objective_measure,attempt=True)
 
        # Gets the current navegation tree as HTML
 
@@ -379,7 +379,7 @@ def survey(request, uri, objective_status = None):
                 #else:
                 #    objective_status='notSatisfied'
 
-                s.update(requested_activity, progress_status = None, objective_status = objective_status, objective_measure = objective_measure)
+                s.update(requested_activity, objective_status = objective_status, objective_measure = objective_measure, attempt=True)
 
       # Gets the current navegation tree as HTML
 
@@ -513,12 +513,16 @@ def get_result(request):
             if t.result:
 
                 string_json = json.loads( t.result[0])
-                if string_json['result'] == 'Success':
-                    if request.user.is_authenticated():
-                        ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0], user=request.user)
 
-                        s = SimpleSequencing()
-                        s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=100)
+                if request.user.is_authenticated():
+                    ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0], user=request.user)
+                    s = SimpleSequencing()
+
+                    if string_json['result'] == 'Success':
+                        s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=100,attempt=True)
+
+                    else:
+                        s.update(ula,attempt=True)
                 result = json.dumps({'result':string_json, 'outcome': t.result[1]})
                 return HttpResponse(result , mimetype='application/javascript')
 

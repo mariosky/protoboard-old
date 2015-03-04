@@ -338,7 +338,7 @@ class SimpleSequencing(object):
 
 
 
-    def exit(self, ula, progress_status=None, objective_status=None, objective_measure=None, kmdynamics=None):
+    def exit(self, ula, progress_status=None, objective_status=None, objective_measure=None, kmdynamics=None, attempt=False):
 
         atree = ActivityTree.objects.get(user=ula.user, root_activity=ula.learning_activity.get_root())
 
@@ -357,12 +357,13 @@ class SimpleSequencing(object):
             if kmdynamics is not None:
                 ula.kmdynamics = kmdynamics
             ula.last_visited = datetime.datetime.now()
-            ula.num_attempts += 1
+            if attempt:
+                ula.num_attempts += 1
             ula.save()
             atree.save()
             ula.rollup_rules()
 
-    def update(self, ula, progress_status=None, objective_status=None, objective_measure=None):
+    def update(self, ula, progress_status=None, objective_status=None, objective_measure=None, attempt=False):
         if not ula.is_current:
             raise NotAllowed('Update', "Can only update a current activity")
         else:
@@ -373,7 +374,8 @@ class SimpleSequencing(object):
             if objective_measure is not None:
                 ula.objective_measure = objective_measure
             ula.last_visited = datetime.datetime.now()
-            ula.num_attempts += 1
+            if attempt:
+                ula.num_attempts += 1
             ula.save()
 
     def suspend(self, user, activity):
@@ -486,7 +488,7 @@ class SimpleSequencing(object):
 
 
     def nav_to_xml(self, node=None, s="", root=None):
-        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s" heading ="%s" secondary_text="%s" description="%s" image ="%s" num_attempts="%s" attempt_limit="%s">'
+        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s" heading ="%s" secondary_text="%s" description="%s" image ="%s">'
         single_tag_template = open_tag_template[:-1]+'/>'
         if node is None:
             node = root
@@ -494,8 +496,7 @@ class SimpleSequencing(object):
                 node.learning_activity.is_container, node.pre_condition,
                 node.recommendation_value,
                 node.objective_status, node.objective_measure,node.learning_activity.is_visible,
-                node.learning_activity.heading,node.learning_activity.secondary_text,node.learning_activity.description,node.learning_activity.image,
-                node.num_attempts,node.learning_activity.attempt_limit)
+                node.learning_activity.heading,node.learning_activity.secondary_text,node.learning_activity.description,node.learning_activity.image)
         if len(node.children) > 0:
 
             s += open_tag_template % vals
