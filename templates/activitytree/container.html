@@ -136,7 +136,7 @@
                      </div>
                          <ul class="list-group">
                             <li class="list-group-item">
-                            <span class="badge">0</span>
+                            <span class="badge">[[num_attempts]]</span>
                             Intentos:
                             </li>
                         </ul>
@@ -292,6 +292,7 @@
                              activity_type: activity_type.activity_type,
                              id: this.getAttribute("activity"),
                              rating: recommended_value,
+                             num_attempts:this.getAttribute("num_attempts"),
                              objective_status:(this.getAttribute("objective_status")=="satisfied")
                          });
 
