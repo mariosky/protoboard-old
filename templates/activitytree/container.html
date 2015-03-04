@@ -280,9 +280,9 @@
                      var activity_type = get_icon(uri_string);
 
                      if (this.getAttribute("pre_condition")=="disabled")
-                       template = disabled_container_template;
+                       template = disabled_activity_template;
                      else
-                       template = container_template;
+                       template = activity_template;
 
                     rendered = Mustache.render(template, {name: this.getAttribute("heading"),
                              uri: uri_string,
