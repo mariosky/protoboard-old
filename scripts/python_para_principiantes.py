@@ -63,11 +63,11 @@ cursoPPP = Course(short_description=description, root=PPP)
 cursoPPP.save()
 
 pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
-    uri = '/survey/EP',
+    uri = '/test/poo',
     parent = PPP, root  = PPP,
 
-    heading="¿Que experiencia tienes programando?",
-    description = "Antes de empezar, dinos algo sobre tu experiencia en programación.",
+    heading="¿Que tanto sabes POO?",
+    description = "Antes de empezar, dinos algo sobre tu experiencia en programación orientada a objetos.",
     image = "https://s3.amazonaws.com/learning-python/survey.jpg",
 
     choice_exit = False,
@@ -89,6 +89,7 @@ else:
     order_in_container = 0
     )
 pretest.save()
+
 
 
 intro = LearningActivity( name = 'Introduccion', slug = 'Intro',

@@ -1043,7 +1043,7 @@ el m&eacute;todo correcto a aplicar en funci&oacute;n del tipo de datos pasados 
                     },
 
 
-'/test/Posttest':{
+'/test/poo':{
     'questions':  [{'id': 1,
                     'interaction': 'simpleChoice',
                     'inline': 0,
