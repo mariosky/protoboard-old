@@ -382,24 +382,24 @@ background-position: left top;
 
     <div id="main_container" class="container-fluid">
 
-     <row>
+     <div class="row">
         <div class="col-md-10">
-     {%if breadcrumbs%}
-         <ol class="breadcrumb">
-            {% for l in breadcrumbs %}
-                {% if forloop.last %}
-                    <li class="active">{{l.name}}</li>
-                {%else%}
-                    <li><a href="{{ l.uri }}">{{l.name}}</a></li>
+            {%if breadcrumbs%}
+                 <ol class="breadcrumb">
+                    {% for l in breadcrumbs %}
+                        {% if forloop.last %}
+                            <li class="active">{{l.name}}</li>
+                        {%else%}
+                            <li><a href="{{ l.uri }}">{{l.name}}</a></li>
 
-                {% endif%}
-            {% endfor%}
-       </ol>
-     {%endif%}
-      </div>
-          <div id="user_points" class="col-md-2">
-          </div>
-     </row>
+                        {% endif%}
+                    {% endfor%}
+                </ol>
+            {%endif%}
+        </div>
+        <div id="user_points" class="col-md-2">
+        </div>
+     </div>
 
 
             {% block content %}
