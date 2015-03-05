@@ -382,7 +382,6 @@ background-position: left top;
       </div>
     </nav>
 
-    {{navegation|safe}}
 
 
 
@@ -457,10 +456,6 @@ background-position: left top;
 
             alert('PUNTOS:'  + puntos_totales);
 
-            $("nav#nav_menu").mmenu({
-                classes: "mm-light",
-                header: true
-            });
 
 
             $( ".nav_next" ).bind( "click", function( event ) {
@@ -492,8 +487,7 @@ background-position: left top;
         });
 
 
-            $('#signout').on('click', function(event) {
-    gapi.auth.signOut();
+
 });
 
 
