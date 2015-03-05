@@ -255,9 +255,9 @@
         Mustache.tags = ['[[', ']]'];
 
         //XML_NAV = "{{XML_NAV|safe}}";
-        xmlDoc= $.parseXML(XML_NAV);
-        $xml = $(xmlDoc)
-        $current = $xml.find("item[is_current|='True']");
+        //xmlDoc= $.parseXML(XML_NAV);
+        //$xml = $(xmlDoc)
+        var $current = $xml.find("item[is_current|='True']");
         if ($current[0].getAttribute("is_container")=="True") {
             var container_template = $('#container_template').html();
             var activity_template = $('#activity_template').html();

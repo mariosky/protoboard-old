@@ -438,6 +438,8 @@ background-position: left top;
   <script type="text/javascript" charset="utf-8">
 
         XML_NAV = "{{XML_NAV|safe}}";
+        xmlDoc= $.parseXML(XML_NAV);
+        $xml = $(xmlDoc)
 
         $( document ).ready(function() {
 
