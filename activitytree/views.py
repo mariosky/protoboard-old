@@ -83,7 +83,6 @@ def dashboard(request,uri):
                 # if choice_exit consider complete
 
 
-            # Gets the current navegation tree as HTML
             nav = s.get_nav(root)
             XML_ = s.nav_to_xml(root=nav)
             #Escape for javascript
@@ -188,12 +187,12 @@ def activity(request,uri):
                 return HttpResponseRedirect(next_activity.learning_activity.uri)
 
 
-        # Gets the current navegation tree as HTML
+
         nav = s.get_nav(root)
         XML_ = s.nav_to_xml(root=nav)
         #Escape for javascript
         XML=XML_.replace('"', r'\"')
-        navegation_tree = s.nav_to_html(nav)
+        #navegation_tree = s.nav_to_html(nav)
 
         breadcrumbs = s.get_current_path(requested_activity)
 
@@ -209,7 +208,7 @@ def activity(request,uri):
             print "VIDEO",(requested_activity.learning_activity.uri).split('/')[2]
             return render_to_response('activitytree/video.html',
 
-                                  {'navegation': navegation_tree,
+                                  {
                                    'uri':requested_activity.learning_activity.uri,
                                    'video':content,
                                    'breadcrumbs':breadcrumbs,
@@ -220,7 +219,7 @@ def activity(request,uri):
 
             return render_to_response('activitytree/container.html',
 
-                                  {'navegation': navegation_tree,
+                                  {
                                    'XML_NAV':XML,
                                    'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.uri,
@@ -231,7 +230,7 @@ def activity(request,uri):
         else:
             return render_to_response('activitytree/'+ (requested_activity.learning_activity.uri).split('/')[1]+'.html',
 
-                                  {'navegation': navegation_tree,
+                                  {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
                                    'root':requested_activity.learning_activity.get_root().uri,
                                    'content':content,
@@ -257,7 +256,7 @@ def activity(request,uri):
             print "VIDEO",(la.uri).split('/')[2]
             return render_to_response('activitytree/video.html',
 
-                                  {'navegation': None,
+                                  {'XML_NAV':None,
                                    'uri':la.uri,
                                    'video':content,
                                    'breadcrumbs':None },
@@ -270,7 +269,7 @@ def activity(request,uri):
         else:
             return render_to_response('activitytree/'+ (la.uri).split('/')[1]+'.html',
 
-                                  {'navegation': None,
+                                  {'XML_NAV':None,
                                    'uri':la.uri,
                                    'content':content,
                                    'breadcrumbs':None,
@@ -317,7 +316,11 @@ def test(request, uri, objective_status = None):
        # Gets the current navegation tree as HTML
 
         nav = s.get_nav(root)
-        navegation_tree = s.nav_to_html(nav)
+        XML_ = s.nav_to_xml(root=nav)
+        #Escape for javascript
+        XML=XML_.replace('"', r'\"')
+        #navegation_tree = s.nav_to_html(nav)
+
         breadcrumbs = s.get_current_path(requested_activity)
 
 
@@ -331,7 +334,7 @@ def test(request, uri, objective_status = None):
                         q['feedback_options'] = zip(q['options'], feedback[q['id']]['user_answer'], feedback[q['id']]['checked'])
 
         return render_to_response('activitytree/'+(requested_activity.learning_activity.uri).split('/')[1]+'.html',
-                                  {'navegation': navegation_tree,
+                                  {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
                                    'content':content,
                                    'feedback':feedback,
@@ -384,8 +387,9 @@ def survey(request, uri, objective_status = None):
       # Gets the current navegation tree as HTML
 
         nav = s.get_nav(root)
-
-        navegation_tree = s.nav_to_html(nav)
+        XML_ = s.nav_to_xml(root=nav)
+        #Escape for javascript
+        XML=XML_.replace('"', r'\"')
 
         breadcrumbs = s.get_current_path(requested_activity)
 
@@ -400,7 +404,7 @@ def survey(request, uri, objective_status = None):
                         q['feedback_options'] = zip(q['options'], feedback[q['id']]['user_answer'], feedback[q['id']]['checked'])
 
         return render_to_response('activitytree/'+(requested_activity.learning_activity.uri).split('/')[1]+'.html',
-                                  {'navegation': navegation_tree,
+                                  {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
                                    'content':content,
                                    'feedback':feedback,
@@ -433,14 +437,17 @@ def program(request,uri):
 
         # Gets the current navegation tree as HTML
         nav = s.get_nav(root)
-        navegation_tree = s.nav_to_html(nav)
+        XML_ = s.nav_to_xml(root=nav)
+        #Escape for javascript
+        XML=XML_.replace('"', r'\"')
+
         breadcrumbs = s.get_current_path(requested_activity)
 
         return render_to_response('activitytree/program.html', {'program_quiz':activities[requested_activity.learning_activity.uri],
                                                                 'activity_uri':requested_activity.learning_activity.uri,
-                                                                'navegation': navegation_tree,
                                                                 'breadcrumbs':breadcrumbs,
-                                                                'root':requested_activity.learning_activity.get_root().uri
+                                                                'root':requested_activity.learning_activity.get_root().uri,
+                                                                'XML_NAV':XML
                                                                 },
                                   context_instance=RequestContext(request))
 
@@ -457,7 +464,7 @@ def program(request,uri):
         if request.method == 'GET':
             return render_to_response('activitytree/program.html', {'program_quiz':activities[la.uri],
                                                                 'activity_uri':la.uri,
-                                                                'navegation': None,
+                                                                'XML_NAV':None,
                                    'breadcrumbs':None
                                                                 },
                                   context_instance=RequestContext(request))

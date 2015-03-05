@@ -313,10 +313,6 @@ background-position: left top;
      {%  endblock style %}
 
 
-   .mm-menu.mm-light .mm-list > li.mm-selected > a:not(.mm-subopen), .mm-menu.mm-light .mm-list > li.mm-selected > span
-   {
-    background: none repeat scroll 0 0 #D9EDF7;
-   }
 
    .fa-check
    {
@@ -381,8 +377,9 @@ background-position: left top;
         </div>
       </div>
     </nav>
-
+{% comment "NO MORE NAVTREE" %}
     {{navegation|safe}}
+{% endcomment %}
 
 
 
@@ -429,8 +426,8 @@ background-position: left top;
     <script  type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script  type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script  type="text/javascript" src="{{MEDIA_URL}}js/mustache.min.js"></script>
-    <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.mmenu.min.all.js"></script>
-    <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.mmenu.header.js"></script>
+     <!--<script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.mmenu.min.all.js"></script>
+    <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.mmenu.header.js"></script>-->
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
 
 
@@ -441,10 +438,10 @@ background-position: left top;
 
         $( document ).ready(function() {
 
-            $("nav#nav_menu").mmenu({
+         <!--   $("nav#nav_menu").mmenu({
                 classes: "mm-light",
                 header: true
-            });
+            });-->
 
 
             $( ".nav_next" ).bind( "click", function( event ) {
@@ -475,10 +472,10 @@ background-position: left top;
 
         });
 
-
+ <!--
             $('#signout').on('click', function(event) {
     gapi.auth.signOut();
-});
+});-->
 
 
 
