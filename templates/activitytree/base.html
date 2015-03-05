@@ -447,7 +447,9 @@ background-position: left top;
             });
 
 
-            $("#user_points").append(  $('<span>').text( puntos_totales));
+            $("#user_points").append(  $('<h5>').attr({ class:'text-info',
+                                                        text:'Mis puntos: '+puntos_totales
+            }));
 
 
 
