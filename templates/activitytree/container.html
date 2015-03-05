@@ -137,6 +137,8 @@
 
 
                      <div class="row">
+
+
                      [[#objective_status]]
                          <div class="col-md-4 text-center">
                            <i class="fa fa-check fa-2x"></i><br/>
@@ -145,6 +147,15 @@
 
                          </div>
                      [[/objective_status]]
+                     [[^objective_status]]
+                        <div class="col-md-4 text-center">
+                           <i class="fa fa-eye-slash fa-2x"></i><br/>
+                            <small>INCOMPLETO</small>
+
+
+                         </div>
+                     [[/objective_status]]
+
 
                      [[#show_attempts]]
                         <div class="col-md-4 text-center">
@@ -157,8 +168,8 @@
                       [[#show_objective_measure]]
                          <div class="col-md-4 text-center">
                               <span class="h3">[[objective_measure]]</span>
-
-                             <small>CALIFICACIÓN</small>
+                                <br/>
+                             <small>PUNTOS</small>
                          </div>
                       [[/show_objective_measure]]
 
@@ -243,10 +254,10 @@
 
         Mustache.tags = ['[[', ']]'];
 
-        XML_NAV = "{{XML_NAV|safe}}";
-        xmlDoc= $.parseXML(XML_NAV);
-        $xml = $(xmlDoc)
-        $current = $xml.find("item[is_current|='True']");
+        //XML_NAV = "{{XML_NAV|safe}}";
+        //xmlDoc= $.parseXML(XML_NAV);
+        //$xml = $(xmlDoc)
+        var $current = $xml.find("item[is_current|='True']");
         if ($current[0].getAttribute("is_container")=="True") {
             var container_template = $('#container_template').html();
             var activity_template = $('#activity_template').html();
@@ -297,7 +308,7 @@
                       template = activity_template;
 
 
-                    var show_attempts = 1;
+                    var show_attempts = !(uri_string.lastIndexOf("/activity/", 0) === 0);
 
                     var is_satisfied = this.getAttribute("objective_status")=="satisfied";
                     var has_objective_measure = this.getAttribute("objective_measure")!="None";
@@ -315,7 +326,7 @@
                              rating: recommended_value,
                              num_attempts:this.getAttribute("num_attempts"),
                              objective_status:is_satisfied,
-                             objective_measure:this.getAttribute("objective_measure"),
+                             objective_measure: Math.floor(this.getAttribute("objective_measure")),
                              show_objective_measure:has_objective_measure,
                              show_attempts:show_attempts
 
