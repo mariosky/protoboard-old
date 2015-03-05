@@ -308,7 +308,7 @@
                       template = activity_template;
 
 
-                    var show_attempts = 1;
+                    var show_attempts = !(uri_string.lastIndexOf("/activity/", 0) === 0);
 
                     var is_satisfied = this.getAttribute("objective_status")=="satisfied";
                     var has_objective_measure = this.getAttribute("objective_measure")!="None";
@@ -328,7 +328,7 @@
                              objective_status:is_satisfied,
                              objective_measure:this.getAttribute("objective_measure"),
                              show_objective_measure:has_objective_measure,
-                             show_attempts:has_objective_measure
+                             show_attempts:show_attempts
 
 
                          });
