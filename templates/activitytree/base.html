@@ -381,8 +381,10 @@ background-position: left top;
 
 
     <div id="main_container" class="container-fluid">
-     {%if breadcrumbs%}
+
      <row>
+        <div class="col-md-10">
+     {%if breadcrumbs%}
          <ol class="breadcrumb">
             {% for l in breadcrumbs %}
                 {% if forloop.last %}
@@ -393,8 +395,12 @@ background-position: left top;
                 {% endif%}
             {% endfor%}
        </ol>
-     </row>
      {%endif%}
+      </div>
+          <div id="user_points" class="col-md-2">
+          </div>
+     </row>
+
 
             {% block content %}
             <!--
@@ -440,7 +446,8 @@ background-position: left top;
                 }
             });
 
-            alert('PUNTOS:'  + puntos_totales);
+
+            $("#user_points").append(  $('<span>').value(  puntos_totales));
 
 
 
