@@ -305,7 +305,7 @@ def test(request, uri, objective_status = None):
 
                 feedback = _check_quiz(request.POST, quiz)
                 # Updates the current Learning Activity
-                objective_measure = int(feedback['total_correct'])/len(quiz['questions'])*100
+                objective_measure = float(feedback['total_correct'])/len(quiz['questions'])*100
                 if feedback['total_correct'] >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
                     objective_status='satisfied'
                 else:
