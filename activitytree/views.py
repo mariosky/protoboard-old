@@ -208,7 +208,7 @@ def activity(request,uri):
             print "VIDEO",(requested_activity.learning_activity.uri).split('/')[2]
             return render_to_response('activitytree/video.html',
 
-                                  {
+                                  {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
                                    'video':content,
                                    'breadcrumbs':breadcrumbs,

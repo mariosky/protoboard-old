@@ -9,9 +9,6 @@
 
     <!-- Bootstrap core CSS -->
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/jquery.mmenu.css"/>
-    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/jquery.mmenu.themes.css"/>
-    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/jquery.mmenu.header.css"/>
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/jquery.raty.css"/>
     <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css">
@@ -313,11 +310,6 @@ background-position: left top;
      {%  endblock style %}
 
 
-   .mm-menu.mm-light .mm-list > li.mm-selected > a:not(.mm-subopen), .mm-menu.mm-light .mm-list > li.mm-selected > span
-   {
-    background: none repeat scroll 0 0 #D9EDF7;
-   }
-
    .fa-check
    {
        color: green;
@@ -394,9 +386,7 @@ background-position: left top;
          <ol class="breadcrumb">
             {% for l in breadcrumbs %}
                 {% if forloop.first %}
-                    <li><a href="#nav_menu">  <i class="fa fa-navicon"></i></a>
-                    <a href="{{ l.uri }}">{{l.name}}</a>
-                    </li>
+
                 {% elif forloop.last%}
                     <li class="active">{{l.name}}</li>
                 {%else%}
@@ -428,8 +418,6 @@ background-position: left top;
     <script  type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script  type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script  type="text/javascript" src="{{MEDIA_URL}}js/mustache.min.js"></script>
-    <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.mmenu.min.all.js"></script>
-    <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.mmenu.header.js"></script>
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
 
 
