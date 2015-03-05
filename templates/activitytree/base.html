@@ -438,10 +438,24 @@ background-position: left top;
   <script type="text/javascript" charset="utf-8">
 
         XML_NAV = "{{XML_NAV|safe}}";
+
         xmlDoc= $.parseXML(XML_NAV);
         $xml = $(xmlDoc)
 
+
         $( document ).ready(function() {
+
+
+            var puntos_totales = 0;
+            $xml.find("item[objective_status='satisfied']").each(function() {
+                var val =  this.getAttribute("objective_measure");
+                if (isNaN(val)==false)
+                {
+                puntos_totales += Number($(this).val());
+                }
+            });
+
+            alert('PUNTOS:'  + puntos_totales);
 
             $("nav#nav_menu").mmenu({
                 classes: "mm-light",
