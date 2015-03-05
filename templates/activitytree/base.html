@@ -385,9 +385,7 @@ background-position: left top;
      <row>
          <ol class="breadcrumb">
             {% for l in breadcrumbs %}
-                {% if forloop.first %}
-
-                {% elif forloop.last%}
+                {% if forloop.last %}
                     <li class="active">{{l.name}}</li>
                 {%else%}
                     <li><a href="{{ l.uri }}">{{l.name}}</a></li>
