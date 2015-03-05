@@ -326,7 +326,7 @@
                              rating: recommended_value,
                              num_attempts:this.getAttribute("num_attempts"),
                              objective_status:is_satisfied,
-                             objective_measure:this.getAttribute("objective_measure"),
+                             objective_measure: Math.floor(this.getAttribute("objective_measure")),
                              show_objective_measure:has_objective_measure,
                              show_attempts:show_attempts
 
