@@ -58,7 +58,7 @@ class LearningActivity(models.Model):
     available_from = models.DateTimeField(null=True)
     available_until = models.DateTimeField(null=True)
     
-    is_container = models.BooleanField()
+    is_container = models.BooleanField(default=False)
     is_visible = models.BooleanField(default=True)
 
     order_in_container = models.PositiveIntegerField(default=0)
