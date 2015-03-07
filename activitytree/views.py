@@ -171,12 +171,14 @@ def activity(request,uri):
                 # Go TO NEXT ACTIVITY
                 s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
                 next_uri = s.get_next(root, current_activity)
+                print 'NEXT'
 
             # 'prev' REQUEST
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
                 s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
                 next_uri = s.get_prev(root, current_activity)
+                print 'PREV'
 
             #No more activities ?
             if next_uri is None:
@@ -187,7 +189,7 @@ def activity(request,uri):
                 return HttpResponseRedirect(next_activity.learning_activity.uri)
 
 
-
+        print 'GET NAV'
         nav = s.get_nav(root)
         XML_ = s.nav_to_xml(root=nav)
         #Escape for javascript
