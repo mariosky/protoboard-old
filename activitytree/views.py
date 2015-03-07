@@ -706,7 +706,9 @@ def facebook_login(request):
     print code, args
 
     response = urllib.urlopen( "https://graph.facebook.com/oauth/access_token?" + urllib.urlencode(args))
+
     response = urlparse.parse_qs(response.read())
+    print "response" , response
     access_token = response["access_token"][-1]
     profile = json.load(urllib.urlopen(
         "https://graph.facebook.com/me?" +
@@ -718,6 +720,7 @@ def facebook_login(request):
 
     facebook_session.expires = expires
     facebook_session.save()
+    print facebook_session
 
     user = authenticate(token=access_token)
     print "Usuario",user

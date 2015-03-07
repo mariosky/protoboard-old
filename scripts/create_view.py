@@ -4,6 +4,8 @@ import psycopg2
 from django.conf import settings
 
 if __name__ == "__main__":
+    import django
+    django.setup()
     import os
     print "####### DJANGO SETTINGS"
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")

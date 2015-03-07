@@ -218,7 +218,6 @@ class UserLearningActivity(models.Model):
     def eval_rollup_rule(self, r):
         try:
             rule = self.parse_rollup_rule(r)
-            print r, rule
         except:
            pass
         
