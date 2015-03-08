@@ -2,8 +2,9 @@ __author__ = 'mario'
 
 
 import psycopg2
+from psycopg2.extras import DictCursor
 import datetime
-import pprint
+import xml.etree.ElementTree as ET
 import functools
 
 def bench(func=None, name=None):
@@ -47,6 +48,51 @@ def nav_to_xml(node=None, s="", root=None):
         return s
 
 
+
+def _get_children(id,recs):
+    return [v for k,v in recs.items() if id == v["parent_id"] ]
+
+def xml_row(row):
+    str_dict = {}
+    for k,v in row.items():
+        str_dict[k]=unicode(v)
+    return str_dict
+
+#if get_attr('/activity/PB','num_attempts') > 0:
+
+
+pre ="""
+if activity['num_attempts'] == 0 :
+    activity['pre_condition'] = 'stopForwardTraversal'
+else:
+    activity['pre_condition'] = ''
+"""
+
+#@bench(name="SQL_NAV")
+def _get_nav(id,recs,xml_tree=None):
+    if recs[id]["parent_id"] is None:
+        xml_tree = ET.Element("item")
+        xml_tree.attrib = xml_row(recs[id])
+
+    children = _get_children(id,recs)
+    if children:
+        for activity in children:
+            print activity['pre_condition_rule']
+
+            exec(pre)
+            #print activity['pre_condition']
+
+            _get_nav(activity['id'],recs,ET.SubElement(xml_tree,'item',xml_row(activity)))
+    else:
+        pass
+        #ET.SubElement(xml_tree,'item',{'name':recs[id]['name']})
+
+
+
+    return xml_tree
+
+
+
 @bench(name="recursive")
 def get_nav( ula):
     #print "get_nav call",ula
@@ -84,25 +130,26 @@ def get_nav( ula):
         ula.children = []
         return ula
 
-@bench(name="sql")
+
+
+
+#@bench(name="sql")
 def sql():
-    cur = con.cursor()
+    cur = con.cursor(cursor_factory=DictCursor)
     query= """
 WITH RECURSIVE nodes_cte AS (
 SELECT 	n.id, n.parent_id, n.name, n.id::TEXT AS path,
 		n.heading, n.secondary_text, n.description, n.image, n.slug, n.uri, n.lom, n.root_id,
 		n.pre_condition_rule, n.post_condition_rule, n.flow, n.forward_only, n.choice,
-		n.choice_exit, n.match_rule, n.filter_rule, n.rollup_rule, n.rollup_objective,
-		n.rollup_progress, n.attempt_limit, n.duration_limit, n.available_from,
+		n.choice_exit, n.attempt_limit, n.available_from,
 		n.available_until, n.is_container, n.is_visible, n.order_in_container
 FROM activitytree_learningactivity AS n
 WHERE n.parent_id = 1
 	UNION ALL
-SELECT 	c.id, c.parent_id, c.name, (p.path || '->' || c.id::TEXT) AS path,
+SELECT 	c.id, c.parent_id, c.name, c.id::TEXT AS path,
 		c.heading, c.secondary_text, c.description, c.image, c.slug, c.uri, c.lom, c.root_id,
 		c.pre_condition_rule, c.post_condition_rule, c.flow, c.forward_only, c.choice,
-		c.choice_exit, c.match_rule, c.filter_rule, c.rollup_rule, c.rollup_objective,
-		c.rollup_progress, c.attempt_limit, c.duration_limit, c.available_from,
+		c.choice_exit, c.attempt_limit, c.available_from,
 		c.available_until, c.is_container, c.is_visible, c.order_in_container
 FROM nodes_cte AS p, activitytree_learningactivity AS c
 WHERE c.parent_id = p.id
@@ -111,19 +158,10 @@ WHERE c.parent_id = p.id
 SELECT  la.id, parent_id, name, ''as path,
 		heading, secondary_text, description, image, slug, uri, lom, root_id,
 		pre_condition_rule, post_condition_rule, flow, forward_only, choice,
-		choice_exit, match_rule, filter_rule, rollup_rule, rollup_objective,
-		rollup_progress, attempt_limit, duration_limit, available_from,
+		choice_exit, attempt_limit, available_from,
 		available_until, is_container, is_visible, order_in_container,
-		 pre_condition ,
- recommendation_value ,
- progress_status      ,
- objective_status     ,
- objective_measure    ,
- last_visited         ,
- num_attempts         ,
- suspended            ,
- accumulated_time     ,
- is_current
+		pre_condition, recommendation_value, progress_status, objective_status,
+        objective_measure, last_visited, num_attempts, is_current
 
 FROM activitytree_learningactivity la, activitytree_userlearningactivity ula
 
@@ -135,20 +173,10 @@ UNION ALL
 SELECT  nd.id, parent_id, name,path,
 		heading, secondary_text, description, image, slug, uri, lom, root_id,
 		pre_condition_rule, post_condition_rule, flow, forward_only, choice,
-		choice_exit, match_rule, filter_rule, rollup_rule, rollup_objective,
-		rollup_progress, attempt_limit, duration_limit, available_from,
+		choice_exit, attempt_limit, available_from,
 		available_until, is_container, is_visible, order_in_container,
-		 pre_condition ,
- recommendation_value ,
- progress_status      ,
- objective_status     ,
- objective_measure    ,
- last_visited         ,
- num_attempts         ,
- suspended            ,
- accumulated_time     ,
- is_current
-
+		pre_condition, recommendation_value, progress_status, objective_status,
+        objective_measure, last_visited, num_attempts, is_current
 
 FROM nodes_cte AS nd, activitytree_userlearningactivity ula
 WHERE
@@ -160,8 +188,14 @@ ORDER BY path ASC
 
 );"""
 
-    r = cur.execute(query)
-    print cur.fetchone()
+    cur.execute(query)
+
+
+    recs = cur.fetchall()
+    records = {}
+    for record in recs:
+        records[record["id"]] = dict(record)
+    return records
 
 
 if __name__ == "__main__":
@@ -185,14 +219,16 @@ from django.contrib.auth.models import User
 
 mario =  User.objects.all()[1]
 print mario.id
-root= UserLearningActivity.objects.filter(learning_activity__uri = "/activity/PB" ,user = User.objects.filter(username=mario.username)[0] )[0]
+#root= UserLearningActivity.objects.filter(learning_activity__uri = "/activity/PB" ,user = User.objects.filter(username=mario.username)[0] )[0]
 
-n = get_nav(root)
-s = nav_to_xml(root=n)
+#n = get_nav(root)
+#s = nav_to_xml(root=n)
 
-print s
-print sql()
+#print s
+recs = sql()
 
+xml = _get_nav(1,recs)
+ET.dump(xml)
 
 
 
