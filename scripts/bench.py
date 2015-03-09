@@ -219,6 +219,14 @@ from django.contrib.auth.models import User
 
 mario =  User.objects.all()[1]
 print mario.id
+
+la = LearningActivity.objects.get(uri="/activity/secuencias")
+ula =  la.userlearningactivity_set.get(user=mario)
+
+print ula
+print ula.learning_activity.parent.userlearningactivity_set.get(user=mario)
+
+
 #root= UserLearningActivity.objects.filter(learning_activity__uri = "/activity/PB" ,user = User.objects.filter(username=mario.username)[0] )[0]
 
 #n = get_nav(root)
@@ -228,7 +236,7 @@ print mario.id
 recs = sql()
 
 xml = _get_nav(1,recs)
-ET.dump(xml)
+#ET.dump(xml)
 
 
 

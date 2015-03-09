@@ -17,7 +17,7 @@ from django.template import RequestContext
 from django.db import transaction
 
 
-
+import xml.etree.ElementTree as ET
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
@@ -25,6 +25,8 @@ from django.views.generic import View
 
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
 from activitytree.interaction_handler import SimpleSequencing
+from activitytree.interaction_handler import get_nav
+
 from activitytree.activities import activities
 
 #from social.backends.google import GooglePlusAuth
@@ -83,10 +85,9 @@ def dashboard(request,uri):
                 # if choice_exit consider complete
 
 
-            nav = s.get_nav(root)
-            XML_ = s.nav_to_xml(root=nav)
+            _XML = get_nav(root)
             #Escape for javascript
-            XML=XML_.replace('"', r'\"')
+            XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')        #navegation_tree = s.nav_to_html(nav)
 
             return render_to_response('activitytree/dashboard.html', {'XML_NAV':XML,
                                    'children': requested_activity.get_children(),
@@ -189,11 +190,10 @@ def activity(request,uri):
                 return HttpResponseRedirect(next_activity.learning_activity.uri)
 
 
-        print 'GET NAV'
-        nav = s.get_nav(root)
-        XML_ = s.nav_to_xml(root=nav)
+        _XML = get_nav(root)
         #Escape for javascript
-        XML=XML_.replace('"', r'\"')
+        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
+
         #navegation_tree = s.nav_to_html(nav)
 
         breadcrumbs = s.get_current_path(requested_activity)
@@ -317,11 +317,9 @@ def test(request, uri, objective_status = None):
 
        # Gets the current navegation tree as HTML
 
-        nav = s.get_nav(root)
-        XML_ = s.nav_to_xml(root=nav)
+        _XML = get_nav(root)
         #Escape for javascript
-        XML=XML_.replace('"', r'\"')
-        #navegation_tree = s.nav_to_html(nav)
+        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')        #navegation_tree = s.nav_to_html(nav)
 
         breadcrumbs = s.get_current_path(requested_activity)
 
@@ -388,10 +386,9 @@ def survey(request, uri, objective_status = None):
 
       # Gets the current navegation tree as HTML
 
-        nav = s.get_nav(root)
-        XML_ = s.nav_to_xml(root=nav)
+        _XML = get_nav(root)
         #Escape for javascript
-        XML=XML_.replace('"', r'\"')
+        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
 
         breadcrumbs = s.get_current_path(requested_activity)
 
@@ -437,12 +434,10 @@ def program(request,uri):
             # if choice_exit consider complete
             _set_current(request,requested_activity, root, s)
 
-        # Gets the current navegation tree as HTML
-        nav = s.get_nav(root)
-        XML_ = s.nav_to_xml(root=nav)
+        # Gets the current navegation tree as XML
+        _XML = get_nav(root)
         #Escape for javascript
-        XML=XML_.replace('"', r'\"')
-
+        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
         breadcrumbs = s.get_current_path(requested_activity)
 
         return render_to_response('activitytree/program.html', {'program_quiz':activities[requested_activity.learning_activity.uri],
@@ -500,7 +495,7 @@ def execute_queue(request):
         rpc['task_id']=task_id
 
         result= {"result":"added" , "error": None, "id": task_id}
-        return HttpResponse(json.dumps(result), mimetype='application/javascript')
+        return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
 @csrf_protect
@@ -533,12 +528,12 @@ def get_result(request):
                     else:
                         s.update(ula,attempt=True)
                 result = json.dumps({'result':string_json, 'outcome': t.result[1]})
-                return HttpResponse(result , mimetype='application/javascript')
+                return HttpResponse(result , content_type='application/javascript')
 
             else:
-                return HttpResponse(json.dumps({'outcome':-1}) , mimetype='application/javascript')
+                return HttpResponse(json.dumps({'outcome':-1}) , content_type='application/javascript')
         else:
-            return HttpResponse(json.dumps({'outcome':-1}) , mimetype='application/javascript')
+            return HttpResponse(json.dumps({'outcome':-1}) , content_type='application/javascript')
 
 def _get_learning_activity(request):
     try:
@@ -676,7 +671,7 @@ def ajax_vote(request, type, uri):
         vals = UserLearningActivity.objects.filter(learning_activity__uri = activity_uri).aggregate(Avg('user_rating'),Count('user_rating'))
         response_data = {'avg': vals['user_rating__avg'], 'votes': vals['user_rating__count']}
 
-        return HttpResponse(json.dumps(response_data), mimetype="application/json")
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         return HttpResponse(content="Ya voto?")
 
@@ -749,7 +744,7 @@ def rate_object(request):
         rating.save()
 
         result= {"result":"added" , "error": None, "id": None}
-        return HttpResponse(json.dumps(result), mimetype='application/javascript')
+        return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
 

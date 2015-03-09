@@ -9,12 +9,11 @@
 
 
 if __name__ == "__main__":
-    import django
-    django.setup()
     import os
-    print "####### DJANGO SETTINGS"
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
-
+    import django
+    from django.conf import settings
+    django.setup()
 
 
 
@@ -75,16 +74,16 @@ pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
     choice_exit = False,
 
     pre_condition_rule = """
-if self.objective_status == 'notSatisfied' :
-    self.pre_condition = 'stopForwardTraversal'
+if activity['objective_status'] == 'notSatisfied' :
+    activity['pre_condition'] = 'stopForwardTraversal'
 else:
-    self.pre_condition = 'hidden'
+    activity['pre_condition'] = 'hidden'
 """,
 
     post_condition_rule = "",
 
-    rollup_objective = True,
-    rollup_progress = True,
+    rollup_objective = False,
+    rollup_progress = False,
 
     is_container = False,
     is_visible = True,
@@ -135,10 +134,10 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
 
 #    pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
     pre_condition_rule = """
-if self.get_ula_attr('Introduccion','objective_status') == 'satisfied':
-    self.pre_condition = ''
+if get_attr('/activity/introduccion','objective_status') == 'satisfied':
+    activity['pre_condition'] = ''
 else:
-    self.pre_condition = 'disabled'
+    activity['pre_condition'] = 'disabled'
 """,
     post_condition_rule = "",
 
@@ -159,7 +158,7 @@ else:
 secuencias.save()
 
 
-tema_1 = LearningActivity( name = 'Introduccion', slug = 'Intro',
+tema_1 = LearningActivity( name = 'Video de Introduccion', slug = 'Intro',
     uri = '/activity/video/intro',
 
     heading="Introducción al Lenguaje Python",
@@ -273,10 +272,10 @@ program_2 = LearningActivity( name = '¿Es par?', slug = 'E2',
     uri = "/program/PPP/2",
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = """
-if self.get_ula_attr('Imprime Hola','objective_status') == 'satisfied':
-    self.pre_condition = ''
+if get_attr('/program/PPP/1','objective_status') == 'satisfied':
+    activity['pre_condition'] = ''
 else:
-    self.pre_condition = 'disabled'
+    activity['pre_condition'] = 'disabled'
 """,
     description = "Haz una función que te diga si es un número par. Necesario completar: Imprime Hola ",
     post_condition_rule = "",
@@ -299,10 +298,10 @@ program_3 = LearningActivity( name = 'Suma dos números', slug = 'E3',
 
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
+if activity['num_attempts'] == 0 :
+    activity['pre_condition'] = 'stopForwardTraversal'
 else:
-    self.pre_condition = ''""",
+    activity['pre_condition'] = ''""",
     post_condition_rule = "",
 
     choice_exit = False,
@@ -319,11 +318,7 @@ program_3.save()
 program_4 = LearningActivity( name = 'distancia()', slug = 'E4',
     uri = "/program/PPP/4",
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -338,11 +333,7 @@ program_4.save()
 program_5 = LearningActivity( name = 'mayor()', slug = 'E5',
     uri = "/program/PPP/5",
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -392,11 +383,7 @@ EjerciciosSec.save()
 program_6 = LearningActivity( name = 'Dame una lista', slug = 'E6',
     uri = "/program/PPP/6",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -411,11 +398,7 @@ program_6.save()
 program_7 = LearningActivity( name = 'Dame una tupla', slug = 'E7',
     uri = "/program/PPP/7",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -429,11 +412,7 @@ program_7.save()
 program_8 = LearningActivity( name = 'Solo una tajada', slug = 'E8',
     uri = "/program/PPP/8",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -448,11 +427,7 @@ program_8.save()
 program_9 = LearningActivity( name = 'Solo una tajadita', slug = 'E9',
     uri = "/program/PPP/9",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -466,11 +441,7 @@ program_9.save()
 program_10 = LearningActivity( name = '¡Pura Acción!', slug = 'E10',
     uri = "/program/PPP/10",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -484,11 +455,7 @@ program_10.save()
 program_11 = LearningActivity( name = 'Mutantes', slug = 'E10',
     uri = "/program/PPP/11",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -502,11 +469,7 @@ program_11.save()
 program_12 = LearningActivity( name = 'Ordena la Lista', slug = 'E10',
     uri = "/program/PPP/12",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
@@ -521,11 +484,7 @@ program_12.save()
 program_13 = LearningActivity( name ='Producto punto' , slug = 'E10',
     uri = "/program/PPP/13",
     parent = EjerciciosSec, root  = PPP,
-    pre_condition_rule = """
-if self.num_attempts == 0 :
-    self.pre_condition = 'stopForwardTraversal'
-else:
-    self.pre_condition = ''""",
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_objective = True,
