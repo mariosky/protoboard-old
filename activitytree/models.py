@@ -53,7 +53,7 @@ class LearningActivity(models.Model):
     rollup_objective = models.BooleanField(default=True)
     rollup_progress = models.BooleanField(default=True)
         
-    attempt_limit = models.PositiveSmallIntegerField(null=True)
+    attempt_limit = models.PositiveSmallIntegerField(default=1000)
     duration_limit = models.PositiveSmallIntegerField(null=True) 
     available_from = models.DateTimeField(null=True)
     available_until = models.DateTimeField(null=True)

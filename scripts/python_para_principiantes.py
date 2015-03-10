@@ -84,6 +84,7 @@ else:
 
     rollup_objective = False,
     rollup_progress = False,
+    attempt_limit=3,
 
     is_container = False,
     is_visible = True,
@@ -294,7 +295,7 @@ program_3 = LearningActivity( name = 'Suma dos números', slug = 'E3',
     heading="Uno + Uno",
     description = "Escribe una función que sume dos números",
     image = "https://s3.amazonaws.com/learning-python/suma.png",
-
+    attempt_limit=3,
 
     parent = EjerciciosIntro, root  = PPP,
     pre_condition_rule = """
