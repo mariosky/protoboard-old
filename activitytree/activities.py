@@ -19,7 +19,7 @@ activities = {
 '/activity/video/ejemplo_ejercicio':
     {'title':u'Ejercicios en Protoboard',
      'url':u"http://www.youtube.com/embed/Htk9KAl1GxU?rel=0",
-      'youtube_id':'aTDJDB_ZjXA'} ,
+      'youtube_id':'Htk9KAl1GxU'} ,
 
 '/activity/PB':u"""<h3 id="welcome">Bienvenidos</h3>
       <p> En este tutorial aprenderás los conceptos básicos de la programación en Python </p>
@@ -1312,7 +1312,8 @@ No necesitamos saber cómo se programó el objeto, ni saber las variables que us
 
 '/activity/video/Objetos_y_Clases_YouTube':
     {'title':u'Una introducción a Objetos y Clases',
-     'url':u"http://www.youtube.com/embed/D-w9RKQlAsA?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/D-w9RKQlAsA?rel=0",
+      'youtube_id':"D-w9RKQlAsA"} ,
 
 
 
