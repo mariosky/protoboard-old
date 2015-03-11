@@ -4,7 +4,11 @@ activities = {
 '/activity/video/intro':
     {'title':u'Introducción',
      'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
-      'youtube_id':'qM5nKU40KVg' } ,
+      'youtube_id':'qM5nKU40KVg',
+      'startSeconds':20,
+      'endSeconds':25,
+
+      } ,
 
 '/activity/video/secuencias':
     {'title':u'Secuencias:Listas, Tuplas y Cadenas',
