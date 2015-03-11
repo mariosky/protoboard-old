@@ -277,7 +277,6 @@ def xml_row(row):
     return str_dict
 
 def sql(root_id,user_id):
-    print root_id,user_id
     cur = con.cursor(cursor_factory=DictCursor)
     query= """
 WITH RECURSIVE nodes_cte AS (
@@ -348,6 +347,7 @@ def _get_nav(id,xml_tree=None):
     children = _get_children(id)
     if children:
         for activity in children:
+            print 'num_attempts',activity['num_attempts'],int(activity['attempt_limit'])
             exec(activity['pre_condition_rule'])
             if activity['pre_condition'] == 'stopForwardTraversal':
                 ET.SubElement(xml_tree,'item',xml_row(activity))
@@ -356,6 +356,7 @@ def _get_nav(id,xml_tree=None):
                 pass
             elif activity['forward_only']  and int(activity['num_attempts']) > 0:
                 activity['pre_condition'] = 'disabled'
+
             elif activity['num_attempts'] >=  int(activity['attempt_limit']):
                 activity['pre_condition'] = 'disabled'
 

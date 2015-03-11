@@ -3,19 +3,23 @@
 activities = {
 '/activity/video/intro':
     {'title':u'Introducción',
-     'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
+      'youtube_id':'qM5nKU40KVg' } ,
 
 '/activity/video/secuencias':
     {'title':u'Secuencias:Listas, Tuplas y Cadenas',
-     'url':u"http://www.youtube.com/embed/aTDJDB_ZjXA?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/aTDJDB_ZjXA?rel=0",
+      'youtube_id':'qM5nKU40KVg'} ,
 
 '/activity/video/ejercicios_basados_en_pruebas':
     {'title':u'Ejercicios Basados en Pruebas',
-     'url':u"http://www.youtube.com/embed/6BL6P48r_9A?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/6BL6P48r_9A?rel=0",
+      'youtube_id':'aTDJDB_ZjXA'} ,
 
 '/activity/video/ejemplo_ejercicio':
     {'title':u'Ejercicios en Protoboard',
-     'url':u"http://www.youtube.com/embed/Htk9KAl1GxU?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/Htk9KAl1GxU?rel=0",
+      'youtube_id':'aTDJDB_ZjXA'} ,
 
 '/activity/PB':u"""<h3 id="welcome">Bienvenidos</h3>
       <p> En este tutorial aprenderás los conceptos básicos de la programación en Python </p>
