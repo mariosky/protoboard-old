@@ -74,9 +74,9 @@ pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
     choice_exit = False,
 
     pre_condition_rule = """
-if activity['objective_status'] == 'notSatisfied' :
+if int(activity['num_attempts']) == 0 :
     activity['pre_condition'] = 'stopForwardTraversal'
-else:
+elif activity['objective_status'] == 'satisfied':
     activity['pre_condition'] = 'hidden'
 """,
 
@@ -194,7 +194,8 @@ tema_2 = LearningActivity( name = 'Ejercicios Basados en Pruebas', slug = 'Ejerc
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 1
+    is_visible = False,
+    order_in_container = 1
     )
 tema_2.save()
 
@@ -298,11 +299,7 @@ program_3 = LearningActivity( name = 'Suma dos números', slug = 'E3',
     attempt_limit=3,
 
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = """
-if activity['num_attempts'] == 0 :
-    activity['pre_condition'] = 'stopForwardTraversal'
-else:
-    activity['pre_condition'] = ''""",
+    pre_condition_rule = """""",
     post_condition_rule = "",
 
     choice_exit = False,

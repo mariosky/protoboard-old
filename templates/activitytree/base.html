@@ -359,9 +359,8 @@ background-position: left top;
             <li><a class="navbar-user" href="#"><img src="http://graph.facebook.com/{{user.email}}/picture?type=square"/>  </a></li>
             <li><a href="/logout">Log out</a></li>
 
-            {% endif %}
+            {% else %}
 
-            {% if not user_name %}
 
             <li><a href="/login">Log in</a></li>
 
@@ -438,7 +437,7 @@ background-position: left top;
 
 
             var puntos_totales = 0;
-            $xml.find("item[objective_status='satisfied']").each(function() {
+            $xml.find("item[objective_measure!='None']").each(function() {
                 var val =  this.getAttribute("objective_measure");
                 if (isNaN(val)==false)
                 {

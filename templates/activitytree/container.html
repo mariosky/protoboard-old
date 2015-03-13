@@ -21,18 +21,7 @@
                </ul>
 
 
-        <!-- <div class="form-group">
-            <label for="r10">Comentario:</label>
-            <select id="exit" name="objective_measure" class="form-control" >
-				<option value="70"> Ninguno </option>
-				<option value="100">Si le entendí</option>
-				<option value="50">Más o menos  </option>
-				<option value="20"> Para nada </option>
-	        </select>
 
-	        x-tmpl-mustache
-
-        </div> -->
        </form>
 
 
@@ -159,7 +148,7 @@
 
                      [[#show_attempts]]
                         <div class="col-md-4 text-center">
-                              <span class="h3">[[num_attempts]]</span>
+                              <span class="h3">[[num_attempts]] de [[attempt_limit]]</span>
                               <br/>
 
                              <small>INTENTOS</small>
@@ -169,7 +158,7 @@
                          <div class="col-md-4 text-center">
                               <span class="h3">[[objective_measure]]</span>
                                 <br/>
-                             <small>PUNTOS</small>
+                             <small>PUNTOS ALCANZADOS</small>
                          </div>
                       [[/show_objective_measure]]
 
@@ -195,10 +184,18 @@
 				<div class="modal-footer" style="text-align: left">
 
                      <div class="row">
-                         <div class="col-md-12">
+                         <div class="col-md-4">
                                <i class="fa fa-lock fa-2x"></i>
 
                          </div>
+                      [[#show_attempts]]
+                        <div class="col-md-4 text-center">
+                              <span class="h3">[[num_attempts]] de [[attempt_limit]]</span>
+                              <br/>
+
+                             <small>INTENTOS</small>
+                         </div>
+                     [[/show_attempts]]
                      </div>
 			</div>
 		</div>
@@ -231,21 +228,25 @@
         var children = [];
         $(element).children().each(function (index) {
 
-            var uri_string = this.getAttribute("uri");
-            var icon = get_icon(uri_string);
-            if (this.getAttribute("objective_status")=="satisfied")
-                {
+            if (this.getAttribute("pre_condition")!="hidden" && this.getAttribute("is_visible")=="True" ) {
+
+                var uri_string = this.getAttribute("uri");
+                var icon = get_icon(uri_string);
+                if (this.getAttribute("objective_status")=="satisfied")
+                    {
                     icon.icon = "fa fa-check"
+                    }
+                children[children.length] =  {
+                    heading: this.getAttribute("heading"),
+                    uri:uri_string,
+                    icon:icon.icon,
+                    disabled:(this.getAttribute("pre_condition")=="disabled"),
+                    objective_status:(this.getAttribute("objective_status")=="satisfied")
+                    };
                 }
-            children[children.length] =  {
-                heading: this.getAttribute("heading"),
-                uri:uri_string,
-                icon:icon.icon,
-                disabled:(this.getAttribute("pre_condition")=="disabled"),
-                objective_status:(this.getAttribute("objective_status")=="satisfied")
-            };
 
         });
+
 
         return children;
     }
@@ -271,68 +272,68 @@
                     recommended_value = 0;
 
                 var template;
+                if (this.getAttribute("pre_condition")!="hidden" && this.getAttribute("is_visible")=="True" ) {
+                    if (this.getAttribute("is_container") == "True") {
 
-                if (this.getAttribute("is_container") == "True")
-                {
+                        if (this.getAttribute("pre_condition") == "disabled")
+                            template = disabled_container_template;
+                        else
+                            template = container_template;
 
-                     if (this.getAttribute("pre_condition")=="disabled")
-                       template = disabled_container_template;
-                     else
-                       template = container_template;
+                        rendered = Mustache.render(template, {
+                            name: this.getAttribute("heading"),
+                            uri: uri_string,
+                            icon: "fa fa-folder-open",
+                            image: this.getAttribute("image"),
+                            description: this.getAttribute("description"),
+                            activity_type: this.getAttribute("secondary_text"),
+                            id: this.getAttribute("activity"),
+                            rating: recommended_value,
+                            children_activities: get_children_activities(this),
+                            objective_status: (this.getAttribute("objective_status") == "satisfied")
 
-                    rendered = Mustache.render(template, {name: this.getAttribute("heading"),
-                        uri: uri_string,
-                        icon: "fa fa-folder-open",
-                        image: this.getAttribute("image"),
-                        description: this.getAttribute("description"),
-                        activity_type: this.getAttribute("secondary_text"),
-                        id: this.getAttribute("activity"),
-                        rating: recommended_value,
-                        children_activities:get_children_activities(this),
-                        objective_status:(this.getAttribute("objective_status")=="satisfied")
+                        });
+                    }
 
-                    });
+
+                    else {
+                        var activity_type = get_icon(uri_string);
+
+                        if (this.getAttribute("pre_condition") == "disabled")
+                            template = disabled_activity_template;
+                        else
+                            template = activity_template;
+
+
+                        var show_attempts = !(uri_string.lastIndexOf("/activity/", 0) === 0);
+
+                        var is_satisfied = this.getAttribute("objective_status") == "satisfied";
+                        var has_objective_measure = this.getAttribute("objective_measure") != "None";
+
+
+                        rendered = Mustache.render(template, {
+                            name: this.getAttribute("heading"),
+                            uri: uri_string,
+                            icon: activity_type.icon,
+                            image: this.getAttribute("image"),
+                            description: this.getAttribute("description"),
+                            activity_type: activity_type.activity_type,
+                            id: this.getAttribute("activity"),
+                            rating: recommended_value,
+                            num_attempts: this.getAttribute("num_attempts"),
+                            attempt_limit: this.getAttribute("attempt_limit"),
+
+                            objective_status: is_satisfied,
+                            objective_measure: Math.floor(this.getAttribute("objective_measure")),
+                            show_objective_measure: has_objective_measure,
+                            show_attempts: show_attempts
+
+
+                        });
+
+
+                    }
                 }
-
-
-                else
-                {
-                    var activity_type = get_icon(uri_string);
-
-                    if (this.getAttribute("pre_condition")=="disabled")
-                      template = disabled_activity_template;
-                    else
-                      template = activity_template;
-
-
-                    var show_attempts = !(uri_string.lastIndexOf("/activity/", 0) === 0);
-
-                    var is_satisfied = this.getAttribute("objective_status")=="satisfied";
-                    var has_objective_measure = this.getAttribute("objective_measure")!="None";
-
-
-
-
-                    rendered = Mustache.render(template, {name: this.getAttribute("heading"),
-                             uri: uri_string,
-                             icon: activity_type.icon,
-                             image: this.getAttribute("image"),
-                             description: this.getAttribute("description"),
-                             activity_type: activity_type.activity_type,
-                             id: this.getAttribute("activity"),
-                             rating: recommended_value,
-                             num_attempts:this.getAttribute("num_attempts"),
-                             objective_status:is_satisfied,
-                             objective_measure: Math.floor(this.getAttribute("objective_measure")),
-                             show_objective_measure:has_objective_measure,
-                             show_attempts:show_attempts
-
-
-                         });
-
-
-                }
-
                 $("#navlist").append(rendered);
                 if (recommended_value) {
                     $('#rating-' + this.getAttribute("activity")).raty({

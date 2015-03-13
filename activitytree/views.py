@@ -281,7 +281,7 @@ def activity(request,uri):
 
         # Do something for anonymous users.    
 
-@transaction.atomic
+
 def test(request, uri, objective_status = None):
     if request.user.is_authenticated():
         s = SimpleSequencing()
@@ -296,24 +296,29 @@ def test(request, uri, objective_status = None):
         root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
         feedback = None
 
+        attempts_left =  requested_activity.learning_activity.attempt_limit-requested_activity.num_attempts
+
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
             # if choice_exit consider complete
             _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
 
         elif request.method == 'POST':
-            if 'check' in request.POST:
-                quiz = activities[requested_activity.learning_activity.uri]
+            if 'check' in request.POST and attempts_left :
 
-                feedback = _check_quiz(request.POST, quiz)
-                # Updates the current Learning Activity
-                objective_measure = float(feedback['total_correct'])/len(quiz['questions'])*100
-                if feedback['total_correct'] >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
-                    objective_status='satisfied'
-                else:
-                    objective_status='notSatisfied'
+                    quiz = activities[requested_activity.learning_activity.uri]
 
-                s.update(requested_activity, objective_status = objective_status, objective_measure = objective_measure,attempt=True)
+                    feedback = _check_quiz(request.POST, quiz)
+                    # Updates the current Learning Activity
+                    objective_measure = float(feedback['total_correct'])/len(quiz['questions'])*100
+                    if feedback['total_correct'] >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
+                        objective_status='satisfied'
+                    else:
+                        objective_status='notSatisfied'
+
+                    s.update(requested_activity, objective_status = objective_status, objective_measure = objective_measure,attempt=True)
+                    attempts_left-=1
+
 
        # Gets the current navegation tree as HTML
 
@@ -339,7 +344,13 @@ def test(request, uri, objective_status = None):
                                    'content':content,
                                    'feedback':feedback,
                                    'breadcrumbs':breadcrumbs,
+
+                                   'attempt_limit':requested_activity.learning_activity.attempt_limit,
+                                  'num_attempts': requested_activity.num_attempts,
+                                   'attempts_left':attempts_left ,
+
                                     'root':requested_activity.learning_activity.get_root().uri},
+
                                     context_instance=RequestContext(request))
     else:
 

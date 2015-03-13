@@ -357,8 +357,8 @@ def _get_nav(id,xml_tree=None):
             elif activity['forward_only']  and int(activity['num_attempts']) > 0:
                 activity['pre_condition'] = 'disabled'
 
-            elif activity['num_attempts'] >=  int(activity['attempt_limit']):
-                activity['pre_condition'] = 'disabled'
+            #elif activity['num_attempts'] >=  int(activity['attempt_limit']):
+            #    activity['pre_condition'] = 'disabled'
 
 
 

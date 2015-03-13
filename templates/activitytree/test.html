@@ -6,7 +6,23 @@
     <form id="learning_activity_form"    role="form"  action="{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
 
-    {{ content.intro|safe }}
+        {% if num_attempts == 0 %}
+
+         {% elif attempts_left  > 2   %}
+            <div class="alert alert-success" role="alert"> Todavía tienes {{attempts_left}}  intentos </div>
+
+
+        {% elif attempts_left  > 1   %}
+            <div class="alert alert-warning" role="alert"> Todavía tienes {{attempts_left}}  intentos </div>
+
+        {% elif attempts_left   == 1   %}
+     <div class="alert alert-danger" role="alert"> Es tu último intento </div>
+        {% elif attempts_left   == 0 %}
+     <div class="alert alert-danger" role="alert"> Ya no tienes más intentos </div>
+        {% endif %}
+
+        {{ content.intro|safe }}
+
 
     {% if feedback %}
 
@@ -79,19 +95,21 @@
 
         {{content.bye|safe}}
 
+     {% if attempts_left %}
+
         {% if feedback %}
 
-     <input type="submit" name="check" value="Re-Enviar" class="btn btn-primary">
+        <input type="submit" name="check" value="Re-Enviar" class="btn btn-primary">
 
 
-    {% else %}
+        {% else %}
 
 
 
-        <input type="submit" name="check" value="Enviar" class="btn btn-primary">
+         <input type="submit" name="check" value="Enviar" class="btn btn-primary">
 
+        {% endif %}
     {% endif %}
-
 
 		</form>
 <row>
