@@ -75,7 +75,7 @@ pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
 
     pre_condition_rule = """
 if int(activity['num_attempts']) == 0 :
-    activity['pre_condition'] = 'stopForwardTraversal'
+    activity['pre_condition'] = ''
 elif activity['objective_status'] == 'satisfied':
     activity['pre_condition'] = 'hidden'
 """,
@@ -138,7 +138,7 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
 if get_attr('/activity/introduccion','objective_status') == 'satisfied':
     activity['pre_condition'] = ''
 else:
-    activity['pre_condition'] = 'disabled'
+    activity['pre_condition'] = ''
 """,
     post_condition_rule = "",
 
@@ -153,7 +153,7 @@ else:
     rollup_progress = True,
 
     is_container = True,
-    is_visible = True,
+    is_visible = False,
     order_in_container = 2
     )
 secuencias.save()
