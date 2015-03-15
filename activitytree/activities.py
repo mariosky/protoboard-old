@@ -4,7 +4,7 @@ activities = {
 '/activity/video/intro':
     {'title':u'Introducción',
      'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
-      'youtube_id':'qM5nKU40KVg',
+      'youtube_id':'iUrrwxOG9uU',
       'startSeconds':20,
       'endSeconds':25,
 
@@ -13,12 +13,12 @@ activities = {
 '/activity/video/secuencias':
     {'title':u'Secuencias:Listas, Tuplas y Cadenas',
      'url':u"http://www.youtube.com/embed/aTDJDB_ZjXA?rel=0",
-      'youtube_id':'qM5nKU40KVg'} ,
+      'youtube_id':'KovkopcILQ8'} ,
 
 '/activity/video/ejercicios_basados_en_pruebas':
     {'title':u'Ejercicios Basados en Pruebas',
      'url':u"http://www.youtube.com/embed/6BL6P48r_9A?rel=0",
-      'youtube_id':'aTDJDB_ZjXA'} ,
+      'youtube_id':'iUrrwxOG9uU'} ,
 
 '/activity/video/ejemplo_ejercicio':
     {'title':u'Ejercicios en Protoboard',
