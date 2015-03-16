@@ -124,11 +124,13 @@ def activity(request,uri):
                         s.assignActivityTree(request.user,learning_activity)
                         requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
                         _set_current(request,requested_activity, requested_activity, s)
+                        return HttpResponseRedirect( learning_activity.uri)
                     #If is not a root learning activity then sorry, not found
                     else:
                         return HttpResponseNotFound('<h1>Activity not found</h1>')
             #Else NOT FOUND
-                return HttpResponseNotFound('<h1>Activity not found</h1>')
+                else:
+                    return HttpResponseNotFound('<h1>Activity not found</h1>')
 
             # We have a valid requested_activity, lets handle OTHER NAVIGATION REQUEST
 
