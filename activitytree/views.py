@@ -205,8 +205,10 @@ def activity(request,uri):
         ####
         ####
 
-
-        content = activities[requested_activity.learning_activity.uri]
+        if requested_activity.learning_activity.uri in activities:
+            content = activities[requested_activity.learning_activity.uri]
+        else:
+            content = ""
 
         if (requested_activity.learning_activity.uri).split('/')[2] =='video':
             print "VIDEO",(requested_activity.learning_activity.uri).split('/')[2]
@@ -255,7 +257,10 @@ def activity(request,uri):
         if False:
             return HttpResponseRedirect('/login/?next=%s' % request.path)
 
-        content = activities[la.uri]
+        if la.uri in activities:
+            content = activities[la.uri]
+        else:
+            content = ""
         if (la.uri).split('/')[2] =='video':
             print "VIDEO",(la.uri).split('/')[2]
             return render_to_response('activitytree/video.html',

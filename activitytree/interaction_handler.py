@@ -268,7 +268,8 @@ con = psycopg2.connect(database=settings.DATABASES['default']['NAME'],user=setti
 RECORDS = {}
 
 def _get_children(id):
-    return [v for k,v in RECORDS.items() if id == v["parent_id"] ]
+    children = [v for k,v in RECORDS.items() if id == v["parent_id"] ]
+    return children
 
 def xml_row(row):
     str_dict = {}
@@ -345,6 +346,7 @@ def _get_nav(id,xml_tree=None):
         xml_tree.attrib = xml_row(RECORDS[id])
 
     children = _get_children(id)
+    children.sort(key=lambda x: x['order_in_container'])
     if children:
         for activity in children:
             print 'num_attempts',activity['num_attempts'],int(activity['attempt_limit'])

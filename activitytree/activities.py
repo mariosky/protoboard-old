@@ -1,6 +1,18 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 activities = {
+
+
+'/activity/video/lo-que-ahora-sabemos':
+    {'title':u'Introducción',
+     'url':u"https://www.youtube.com/watch?v=GUxyQ6Mj_kc",
+      'youtube_id':'GUxyQ6Mj_kc'
+
+      },
+
+
+
+
 '/activity/video/intro':
     {'title':u'Introducción',
      'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
