@@ -48,7 +48,7 @@ class LearningActivity(models.Model):
 
     match_rule = models.TextField(blank=True)
     filter_rule = models.TextField(blank=True)
-    rollup_rule  = models.TextField(blank=True)
+    rollup_rule  = models.TextField(blank=True, default="satisfied IF All satisfied")
     
     rollup_objective = models.BooleanField(default=True)
     rollup_progress = models.BooleanField(default=True)
