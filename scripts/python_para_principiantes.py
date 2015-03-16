@@ -7,7 +7,6 @@
 ##
 
 
-
 if __name__ == "__main__":
     import os
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
@@ -16,12 +15,7 @@ if __name__ == "__main__":
     django.setup()
 
 
-
-
-
 from activitytree.models import LearningStyleInventory, LearningActivity, Course, UserLearningActivity
-from django.contrib.auth.models import User
-from activitytree.interaction_handler import SimpleSequencing
 
 
 
@@ -63,10 +57,41 @@ description= u"""
 cursoPPP = Course(short_description=description, root=PPP)
 cursoPPP.save()
 
-pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
-    uri = '/test/poo',
-    parent = PPP, root  = PPP,
 
+
+intro = LearningActivity( name = 'Introduccion', slug = 'Intro',
+    uri = "/activity/introduccion",
+#   lom =
+    parent = PPP, root  = PPP,
+    heading="Introducción al lenguaje",
+    description = "Vemos las principales características del lenguaje y hacemos los primeros ejercicios.",
+    image = "https://s3.amazonaws.com/learning-python/python-logo.png",
+    secondary_text = "Lección 1",
+#   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
+    pre_condition_rule = ""  ,
+    post_condition_rule = "",
+
+    flow = True,
+    forward_only = False,
+    choice = True,
+    choice_exit = False,
+
+
+    rollup_rule  = "satisfied IF All satisfied",
+    rollup_objective = True,
+    rollup_progress = True,
+
+    is_container = True,
+    is_visible = True,
+    order_in_container = 1
+    )
+intro.save()
+
+pretest = LearningActivity(
+    name = 'Experiencia Programando', slug = 'Pretest',
+    uri = '/test/poo',
+    parent = intro, root  = PPP,
+    secondary_text = "Unidad 1",
     heading="¿Que tanto sabes POO?",
     description = "Antes de empezar, dinos algo sobre tu experiencia en programación orientada a objetos.",
     image = "https://s3.amazonaws.com/learning-python/survey.jpg",
@@ -91,37 +116,6 @@ elif activity['objective_status'] == 'satisfied':
     order_in_container = 0
     )
 pretest.save()
-
-
-
-intro = LearningActivity( name = 'Introduccion', slug = 'Intro',
-    uri = "/activity/introduccion",
-#   lom =
-    parent = PPP, root  = PPP,
-    heading="Introducción al lenguaje",
-    description = "Vemos las principales características del lenguaje y hacemos los primeros ejercicios.",
-    image = "https://s3.amazonaws.com/learning-python/python-logo.png",
-    secondary_text = "Lección",
-#   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
-    pre_condition_rule = ""  ,
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = False,
-    choice = True,
-    choice_exit = False,
-
-
-    rollup_rule  = "satisfied IF All satisfied",
-    rollup_objective = True,
-    rollup_progress = True,
-
-    is_container = True,
-    is_visible = True,
-    order_in_container = 1
-    )
-intro.save()
-
 
 secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
     uri = "/activity/secuencias",
