@@ -13,7 +13,7 @@ urlpatterns = patterns('',
       (r'^welcome/$','activitytree.views.welcome'),
       (r'^dashboard/(?P<uri>(\w(\/*))+)$','activitytree.views.dashboard'),
 
-      (r'^activity/(?P<uri>\w(\/*))+$','activitytree.views.activity'),
+      (r'^activity/(?P<uri>[\w-](\/*))+$','activitytree.views.activity'),
       (r'^activity/video/(?P<uri>\w(\/*))+','activitytree.views.activity'),
       (r'^test/(?P<uri>\w(\/*))+$','activitytree.views.test'),
       (r'^survey/(?P<uri>\w+)$','activitytree.views.survey'),
