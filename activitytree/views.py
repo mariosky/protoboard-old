@@ -674,6 +674,9 @@ def _check_survey(post_dict, quiz):
     return checked
 
 def login_view(request,template_name='registration/login.html',  redirect_field_name=REDIRECT_FIELD_NAME):
+    print request.GET,request.GET['next']
+    if 'next' in request.GET:
+        request.session['after_login'] = request.GET['next']
     return TemplateResponse(request, template_name, current_app=None)
 
 
@@ -705,6 +708,7 @@ def facebook_get_login(request):
     return HttpResponseRedirect(url)
 
 def facebook_login(request):
+    print 'segundo:',request.session.values()
     if 'error' in request.GET:
         return HttpResponseRedirect('/')
 
@@ -742,6 +746,8 @@ def facebook_login(request):
     if user:
         if user.is_active:
             login(request, user)
+            if 'after_login' in request.session:
+                return HttpResponseRedirect(request.session['after_login'])
             return HttpResponseRedirect('/')
         else:
             error = 'AUTH_DISABLED'
