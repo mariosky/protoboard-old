@@ -119,18 +119,18 @@ def activity(request,uri):
             if not requested_activity : # The requested_activity was not found
             # Maybe a
             # 'start' REQUEST?
-                if 'nav' in request.GET and request.GET['nav'] == 'start':
-                    if learning_activity and learning_activity.root is None:
-                        s.assignActivityTree(request.user,learning_activity)
-                        requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
-                        _set_current(request,requested_activity, requested_activity, s)
-                        return HttpResponseRedirect( learning_activity.uri)
-                    #If is not a root learning activity then sorry, not found
-                    else:
-                        return HttpResponseNotFound('<h1>Activity not found</h1>')
-            #Else NOT FOUND
+            #    if 'nav' in request.GET and request.GET['nav'] == 'start':
+                if learning_activity and learning_activity.root is None:
+                    s.assignActivityTree(request.user,learning_activity)
+                    requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
+                    _set_current(request,requested_activity, requested_activity, s)
+                    return HttpResponseRedirect( learning_activity.uri)
+                #If is not a root learning activity then sorry, not found
                 else:
                     return HttpResponseNotFound('<h1>Activity not found</h1>')
+            #Else NOT FOUND
+                #else:
+                #    return HttpResponseNotFound('<h1>Activity not found</h1>')
 
             # We have a valid requested_activity, lets handle OTHER NAVIGATION REQUEST
 
