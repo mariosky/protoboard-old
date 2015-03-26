@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
+
+
+
+
 activities = {
 
 
@@ -3032,3 +3036,17 @@ print json.dumps(result)
 }
 
 
+if __name__ == "__main__":
+
+    from pymongo import MongoClient
+    client = MongoClient()
+    a = { '_id':'/activity/video/lo-que-ahora-sabemos',
+          'title':u'Introducción',
+          'url':u"https://www.youtube.com/watch?v=GUxyQ6Mj_kc",
+          'youtube_id':'GUxyQ6Mj_kc'}
+
+
+    db = client.protoboard_database
+    activities_collection = db.activities_collection
+    activity_id = activities_collection.insert(a)
+    print activity_id
