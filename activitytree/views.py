@@ -9,7 +9,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout, get_user_model
+from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout as auth_logout, get_user_model
 from django.contrib.sites.models import get_current_site
 from django.utils.http import is_safe_url
 from django.shortcuts import resolve_url
@@ -27,7 +27,7 @@ from activitytree.models import Course,ActivityTree,UserLearningActivity, Learni
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.interaction_handler import get_nav
 
-from activitytree.activities import activities
+from activitytree.activities import activities, multi_device_activities
 
 #from social.backends.google import GooglePlusAuth
 
@@ -38,14 +38,12 @@ from eval_code.RedisCola import Cola, Task
 import json
 from django.conf import settings
 
-# def logout(request):
-#     """Logs out user"""
-#     auth_logout(request)
-#     plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
-#     plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
-#     courses = Course.objects.all()
-#     return render_to_response('activitytree/welcome.html', {'courses':courses,'plus_scope':plus_scope,'plus_id':plus_id}
-#                              , RequestContext(request))
+
+import redis
+ip_couch = "http://10.10.184.236:5984"
+
+redis_service = redis.Redis("127.0.0.1")
+
 
 def welcome(request):
     # plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
@@ -210,8 +208,9 @@ def activity(request,uri):
         else:
             content = ""
 
+        update_pool(requested_activity.learning_activity.uri)
+
         if (requested_activity.learning_activity.uri).split('/')[2] =='video':
-            print "VIDEO",(requested_activity.learning_activity.uri).split('/')[2]
             return render_to_response('activitytree/video.html',
 
                                   {'XML_NAV':XML,
@@ -262,7 +261,6 @@ def activity(request,uri):
         else:
             content = ""
         if (la.uri).split('/')[2] =='video':
-            print "VIDEO",(la.uri).split('/')[2]
             return render_to_response('activitytree/video.html',
 
                                   {'XML_NAV':None,
@@ -674,10 +672,35 @@ def _check_survey(post_dict, quiz):
     return checked
 
 def login_view(request,template_name='registration/login.html',  redirect_field_name=REDIRECT_FIELD_NAME):
-    print request.GET,request.GET['next']
-    if 'next' in request.GET:
-        request.session['after_login'] = request.GET['next']
-    return TemplateResponse(request, template_name, current_app=None)
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        context = {}
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                if 'next' in request.GET:
+                    request.session['after_login'] = request.GET['next']
+                    return HttpResponseRedirect(request.GET['next'])
+                else:
+
+                    return HttpResponseRedirect('/')
+
+
+                # Redirect to a success page.
+            else:
+
+                context['errors'] = 'User is locked'
+
+        else:
+            context['errors'] = 'Invalid Login'
+
+        return TemplateResponse(request, template_name,context, current_app=None)
+
+    else:
+            return TemplateResponse(request, template_name, current_app=None)
 
 
 
@@ -708,7 +731,6 @@ def facebook_get_login(request):
     return HttpResponseRedirect(url)
 
 def facebook_login(request):
-    print 'segundo:',request.session.values()
     if 'error' in request.GET:
         return HttpResponseRedirect('/')
 
@@ -722,12 +744,10 @@ def facebook_login(request):
              "client_secret" : settings.FACEBOOK_APP_SECRET,
              "code" : code }
 
-    print code, args
 
     response = urllib.urlopen( "https://graph.facebook.com/oauth/access_token?" + urllib.urlencode(args))
 
     response = urlparse.parse_qs(response.read())
-    print "response" , response
     access_token = response["access_token"][-1]
     profile = json.load(urllib.urlopen(
         "https://graph.facebook.com/me?" +
@@ -739,10 +759,9 @@ def facebook_login(request):
 
     facebook_session.expires = expires
     facebook_session.save()
-    print facebook_session
+
 
     user = authenticate(token=access_token)
-    print "Usuario",user
     if user:
         if user.is_active:
             login(request, user)
@@ -779,3 +798,13 @@ def logout_view(request):
     # back to the homepage.
     logout(request)
     return HttpResponseRedirect('/')
+
+
+def update_pool(uri):
+    if uri:
+        print uri
+        if uri in multi_device_activities:
+            for device in multi_device_activities[uri]:
+                print device
+                redis_service.set(device["dispositivo"],{"url":ip_couch + device["url"] ,"estado":device["estado"],"tipo":device["tipo"]} )
+

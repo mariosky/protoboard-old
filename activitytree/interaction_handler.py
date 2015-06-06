@@ -349,7 +349,6 @@ def _get_nav(id,xml_tree=None):
     children.sort(key=lambda x: x['order_in_container'])
     if children:
         for activity in children:
-            print 'num_attempts',activity['num_attempts'],int(activity['attempt_limit'])
             exec(activity['pre_condition_rule'])
             if activity['pre_condition'] == 'stopForwardTraversal':
                 ET.SubElement(xml_tree,'item',xml_row(activity))
@@ -381,5 +380,4 @@ def get_attr(uri, attr):
 
 def get_nav(root):
     sql(root.learning_activity.id,root.user_id)
-    print RECORDS
     return _get_nav(root.learning_activity.id)

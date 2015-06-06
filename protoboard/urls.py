@@ -33,6 +33,7 @@ urlpatterns = patterns('',
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout
       (r'^accounts/login/$', 'activitytree.views.welcome'),
+      url('', include('django.contrib.auth.urls')),
       #url('', include('social.apps.django_app.urls', namespace='social')),
 
 
