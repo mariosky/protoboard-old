@@ -112,17 +112,6 @@
                     <li class="next"><span class="nav_next">  Continuar &rarr;</span></li>
                </ul>
 
-
-        <!-- <div class="form-group">
-            <label for="r10">Comentario:</label>
-            <select id="exit" name="objective_measure" class="form-control" >
-				<option value="70"> Ninguno </option>
-				<option value="100">Si le entendí</option>
-				<option value="50">Más o menos  </option>
-				<option value="20"> Para nada </option>
-	        </select>
-
-        </div> -->
        </form>
 
 
@@ -199,72 +188,9 @@ $(document).ready(function() {
 });
 
 
-// Report
-
-/*function report() {
-
-    $("#report").html("<b>Keystroke Dynamics</b><br/>");
-    for (k in keypresses) {
-	$("#report").append("Timestamp: " + keypresses[k].timestamp + " Keycode: " + keypresses[k].keycode + " Type: " + keypresses[k].type + "<br />");
-    }
-
-    $("#report").append("<br /><b>Mouse Dynamics - Movement</b><br />");
-    for (k in mouse) {
-	$("#report").append("Timestamp: " + mouse[k].timestamp + " PositionX: " + mouse[k].position.x + " PositionY: " + mouse[k].position.y + "<br />");
-    }
-
-    $("#report").append("<br /><b>Mouse Dynamics - Clicks</b><br />");
-    for (k in mousepresses) {
-	$("#report").append("Timestamp: " + mousepresses[k].timestamp + " Button: " + mousepresses[k].mousecode + " Type: " + mousepresses[k].type + "<br />");
-    }
-    $("#report").append("<br />");
-    $("#report").append(JSON.stringify({"keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse}));
-
-}
-*/
     </script>
 
- <script type="text/javascript" charset="utf-8">
-     /*
-        $( document ).ready(function() {
-	  $( ".nav_next" ).unbind( "click");
-	  $( ".nav_prev" ).unbind( "click");
-          $( ".nav_next" ).bind( "click", function( event ) {
-	    var kmdynamics = JSON.stringify({"keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse});
-                   var form =  $("#learning_activity_form");
-                  // form.append( $('<input>').attr({ type: 'hidden',
-                  //                                  name: 'nav_event',
-                  //                                  value:'next'
-                  //                                }));
-	           //Keyboard & Mouse Dynamics
-	           form.append( $('<input>').attr({ type: 'hidden',
-	                                            name: 'kmdynamics',
-	                                            value: kmdynamics}));
 
-                  form.submit();
-
-
-
-             });
-
-            $( ".nav_prev" ).bind( "click", function( event ) {
-	      var kmdynamics = JSON.stringify({"keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse});
-                   var form =  $("#learning_activity_form");
-               //    form.append( $('<input>').attr({ type: 'hidden',
-               //                                     name: 'nav_event',
-               //                                     value:'prev'
-               //                                   }));
-	           //Keyboard & Mouse Dynamics
-	           form.append( $('<input>').attr({ type: 'hidden',
-	                                            name: 'kmdynamics',
-	                                            value: kmdynamics}));
-
-                  form.submit();
-
-            });
-        });
-         */
-</script>
 
 
     <script type="text/javascript" charset="utf-8">
@@ -320,7 +246,6 @@ $(document).ready(function() {
          $("#send_btn_queue").addClass("disabled" );
          var code = editor.getValue();
 
-           // alert(code);
 
            $.ajax(
                 {
@@ -444,11 +369,11 @@ $(document).ready(function() {
 
    <script src="{{ MEDIA_URL }}js/ace.js" type="text/javascript" charset="utf-8"></script>
    <script src="{{ MEDIA_URL }}js/theme-chrome.js" type="text/javascript" charset="utf-8"></script>
-   <script src="{{ MEDIA_URL }}js/mode-python.js" type="text/javascript" charset="utf-8"></script>
+   <script src="{{ MEDIA_URL }}js/mode-{{ program_quiz.lang }}.js" type="text/javascript" charset="utf-8"></script>
    <script type="text/javascript" charset="utf-8">
         editor = ace.edit("editor");
         editor.setTheme("ace/theme/chrome");
-        editor.getSession().setMode("ace/mode/python");
+        editor.getSession().setMode("ace/mode/{{ program_quiz.lang }}");
 
    </script>
 

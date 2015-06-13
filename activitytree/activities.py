@@ -137,57 +137,53 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""},
+""","lang":"curso", "type":"unit_test" },
 
  '/program/PPP/2':
-        {   'title':u"¿Es par?",
+        {   'title':u"Clase Producto",
             'initial_code':u"""
-def es_par():
-    pass
+using System;
+public class Product
+{
+        public   code;
+        public   desc;
+
+        public Product(int c, string d)
+        {
+        code=c;
+        desc=d;
+        }
+
+}
 """,
             'correct_code':u""" """,
-             'instructions':u"""<p>Escribe una función llamada <code> es_par </code> la cual tome un
-             parámetro entero y regrese <code> True </code> si es entero y <code> False </code>
-             si no lo es.</p>
-            </code>""",
-            'unit_test':u"""
-import sys
-import unittest
-import json
+             'instructions':u"""<p>Completa la clase llamada <code> Producto </code> """,
+            'unit_test':u"""[TestFixture]
+public class ProductTest
+{
 
-class ResultadoPrueba(unittest.TestResult):
-    def __init__(self):
-         super(ResultadoPrueba, self).__init__()
-         self.success = []
-    def addSuccess(self, test):
-         self.success.append(test)
-    def shouldStop(self, test):
-         return False
+    [Test, Description("Prueba del Constructor")]
+    public void Constructor()
+    {
+        Product p = new Product(1,"hola");
+        Console.WriteLine(p.desc);
+        Console.WriteLine("YES!");
 
 
-class Test(unittest.TestCase):
-    def setUp(self):
-        pass
-    def test_cero(self):
-        self.assertEqual(es_par(0),True)
-    def test_par(self):
-        self.assertEqual(es_par(6),True)
+        // Constraint Syntax
+        Assert.AreEqual(p.code,1);
 
-suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-Resultado = ResultadoPrueba()
-suite.run(Resultado)
-result = {}
+    }
 
-if Resultado.wasSuccessful():
-    result['result'] = "Success"
-else:
-    result['result'] = "Failure"
-result['errors']=  [str(e[0])   for e in Resultado.errors]
-result['failures']=  [str(e[0]) for e in Resultado.failures]
-result['successes']=  [str(e)  for e in Resultado.success]
-print "!!!---"
-print json.dumps(result)
-"""},
+    [Test, Description("Public Descripción")]
+    public void Descripcion()
+    {
+        Product p = new Product(1,"hola");
+        // Constraint Syntax
+        Assert.AreEqual(p.desc,"hola");
+
+    }
+}""","lang":"csharp", "type":"unit_test" },
 
 
  '/program/PPP/3':
@@ -245,7 +241,10 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""},
+""", "lang":"python", "type":"unit_test"  },
+
+
+
 
  '/program/PPP/4':
         {   'title':u"distancia()",

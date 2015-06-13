@@ -491,13 +491,16 @@ def program(request,uri):
 def execute_queue(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
-        server = Cola("curso")
+
 
         code = rpc["params"][0]
         activity_uri = rpc["method"]
         unit_test = activities[activity_uri]['unit_test']
+        print activities[activity_uri]['lang']
+        server = Cola(activities[activity_uri]['lang'])
 
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
+        print task
         task_id = server.enqueue(**task)
 
         if request.user.is_authenticated():
@@ -522,15 +525,18 @@ def get_result(request):
         #TO DO:
         # No ID, Task Not Found
         task_id = rpc["id"]
+        print task_id
         t = Task(id=task_id)
+        print "Cola", task_id.split(':')[0]
 
         # outcome:
         # -1 No result found
         # 0 Sub-process Success
         # 1 Sub-process Failure
-        if t.get_result('curso'):
+        if t.get_result(task_id.split(':')[0]):
 
             if t.result:
+                print t.result
 
                 string_json = json.loads( t.result[0])
 
