@@ -537,8 +537,11 @@ def get_result(request):
 
             if t.result:
                 print t.result
-
-                string_json = json.loads( t.result[0])
+                string_json=""
+                try:
+                    string_json = json.loads( t.result[0])
+                except Exception, e:
+                    print e
 
                 if request.user.is_authenticated():
                     ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0], user=request.user)
