@@ -96,18 +96,7 @@ def foo(l):
     """,
             'instructions':u"""<p>Escribe una función llamada foo la cual imprima Hola.</p>
             </code>""",
-            'unit_test':u"""import unittest, sys
-import json
-
-class ResultadoPrueba(unittest.TestResult):
-    def __init__(self):
-         super(ResultadoPrueba, self).__init__()
-         self.success = []
-    def addSuccess(self, test):
-         self.success.append(test)
-    def shouldStop(self, test):
-         return False
-
+            'unit_test':u"""
 class Test(unittest.TestCase):
     def test_foo(self):
         from StringIO import StringIO
@@ -122,26 +111,12 @@ class Test(unittest.TestCase):
         finally:
             sys.stdout = saved_stdout
             print output
-
-suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-Resultado = ResultadoPrueba()
-suite.run(Resultado)
-result = {}
-
-if Resultado.wasSuccessful():
-    result['result'] = "Success"
-else:
-    result['result'] = "Failure"
-result['errors']=  [str(e[0])   for e in Resultado.errors]
-result['failures']=  [str(e[0]) for e in Resultado.failures]
-result['successes']=  [str(e)  for e in Resultado.success]
-print "!!!---"
-print json.dumps(result)
-""","lang":"curso", "type":"unit_test" },
+""","lang":"python", "type":"unit_test" },
 
  '/program/PPP/2':
         {   'title':u"Clase Producto",
             'initial_code':u"""
+using System.IO;
 using System;
 public class Product
 {
@@ -154,11 +129,17 @@ public class Product
         desc=d;
         }
 
+        public void Print()
+        {
+        Console.WriteLine("Producto {0}: {1}", code,desc);
+        }
+
 }
 """,
             'correct_code':u""" """,
              'instructions':u"""<p>Completa la clase llamada <code> Producto </code> """,
-            'unit_test':u"""[TestFixture]
+            'unit_test':u"""
+[TestFixture]
 public class ProductTest
 {
 
@@ -166,21 +147,29 @@ public class ProductTest
     public void Constructor()
     {
         Product p = new Product(1,"hola");
-        Console.WriteLine(p.desc);
-        Console.WriteLine("YES!");
-
-
         // Constraint Syntax
         Assert.AreEqual(p.code,1);
-
     }
 
-    [Test, Description("Public Descripción")]
-    public void Descripcion()
+
+    [Test, Description("Imprimir la Descripción")]
+    public void PrintTest()
     {
         Product p = new Product(1,"hola");
-        // Constraint Syntax
-        Assert.AreEqual(p.desc,"hola");
+
+        p.Print();
+        using (StringWriter sw = new StringWriter())
+        {
+            Console.SetOut(sw);
+
+
+            p.Print();
+
+        string expected = "Producto 1: hola";
+        StringAssert.StartsWith(expected, sw.ToString());
+
+
+        }
 
     }
 }""","lang":"csharp", "type":"unit_test" },
@@ -205,20 +194,6 @@ def suma(a,b):
                 <p>-1</p>
             </code>""",
             'unit_test':u"""
-import sys
-import unittest
-import json
-
-class ResultadoPrueba(unittest.TestResult):
-    def __init__(self):
-         super(ResultadoPrueba, self).__init__()
-         self.success = []
-    def addSuccess(self, test):
-         self.success.append(test)
-    def shouldStop(self, test):
-         return False
-
-
 class Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -226,20 +201,7 @@ class Test(unittest.TestCase):
         self.assertEqual(suma(3,9),12)
     def test_negativos(self):
         self.assertEqual(suma(5,-12),-7)
-
-suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-Resultado = ResultadoPrueba()
-suite.run(Resultado)
-result = {}
-
-if Resultado.wasSuccessful():
-    result['result'] = "Success"
-else:
-    result['result'] = "Failure"
-result['errors']=  [str(e[0])   for e in Resultado.errors]
-result['failures']=  [str(e[0]) for e in Resultado.failures]
-result['successes']=  [str(e)  for e in Resultado.success]
-print "!!!---"
+"
 print json.dumps(result)
 """, "lang":"python", "type":"unit_test"  },
 
@@ -262,20 +224,6 @@ def distancia():
                 <p>7</p>
             </code>""",
             'unit_test':u"""
-import sys
-import unittest
-import json
-
-class ResultadoPrueba(unittest.TestResult):
-    def __init__(self):
-         super(ResultadoPrueba, self).__init__()
-         self.success = []
-    def addSuccess(self, test):
-         self.success.append(test)
-    def shouldStop(self, test):
-         return False
-
-
 class Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -283,21 +231,6 @@ class Test(unittest.TestCase):
         self.assertEqual(distancia(3,9),6)
     def test_negativos(self):
         self.assertEqual(distancia(5,-12),17)
-
-suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-Resultado = ResultadoPrueba()
-suite.run(Resultado)
-result = {}
-
-if Resultado.wasSuccessful():
-    result['result'] = "Success"
-else:
-    result['result'] = "Failure"
-result['errors']=  [str(e[0])   for e in Resultado.errors]
-result['failures']=  [str(e[0]) for e in Resultado.failures]
-result['successes']=  [str(e)  for e in Resultado.success]
-print "!!!---"
-print json.dumps(result)
 """},
 
 

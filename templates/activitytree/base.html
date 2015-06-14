@@ -423,7 +423,7 @@ background-position: left top;
     <script  type="text/javascript" src="{{MEDIA_URL}}js/mustache.min.js"></script>
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
 
-
+{% if XML_NAV  %}
 
   <script type="text/javascript" charset="utf-8">
 
@@ -434,7 +434,6 @@ background-position: left top;
 
 
         $( document ).ready(function() {
-
 
             var puntos_totales = 0;
             $xml.find("item[objective_measure!='None']").each(function() {
@@ -496,6 +495,8 @@ $(document).ready(function() {
 
 
     </script>
+
+    {% endif  %}
   {% block scripts %}
 
   {% endblock scripts %}
