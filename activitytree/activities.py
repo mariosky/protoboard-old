@@ -41,12 +41,7 @@ activities = {
      'url':u"http://www.youtube.com/embed/Htk9KAl1GxU?rel=0",
       'youtube_id':'Htk9KAl1GxU'} ,
 
-'/activity/PB':u"""<h3 id="welcome">Bienvenidos</h3>
-      <p> En este tutorial aprenderás los conceptos básicos de la programación en Python </p>
-      <p> Orientado a principiantes muy avanzados, que se maravillen con la simplicidad de este hola mundo: </p>
-            <p><code>print "hola mundo"</code></p>
-          <p> Python es utilizado por la  Nasa, Google, Instagram y por su puesto protoboard.org</p>
-    """,
+'/activity/PB':u"""""",
 
 '/activity/introduccion': u""" <h3>Introducción</h3>
   <p> Empezamos con una serie de videos introductorios al tutorial y después EJERCICIOS.
