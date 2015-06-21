@@ -1,11 +1,9 @@
 __author__ = 'mariosky'
 import redis
+import os
 
-HOST = "45.55.90.203"
+HOST = os.environ['REDIS_HOST']
 PORT = 6379
-APP_NAME = 'cola'
-WORKER_HEARTBEAT_INTERVAL = 10 #Time a worker waits for a Task before unblocking to send a heartbeat
-
 
 r = redis.Redis(host=HOST, port=PORT)
 
@@ -13,7 +11,7 @@ r = redis.Redis(host=HOST, port=PORT)
 class Task:
     def __init__(self, **kwargs):
         self.id = kwargs['id']
-        self.method = kwargs.get('method', None)
+        self.method =  kwargs.get('method', None)
         self.params = kwargs.get('params', {})
         self.state = kwargs.get('state', 'created')
         self.expire = kwargs.get('expire', None)
@@ -60,7 +58,7 @@ class Task:
 
 
 class Cola:
-    def __init__(self, name = APP_NAME):
+    def __init__(self, name):
         self.app_name = name
         self.task_counter = self.app_name+':task_counter'
         self.pending_set = self.app_name+':pending_set'
@@ -68,12 +66,11 @@ class Cola:
         self.result_set = self.app_name+':result_set'
         self.worker_set = self.app_name+':worker_set'
 
-
     def initialize(self):
         r.flushall()
         r.setnx(self.task_counter,0)
 
-    def enqueue(self, **kwargs ):
+    def enqueue(self, **kwargs):
         if kwargs['id'] is None:
             kwargs['id'] = "%s:task:%s" % (self.app_name, r.incr(self.task_counter))
         t = Task(**kwargs)
@@ -91,33 +88,13 @@ class Cola:
                 dead.append(w)
         return dead
 
+    def get_workers(self):
+        pattern = '%s:worker:*' % (self.app_name)
+        return r.keys(pattern)
 
+    @staticmethod
+    def get_all_workers():
+        pattern = '*:worker:*'
+        print pattern
 
-class Worker:
-    def __init__(self, worker_id, cola):
-        self.cola = cola
-        self.id = '%s:worker:%s' % (cola.app_name, worker_id)
-        r.sadd(self.cola.worker_set, self.id)
-
-    def pull_task(self, time_out=WORKER_HEARTBEAT_INTERVAL):
-        #Pop task from queue
-        #This is a blocking operation
-        #task is a tuple (queue_name, task_id)
-        task = r.blpop(self.cola.task_queue, time_out)
-        if task:
-            #Get Task Details
-            _task = r.get(task[1])
-            #Get Time_stamp
-            time_stamp =r.time()[0]
-            #Store task in pending_set ordered by time
-            # zadd NOTE: The order of arguments differs from that of the official ZADD command.
-            r.zadd(self.cola.pending_set, '%s:%s' % (self.id, task[1]), time_stamp)
-            # Return a Task object
-            return Task(**eval(_task))
-        #If there is no task to do return None
-        else:
-            return None
-
-    def send_heartbeat(self, timeout = WORKER_HEARTBEAT_INTERVAL+5):
-        r.set(self.id, 1)
-        r.expire(self.id, timeout)
+        return r.keys(pattern)

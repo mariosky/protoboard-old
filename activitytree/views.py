@@ -29,7 +29,7 @@ from activitytree.interaction_handler import get_nav
 
 from activitytree.activities import activities, multi_device_activities
 
-#from social.backends.google import GooglePlusAuth
+from mongo_activities import Activity
 
 import urllib
 import urlparse
@@ -172,14 +172,12 @@ def activity(request,uri):
                 # Go TO NEXT ACTIVITY
                 s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
                 next_uri = s.get_next(root, current_activity)
-                print 'NEXT'
 
             # 'prev' REQUEST
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
                 s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
                 next_uri = s.get_prev(root, current_activity)
-                print 'PREV'
 
             #No more activities ?
             if next_uri is None:
@@ -203,8 +201,14 @@ def activity(request,uri):
         ####
         ####
 
-        if requested_activity.learning_activity.uri in activities:
-            content = activities[requested_activity.learning_activity.uri]
+        #if requested_activity.learning_activity.uri in activities:
+        #    content = activities[requested_activity.learning_activity.uri]
+        #else:
+        #    content = ""
+        activity_content = Activity.get(requested_activity.learning_activity.uri)
+
+        if activity_content and 'content' in activity_content:
+            content = activity_content['content']
         else:
             content = ""
 
@@ -215,7 +219,7 @@ def activity(request,uri):
 
                                   {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
-                                   'video':content,
+                                   'video':activity_content,
                                    'breadcrumbs':breadcrumbs,
                                    'root':requested_activity.learning_activity.get_root().uri},
                                     context_instance=RequestContext(request))
@@ -256,10 +260,19 @@ def activity(request,uri):
         if False:
             return HttpResponseRedirect('/login/?next=%s' % request.path)
 
-        if la.uri in activities:
-            content = activities[la.uri]
+        activity_content = Activity.get(la.uri)
+
+        if activity_content and 'content' in activity_content:
+            content = activity_content['content']
         else:
             content = ""
+
+        #if la.uri in activities:
+        #    content = activities[la.uri]
+        #else:
+        #    content = ""
+
+
         if (la.uri).split('/')[2] =='video':
             return render_to_response('activitytree/video.html',
 
@@ -311,12 +324,13 @@ def test(request, uri, objective_status = None):
         elif request.method == 'POST':
             if 'check' in request.POST and attempts_left :
 
-                    quiz = activities[requested_activity.learning_activity.uri]
+                    #quiz = activities[requested_activity.learning_activity.uri]
+                    quiz = Activity.get(requested_activity.learning_activity.uri)
 
                     feedback = _check_quiz(request.POST, quiz)
                     # Updates the current Learning Activity
                     objective_measure = float(feedback['total_correct'])/len(quiz['questions'])*100
-                    if feedback['total_correct'] >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
+                    if feedback['total_correct'] >= quiz['satisfied_at_least']:
                         objective_status='satisfied'
                     else:
                         objective_status='notSatisfied'
@@ -335,9 +349,10 @@ def test(request, uri, objective_status = None):
 
 
 
-        content = activities[requested_activity.learning_activity.uri]
+        test = Activity.get(requested_activity.learning_activity.uri)
+
         if feedback:
-            for q in content['questions']:
+            for q in test['questions']:
                 if q['id'] in feedback:
                     q['feedback'] = feedback[q['id']]
                     if q['interaction']  in ['choiceInteraction','simpleChoice']:
@@ -346,7 +361,7 @@ def test(request, uri, objective_status = None):
         return render_to_response('activitytree/'+(requested_activity.learning_activity.uri).split('/')[1]+'.html',
                                   {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
-                                   'content':content,
+                                   'content':test,
                                    'feedback':feedback,
                                    'breadcrumbs':breadcrumbs,
 
@@ -385,7 +400,7 @@ def survey(request, uri, objective_status = None):
         elif request.method == 'POST':
             if 'check' in request.POST:
 
-                feedback = _check_survey(request.POST, activities[requested_activity.learning_activity.uri])
+                feedback = _check_survey(request.POST, Activity.get(requested_activity.learning_activity.uri))
 
                 event = ULA_Event.objects.create(ULA=requested_activity,context=feedback)
                 event.save()
@@ -408,11 +423,11 @@ def survey(request, uri, objective_status = None):
 
         breadcrumbs = s.get_current_path(requested_activity)
 
-        content = activities[requested_activity.learning_activity.uri]
+        test = Activity.get(requested_activity.learning_activity.uri)
 
 
         if feedback:
-            for q in content['questions']:
+            for q in test['questions']:
                 if q['id'] in feedback:
                     q['feedback'] = feedback[q['id']]
                     if q['interaction']  in ['choiceInteraction','simpleChoice']:
@@ -421,7 +436,7 @@ def survey(request, uri, objective_status = None):
         return render_to_response('activitytree/'+(requested_activity.learning_activity.uri).split('/')[1]+'.html',
                                   {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
-                                   'content':content,
+                                   'content':test,
                                    'feedback':feedback,
                                    'breadcrumbs':breadcrumbs,
                                    'root':requested_activity.learning_activity.get_root().uri},
@@ -440,7 +455,19 @@ def program(request,uri):
         requested_activity = _get_ula(request)
 
         if not requested_activity:
-            return HttpResponseNotFound('<h1>Activity not found</h1>')
+            print request.path
+            program_test = Activity.get(request.path)
+            if program_test:
+                return render_to_response('activitytree/program.html', {'program_quiz':program_test,
+                                                                'activity_uri':request.path,
+                                                                'breadcrumbs':None,
+                                                                'root':None,
+                                                                'XML_NAV':None
+                                                                },
+                                  context_instance=RequestContext(request))
+            else:
+
+                return HttpResponseNotFound('<h1>Activity not found</h1>')
 
         # Gets the root of the User Learning Activity
         root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
@@ -456,7 +483,7 @@ def program(request,uri):
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
         breadcrumbs = s.get_current_path(requested_activity)
 
-        return render_to_response('activitytree/program.html', {'program_quiz':activities[requested_activity.learning_activity.uri],
+        return render_to_response('activitytree/program.html', {'program_quiz':Activity.get(requested_activity.learning_activity.uri),
                                                                 'activity_uri':requested_activity.learning_activity.uri,
                                                                 'breadcrumbs':breadcrumbs,
                                                                 'root':requested_activity.learning_activity.get_root().uri,
@@ -466,16 +493,27 @@ def program(request,uri):
 
     else:
         try:
-            la = LearningActivity.objects.filter(uri=request.path)[0]
+            la = LearningActivity.objects.get(uri=request.path)
         except ObjectDoesNotExist:
-            return HttpResponseNotFound('<h1>Activity not found</h1>')
+            program_test = Activity.get(request.path)
+            if program_test:
+                return render_to_response('activitytree/program.html', {'program_quiz':program_test,
+                                                                'activity_uri':request.path,
+                                                                'breadcrumbs':None,
+                                                                'root':None,
+                                                                'XML_NAV':None
+                                                                },
+                                  context_instance=RequestContext(request))
+            else:
+
+                return HttpResponseNotFound('<h1>Activity not found</h1>')
             # Check if public, all public for now
         if False:
             return HttpResponseRedirect('/login/?next=%s' % request.path)
 
-        content = activities[la.uri]
+
         if request.method == 'GET':
-            return render_to_response('activitytree/program.html', {'program_quiz':activities[la.uri],
+            return render_to_response('activitytree/program.html', {'program_quiz':Activity.get(la.uri),
                                                                 'activity_uri':la.uri,
                                                                 'XML_NAV':None,
                                    'breadcrumbs':None
@@ -495,21 +533,27 @@ def execute_queue(request):
 
         code = rpc["params"][0]
         activity_uri = rpc["method"]
-        unit_test = activities[activity_uri]['unit_test']
-        print activities[activity_uri]['lang']
-        server = Cola(activities[activity_uri]['lang'])
+        program_test = Activity.get(activity_uri)
+        unit_test = program_test['unit_test']
+        server = Cola(program_test['lang'])
 
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
-        print task
         task_id = server.enqueue(**task)
 
         if request.user.is_authenticated():
-            ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["method"], user=request.user )
-            s = SimpleSequencing()
-            s.update(ula)
-            ## Mouse Dynamics
-            event = ULA_Event.objects.create(ULA=ula,context=rpc)
-            event.save()
+            ula = None
+            try:
+                ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["method"], user=request.user )
+
+                s = SimpleSequencing()
+                s.update(ula)
+                ## Mouse Dynamics
+                event = ULA_Event.objects.create(ULA=ula,context=rpc)
+                event.save()
+            except ObjectDoesNotExist:
+                #Assume is a non assigned program
+                print "Non"
+                pass
 
         rpc['task_id']=task_id
 
@@ -525,9 +569,7 @@ def get_result(request):
         #TO DO:
         # No ID, Task Not Found
         task_id = rpc["id"]
-        print task_id
         t = Task(id=task_id)
-        print "Cola", task_id.split(':')[0]
 
         # outcome:
         # -1 No result found
@@ -536,7 +578,6 @@ def get_result(request):
         if t.get_result(task_id.split(':')[0]):
 
             if t.result:
-                print t.result
                 string_json=""
                 try:
                     string_json = json.loads( t.result[0])
@@ -544,14 +585,18 @@ def get_result(request):
                     print e
 
                 if request.user.is_authenticated():
-                    ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0], user=request.user)
-                    s = SimpleSequencing()
+                    try:
+                        ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0], user=request.user)
+                        s = SimpleSequencing()
 
-                    if string_json['result'] == 'Success':
-                        s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=30,attempt=True)
+                        if string_json['result'] == 'Success':
+                            s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=30,attempt=True)
 
-                    else:
-                        s.update(ula,attempt=True)
+                        else:
+                            s.update(ula,attempt=True)
+                    except Exception, e:
+                        print e
+
                 result = json.dumps({'result':string_json, 'outcome': t.result[1]})
                 return HttpResponse(result , content_type='application/javascript')
 
@@ -562,7 +607,7 @@ def get_result(request):
 
 def _get_learning_activity(request):
     try:
-        la = LearningActivity.objects.filter(uri=request.path)[0]
+        la = LearningActivity.objects.get(uri=request.path)
     except ObjectDoesNotExist:
         return None
     return la
@@ -811,7 +856,6 @@ def logout_view(request):
 
 def update_pool(uri):
     if uri:
-        print uri
         if uri in multi_device_activities:
             for device in multi_device_activities[uri]:
                 print device

@@ -118,7 +118,7 @@ elif activity['objective_status'] == 'satisfied':
 pretest.save()
 
 secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
-    uri = "/activity/secuencias",
+    uri = "/activity/introduccion",
 #   lom =
     image = "https://s3.amazonaws.com/learning-python/sequence.jpg",
     heading="Objetos Tipo Secuencia",
