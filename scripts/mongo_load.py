@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-
-
-
 activities = [
-
     {
      '_id':'/activity/video/lo-que-ahora-sabemos',
     'title':u'Introducción',
@@ -31,7 +27,7 @@ activities = [
      'youtube_id':'iUrrwxOG9uU',
      'startSeconds':20,
      'endSeconds':25,
-     } ,
+     },
 
     {'_id':'/activity/video/tomala',
      'title':u'Secuencias:Listas, Tuplas y Cadenas',
@@ -377,7 +373,8 @@ public class ProductTest
 if __name__ == "__main__":
 
      from pymongo import MongoClient
-     client = MongoClient()
+     from django.conf import settings
+     client = MongoClient(settings.MONGO_DB)
      db = client.protoboard_database
 
      activities_collection = db.activities_collection
