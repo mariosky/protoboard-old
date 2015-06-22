@@ -16,7 +16,7 @@
 
     <div class="row">
 
-         <form id="nav_form"   role="form" action="{{root}}" method = "POST">{% csrf_token %}
+         <form id="nav_form"   role="form" action="/{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
 
 
                <ul class="pager">
@@ -38,13 +38,13 @@
 <script id="container_template" type="x-tmpl-mustache">
 	<div class="col-xs-12 col-md-4 col-sm-6">
 		<div class="thumbnail">
-		   <a href="[[uri]]">
+		   <a href="/[[path_id]][[uri]]">
 		       <img src="[[image]]" alt="...">
 		   </a>
 
 			<div class="caption">
 			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
-				<a href="[[uri]]" class="disabled">
+				<a href="/[[path_id]][[uri]]" class="disabled">
 					<h4>[[name]] </h4>
 				</a>
 				<div id="rating-[[id]]" class="raty"> </div>
@@ -53,7 +53,7 @@
                      <div class="list-group">
 
                      [[#children_activities]]
-                            <a href="[[uri]]" class="list-group-item [[#disabled]] disabled [[/disabled]]">
+                            <a href="/[[path_id]][[uri]]" class="list-group-item [[#disabled]] disabled [[/disabled]]">
                               <i class="[[icon]]"></i> [[heading]]
                             </a>
 
@@ -77,7 +77,7 @@
 <script id="disabled_container_template" type="x-tmpl-mustache">
 	<div class="col-xs-12 col-md-4 col-sm-6">
 		<div class="thumbnail">
-		   <a href="[[uri]]">
+		   <a href="/[[path_id]][[uri]]">
 		       <img src="[[image]]" alt="...">
 		   </a>
 
@@ -90,7 +90,7 @@
                      <div class="list-group">
 
                      [[#children_activities]]
-                            <a href="[[uri]]" class="list-group-item disabled">
+                            <a href="/[[path_id]][[uri]]" class="list-group-item disabled">
                               <i class="[[icon]]"></i> [[heading]]
                             </a>
 
@@ -111,13 +111,13 @@
 <script id="activity_template" type="x-tmpl-mustache">
 	<div class="col-xs-12 col-md-4 col-sm-6">
 		<div class="thumbnail">
-		   <a href="[[uri]]">
+		   <a href="/[[path_id]][[uri]]">
 		       <img src="[[image]]" alt="...">
 		   </a>
 
 			<div class="caption">
 			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
-				<a href="[[uri]]" class="disabled">
+				<a href="/[[path_id]][[uri]]" class="disabled">
 					<h4>[[name]] </h4>
 				</a>
 				[[#rating]]
@@ -243,6 +243,7 @@
                 children[children.length] =  {
                     heading: this.getAttribute("heading"),
                     uri:uri_string,
+                    path_id: this.getAttribute("id"),
                     icon:icon.icon,
                     disabled:(this.getAttribute("pre_condition")=="disabled"),
                     objective_status:(this.getAttribute("objective_status")=="satisfied")
@@ -288,6 +289,7 @@
                         rendered = Mustache.render(template, {
                             name: this.getAttribute("heading"),
                             uri: uri_string,
+                            path_id:this.getAttribute("id"),
                             icon: "fa fa-folder-open",
                             image: this.getAttribute("image"),
                             description: this.getAttribute("description"),
@@ -324,6 +326,7 @@
                             description: this.getAttribute("description"),
                             activity_type: activity_type.activity_type,
                             id: this.getAttribute("activity"),
+                            path_id: this.getAttribute("id"),
                             rating: recommended_value,
                             num_attempts: this.getAttribute("num_attempts"),
                             attempt_limit: this.getAttribute("attempt_limit"),
@@ -368,6 +371,7 @@
                                     description: this.getAttribute("description"),
                                     activity_type: this.getAttribute("secondary_text"),
                                     id: this.getAttribute("activity"),
+                                    path_id: this.getAttribute("id"),
                                     rating: recommended_value,
                                     children_activities: get_children_activities(this),
                                     objective_status: (this.getAttribute("objective_status") == "satisfied")
@@ -402,7 +406,7 @@
                                             rating: recommended_value,
                                             num_attempts: this.getAttribute("num_attempts"),
                                             attempt_limit: this.getAttribute("attempt_limit"),
-
+                                            path_id: this.getAttribute("id"),
                                             objective_status: is_satisfied,
                                             objective_measure: Math.floor(this.getAttribute("objective_measure")),
                                             show_objective_measure: has_objective_measure,

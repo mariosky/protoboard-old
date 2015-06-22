@@ -389,7 +389,7 @@ background-position: left top;
                         {% if forloop.last %}
                             <li class="active">{{l.name}}</li>
                         {%else%}
-                            <li><a href="{{ l.uri }}">{{l.name}}</a></li>
+                            <li><a href="/{{ l.id }}{{ l.uri }}">{{l.name}}</a></li>
 
                         {% endif%}
                     {% endfor%}
