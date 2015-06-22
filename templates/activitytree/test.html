@@ -3,7 +3,7 @@
 {% block content %}
 
 
-    <form id="learning_activity_form"    role="form"  action="{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+    <form id="learning_activity_form"    role="form"  action="{{ uri_id }}{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
 
         {% if num_attempts == 0 %}
@@ -113,7 +113,7 @@
 
 		</form>
 <row>
-    <form id="nav_form"   role="form" action="{{root}}" method = "POST">{% csrf_token %}
+    <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
 
 
                <ul class="pager">

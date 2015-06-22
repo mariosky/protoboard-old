@@ -17,7 +17,7 @@ activities = [
 
 
 
-    {'_id':'/activity/video/tomala',
+    {'_id':'/activity/video/startup/business-model-canvas',
      'title':u'Introducción',
      'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
      'youtube_id':'iUrrwxOG9uU'
@@ -32,6 +32,11 @@ activities = [
      'startSeconds':20,
      'endSeconds':25,
      } ,
+
+    {'_id':'/activity/video/tomala',
+     'title':u'Secuencias:Listas, Tuplas y Cadenas',
+     'url':u"http://www.youtube.com/embed/aTDJDB_ZjXA?rel=0",
+      'youtube_id':'KovkopcILQ8'} ,
 
     {'_id':'/activity/video/secuencias',
      'title':u'Secuencias:Listas, Tuplas y Cadenas',

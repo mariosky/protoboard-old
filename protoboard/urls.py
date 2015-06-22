@@ -11,19 +11,17 @@ urlpatterns = patterns('',
     # Example:
       (r'^$','activitytree.views.welcome'),
       (r'^welcome/$','activitytree.views.welcome'),
-      (r'^dashboard/(?P<uri>(\w(\/*))+)$','activitytree.views.dashboard'),
+      (r'^dashboard/(?P<path_id>[0-9]+)$','activitytree.views.dashboard'),
 
-      (r'^(?P<uri>activity/([\w+](\/*))+)','activitytree.views.activity'),
-      (r'^(?P<path_id>[0-9]+)(?P<uri>/activity/([\w+](\/*))+)$','activitytree.views.path_activity'),
+      (r'^(?P<uri>activity/([\w+](\/*)(-*))+)$','activitytree.views.activity'),
+      (r'^(?P<path_id>[0-9]+)(?P<uri>/activity/([\w+](\/*)(-*))+)$','activitytree.views.path_activity'),
 
+      (r'^(?P<path_id>[0-9]+)(?P<uri>/test/([\w+](\/*)(-*))+)$','activitytree.views.path_test'),
 
+      (r'^(?P<path_id>[0-9]+)(?P<uri>/program/([\w+](\/*)(-*))+)$','activitytree.views.path_program'),
 
+      (r'^(?P<uri>program/([\w+](\/*)(-*))+)$','activitytree.views.program'),
 
-      (r'^activity/video/(?P<uri>\w(\/*))+','activitytree.views.activity'),
-      (r'^test/(?P<uri>\w(\/*))+$','activitytree.views.test'),
-      (r'^survey/(?P<uri>\w+)$','activitytree.views.survey'),
-
-      (r'^program/(?P<uri>\w(\/*))+$','activitytree.views.program'),
       (r'^execute_queue$','activitytree.views.execute_queue'),
       (r'^get_result$','activitytree.views.get_result'),
 
@@ -31,10 +29,8 @@ urlpatterns = patterns('',
       (r'^facebook/get_login/?$', 'activitytree.views.facebook_get_login'),
       (r'^facebook/login/?$','activitytree.views.facebook_login'),
       (r'^logout/?$', 'activitytree.views.logout_view'),
-
-
-
       (r'^login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
+
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout
       (r'^accounts/login/$', 'activitytree.views.welcome'),

@@ -9,15 +9,14 @@
                     <div id="player">
 
                     </div>
-                    <!--
-                    <iframe width="640" height="510" src="{{ video.url }}" frameborder="0" allowfullscreen></iframe>
-                    -->
+
                 </div>
         </div>
         <div class="col-md-3">
             <div class="row">
 
-                <form id="nav_form"   role="form" action="/{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
+                {% if XML_NAV %}
+                <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
 
 
                    <ul class="pager">
@@ -26,6 +25,7 @@
                     </ul>
 
                 </form>
+                {% endif %}
 
            </div>
 
@@ -114,12 +114,12 @@
       //var done = false;
 
       function onPlayerStateChange(event) {
+          {% if XML_NAV %}
         if (event.data == YT.PlayerState.ENDED ) {
           nextActivity();
          // done = true;
-
-
-        }
+            }
+            {% endif %}
       }
 
       function nextActivity() {
@@ -132,6 +132,7 @@
                   form.submit();
 
       }
+    {% if user.is_authenticated %}
 
 $('#rating-info').raty({
     path: '{{MEDIA_URL}}images',
@@ -161,6 +162,10 @@ $('#rating-info').raty({
             }
 
     });
+
+        {% else %}
+
+        {% endif %}
 
 function getCookie(name) {
                 var cookieValue = null;

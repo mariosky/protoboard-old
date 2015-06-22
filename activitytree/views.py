@@ -56,21 +56,26 @@ def welcome(request):
                  },
                 context_instance=RequestContext(request))
 
-def dashboard(request,uri):
+def dashboard(request,path_id):
     if request.user.is_authenticated():
         if request.method == 'GET':
 
             s = SimpleSequencing()
-            request.path= '/%s'%(uri)
+
             # First, the requested_activity  exists??
             # Gets the Learning Activity object from uri
-            requested_activity = _get_ula(request)
+            requested_activity = None
+            try:
+                requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user )
+            except (ObjectDoesNotExist, IndexError) as e:
+                requested_activity = None
+
 
             if not requested_activity:
                 return HttpResponseNotFound('<h1>Activity not found</h1>')
 
             # Gets the root of the User Learning Activity
-            root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
+            root = UserLearningActivity.objects.get(learning_activity_id = path_id ,user = request.user )
 
                 # Exits last activity, and sets requested activity as current
                 # if choice_exit consider complete
@@ -117,7 +122,7 @@ def path_activity(request,path_id, uri):
             #    if 'nav' in request.GET and request.GET['nav'] == 'start':
                 if learning_activity and learning_activity.root is None:
                     s.assignActivityTree(request.user,learning_activity)
-                    requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user)[0]
+                    requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user)
                     _set_current(request,requested_activity, requested_activity, s)
                     return HttpResponseRedirect( learning_activity.uri)
                 #If is not a root learning activity then sorry, not found
@@ -199,6 +204,7 @@ def path_activity(request,path_id, uri):
         breadcrumbs = s.get_current_path(requested_activity)
 
         activity_content = Activity.get(requested_activity.learning_activity.uri)
+        print 'activity:', activity_content
 
         if activity_content and 'content' in activity_content:
             content = activity_content['content']
@@ -206,7 +212,7 @@ def path_activity(request,path_id, uri):
             content = ""
 
         update_pool(requested_activity.learning_activity.uri)
-
+        print activity_content,uri
         if (requested_activity.learning_activity.uri).split('/')[2] =='video':
             return render_to_response('activitytree/video.html',
 
@@ -216,7 +222,7 @@ def path_activity(request,path_id, uri):
                                    'video':activity_content,
                                    'breadcrumbs':breadcrumbs,
                                    'root':requested_activity.learning_activity.get_root().uri,
-                                   'root_id':requested_activity.learning_activity.get_root().id},
+                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id},
                                     context_instance=RequestContext(request))
 
         elif requested_activity.learning_activity.is_container:
@@ -227,10 +233,10 @@ def path_activity(request,path_id, uri):
                                    'XML_NAV':XML,
                                    'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.uri,
-                                   'uri_id':requested_activity.learning_activity.id,
+                                   'uri_id':'/%s'% requested_activity.learning_activity.id,
                                    'content':content,
                                    'root':requested_activity.learning_activity.get_root().uri,
-                                   'root_id':requested_activity.learning_activity.get_root().id,
+                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
         else:
@@ -238,10 +244,10 @@ def path_activity(request,path_id, uri):
 
                                   {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
-                                   'uri_id':requested_activity.learning_activity.id,
+                                   'uri_id':'/%s'% requested_activity.learning_activity.id,
                                    'content':content,
                                    'root':requested_activity.learning_activity.get_root().uri,
-                                   'root_id':requested_activity.learning_activity.get_root().id,
+                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
 
@@ -251,167 +257,13 @@ def path_activity(request,path_id, uri):
 
 
 def activity(request, uri=None):
-    learning_activity = _get_learning_activity(request)
-
-    if learning_activity is None:
-        return HttpResponseNotFound('<h1>Learning Activity not found</h1>')
-
-
-    if request.user.is_authenticated():
-        root=None
-        s = SimpleSequencing()
-        requested_activity = None
-        if request.method == 'GET':
-            requested_activity = _get_ula(request)
-
-            # The requested_activity was NOT FOUND
-            if not requested_activity : # The requested_activity was not found
-            # Maybe a
-            # 'start' REQUEST?
-            #    if 'nav' in request.GET and request.GET['nav'] == 'start':
-                if learning_activity and learning_activity.root is None:
-                    s.assignActivityTree(request.user,learning_activity)
-                    requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = request.path ,user = request.user)[0]
-                    _set_current(request,requested_activity, requested_activity, s)
-                    return HttpResponseRedirect( learning_activity.uri)
-                #If is not a root learning activity then sorry, not found
-                else:
-                    return HttpResponseNotFound('<h1>Activity not found</h1>')
-            #Else NOT FOUND
-                #else:
-                #    return HttpResponseNotFound('<h1>Activity not found</h1>')
-
-            # We have a valid requested_activity, lets handle OTHER NAVIGATION REQUEST
-
-            #Get root of activity tree
-            root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root(),
-                                                       user = request.user )[0]
-            # 'continue' REQUEST?
-            if requested_activity.is_root() and 'nav' in request.GET and request.GET['nav'] == 'continue':
-                current_activity = s.get_current(requested_activity)
-                if current_activity:
-                    requested_activity = current_activity
-                    return HttpResponseRedirect( requested_activity.learning_activity.uri)
-                else:
-                    _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
-            #Else is a
-            # 'choice' REQUEST
-            else:
-                _set_current(request,requested_activity, root, s)
-
-        if request.method == 'POST' and 'nav_event' in request.POST:
-            #Get root of activity tree
-            root = _get_ula(request)
-            if not root or not root.is_root():
-                return HttpResponseNotFound('<h1>Activity not found</h1>')
-
-            current_activity = s.get_current(root)
-
-
-            if current_activity.learning_activity.is_container:
-                progress_status = None
-                objective_status = None
-            else:
-                ###
-                ###  What if status in POST??
-                ###
-                progress_status = 'complete'
-                objective_status = 'satisfied'
-
-            # 'next' REQUEST
-            if request.POST['nav_event'] == 'next':
-                # Go TO NEXT ACTIVITY
-                s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
-                next_uri = s.get_next(root, current_activity)
-
-            # 'prev' REQUEST
-            elif request.POST['nav_event'] == 'prev':
-                # Go TO PREV ACTIVITY
-                s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
-                next_uri = s.get_prev(root, current_activity)
-
-            #No more activities ?
-            if next_uri is None:
-
-                return HttpResponseRedirect( root.learning_activity.uri)
-            else:
-                next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
-                return HttpResponseRedirect(next_activity.learning_activity.uri)
-
-
-        _XML = get_nav(root)
-        #Escape for javascript
-        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
-
-        #navegation_tree = s.nav_to_html(nav)
-
-        breadcrumbs = s.get_current_path(requested_activity)
-
-
-        ####
-        ####
-        ####
-
-        #if requested_activity.learning_activity.uri in activities:
-        #    content = activities[requested_activity.learning_activity.uri]
-        #else:
-        #    content = ""
-        activity_content = Activity.get(requested_activity.learning_activity.uri)
-
-        if activity_content and 'content' in activity_content:
-            content = activity_content['content']
-        else:
-            content = ""
-
-        update_pool(requested_activity.learning_activity.uri)
-
-        if (requested_activity.learning_activity.uri).split('/')[2] =='video':
-            return render_to_response('activitytree/video.html',
-
-                                  {'XML_NAV':XML,
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'video':activity_content,
-                                   'breadcrumbs':breadcrumbs,
-                                   'root':requested_activity.learning_activity.get_root().uri},
-                                    context_instance=RequestContext(request))
-
-        elif requested_activity.learning_activity.is_container:
-
-            return render_to_response('activitytree/container.html',
-
-                                  {
-                                   'XML_NAV':XML,
-                                   'children': requested_activity.get_children(),
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'content':content,
-                                   'root':requested_activity.learning_activity.get_root().uri,
-                                   'breadcrumbs':breadcrumbs},
-                                    context_instance=RequestContext(request))
-        else:
-            return render_to_response('activitytree/'+ (requested_activity.learning_activity.uri).split('/')[1]+'.html',
-
-                                  {'XML_NAV':XML,
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'root':requested_activity.learning_activity.get_root().uri,
-                                   'content':content,
-                                   'breadcrumbs':breadcrumbs},
-                                    context_instance=RequestContext(request))
-
-        #####
-        #####
-        #####
-
-    else:
-        try:
-            la = LearningActivity.objects.filter(uri=request.path)[0]
-        except ObjectDoesNotExist:
-            return HttpResponseNotFound('<h1>Activity not found</h1>')
+    if request.method == 'GET':
 
         # Check if public, all public for now
         if False:
             return HttpResponseRedirect('/login/?next=%s' % request.path)
-
-        activity_content = Activity.get(la.uri)
+        print '/%s' % uri
+        activity_content = Activity.get('/%s' % uri)
 
         if activity_content and 'content' in activity_content:
             content = activity_content['content']
@@ -419,24 +271,22 @@ def activity(request, uri=None):
             content = ""
 
 
-        if (la.uri).split('/')[2] =='video':
+        if (uri).split('/')[1] =='video':
+            print activity_content
             return render_to_response('activitytree/video.html',
 
                                   {'XML_NAV':None,
-                                   'uri':la.uri,
-                                   'video':content,
+                                   'uri':uri,
+                                   'video':activity_content,
                                    'breadcrumbs':None },
                                     context_instance=RequestContext(request))
 
-        elif la.is_container:
-            return HttpResponseRedirect('/login/?next=%s' % request.path)
-
 
         else:
-            return render_to_response('activitytree/'+ (la.uri).split('/')[1]+'.html',
+            return render_to_response('activitytree/activity.html',
 
                                   {'XML_NAV':None,
-                                   'uri':la.uri,
+                                   'uri':uri,
                                    'content':content,
                                    'breadcrumbs':None,
                                    },
@@ -445,23 +295,24 @@ def activity(request, uri=None):
 
         # Do something for anonymous users.    
 
+def path_test(request,path_id, uri):
 
-def test(request, uri, objective_status = None):
     if request.user.is_authenticated():
         s = SimpleSequencing()
-        # First, the requested_activity  exists??
-        # Gets the Learning Activity object from uri
-        requested_activity = _get_ula(request)
+        try:
+            requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user )
+        except ObjectDoesNotExist as e:
+            return HttpResponseNotFound('<h1>Learning Activity not found</h1>')
 
-        if not requested_activity:
-            return HttpResponseNotFound('<h1>Activity not found</h1>')
+        root = None
 
-        # Gets the root of the User Learning Activity
-        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
+        try:
+            root = UserLearningActivity.objects.get(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )
+        except (ObjectDoesNotExist, IndexError) as e:
+                return HttpResponseNotFound('<h1>Path not found</h1>')
+
         feedback = None
-
-        attempts_left =  requested_activity.learning_activity.attempt_limit-requested_activity.num_attempts
-
+        attempts_left = requested_activity.learning_activity.attempt_limit-requested_activity.num_attempts
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
             # if choice_exit consider complete
@@ -510,10 +361,13 @@ def test(request, uri, objective_status = None):
                                    'content':test,
                                    'feedback':feedback,
                                    'breadcrumbs':breadcrumbs,
+                                   'uri_id':'/%s'% requested_activity.learning_activity.id,
+
 
                                    'attempt_limit':requested_activity.learning_activity.attempt_limit,
                                   'num_attempts': requested_activity.num_attempts,
                                    'attempts_left':attempts_left ,
+                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
 
                                     'root':requested_activity.learning_activity.get_root().uri},
 
@@ -523,100 +377,20 @@ def test(request, uri, objective_status = None):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.
 
-@transaction.atomic
-def survey(request, uri, objective_status = None):
+
+
+def path_program(request,path_id, uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
-        # First, the requested_activity  exists??
-        # Gets the Learning Activity object from uri
-        requested_activity = _get_ula(request)
-
-        if not requested_activity:
-            return HttpResponseNotFound('<h1>Activity not found</h1>')
-
-        # Gets the root of the User Learning Activity
-        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
-        feedback = None
-
-        if request.method == 'GET':
-            # Exits last activity, and sets requested activity as current
-            # if choice_exit consider complete
-            _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
-
-        elif request.method == 'POST':
-            if 'check' in request.POST:
-
-                feedback = _check_survey(request.POST, Activity.get(requested_activity.learning_activity.uri))
-
-                event = ULA_Event.objects.create(ULA=requested_activity,context=feedback)
-                event.save()
-
-
-                # Updates the current Learning Activity
-                objective_measure = feedback['total_correct']
-                #if objective_measure >= activities[requested_activity.learning_activity.uri]['satisfied_at_least']:
-                objective_status='satisfied'
-                #else:
-                #    objective_status='notSatisfied'
-
-                s.update(requested_activity, objective_status = objective_status, objective_measure = objective_measure, attempt=True)
-
-      # Gets the current navegation tree as HTML
-
-        _XML = get_nav(root)
-        #Escape for javascript
-        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
-
-        breadcrumbs = s.get_current_path(requested_activity)
-
-        test = Activity.get(requested_activity.learning_activity.uri)
-
-
-        if feedback:
-            for q in test['questions']:
-                if q['id'] in feedback:
-                    q['feedback'] = feedback[q['id']]
-                    if q['interaction']  in ['choiceInteraction','simpleChoice']:
-                        q['feedback_options'] = zip(q['options'], feedback[q['id']]['user_answer'], feedback[q['id']]['checked'])
-
-        return render_to_response('activitytree/'+(requested_activity.learning_activity.uri).split('/')[1]+'.html',
-                                  {'XML_NAV':XML,
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'content':test,
-                                   'feedback':feedback,
-                                   'breadcrumbs':breadcrumbs,
-                                   'root':requested_activity.learning_activity.get_root().uri},
-                                    context_instance=RequestContext(request))
-    else:      
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
-        # Do something for anonymous users.
-
-
-@transaction.atomic
-def program(request,uri):
-    if request.user.is_authenticated():
-        s = SimpleSequencing()
-        # First, the requested_activity  exists??
-        # Gets the Learning Activity object from uri
-        requested_activity = _get_ula(request)
-
-        if not requested_activity:
-            print request.path
-            program_test = Activity.get(request.path)
-            if program_test:
-                return render_to_response('activitytree/program.html', {'program_quiz':program_test,
-                                                                'activity_uri':request.path,
-                                                                'breadcrumbs':None,
-                                                                'root':None,
-                                                                'XML_NAV':None
-                                                                },
-                                  context_instance=RequestContext(request))
-            else:
-
-                return HttpResponseNotFound('<h1>Activity not found</h1>')
-
-        # Gets the root of the User Learning Activity
-        root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )[0]
+        try:
+            requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user )
+        except ObjectDoesNotExist as e:
+            return HttpResponseNotFound('<h1>Learning Activity not found</h1>')
+        root = None
+        try:
+            root = UserLearningActivity.objects.get(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )
+        except (ObjectDoesNotExist, IndexError) as e:
+                return HttpResponseNotFound('<h1>Path not found</h1>')
 
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
@@ -627,49 +401,37 @@ def program(request,uri):
         _XML = get_nav(root)
         #Escape for javascript
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
-        breadcrumbs = s.get_current_path(requested_activity)
 
+        breadcrumbs = s.get_current_path(requested_activity)
+        print Activity.get(requested_activity.learning_activity.uri),path_id,uri
+        print requested_activity.learning_activity.uri
         return render_to_response('activitytree/program.html', {'program_quiz':Activity.get(requested_activity.learning_activity.uri),
                                                                 'activity_uri':requested_activity.learning_activity.uri,
                                                                 'breadcrumbs':breadcrumbs,
                                                                 'root':requested_activity.learning_activity.get_root().uri,
+                                                                'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
                                                                 'XML_NAV':XML
                                                                 },
                                   context_instance=RequestContext(request))
 
     else:
-        try:
-            la = LearningActivity.objects.get(uri=request.path)
-        except ObjectDoesNotExist:
-            program_test = Activity.get(request.path)
-            if program_test:
-                return render_to_response('activitytree/program.html', {'program_quiz':program_test,
-                                                                'activity_uri':request.path,
-                                                                'breadcrumbs':None,
-                                                                'root':None,
-                                                                'XML_NAV':None
-                                                                },
-                                  context_instance=RequestContext(request))
-            else:
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
 
-                return HttpResponseNotFound('<h1>Activity not found</h1>')
-            # Check if public, all public for now
-        if False:
-            return HttpResponseRedirect('/login/?next=%s' % request.path)
+@transaction.atomic
+def program(request, uri):
+    print request.path
+    program_test = Activity.get(request.path)
+    if program_test:
+        return render_to_response('activitytree/program.html', {'program_quiz':program_test,
+                                                        'activity_uri':request.path,
+                                                        'breadcrumbs':None,
+                                                        'root':None,
+                                                        'XML_NAV':None
+                                                        },
+                          context_instance=RequestContext(request))
+    else:
 
-
-        if request.method == 'GET':
-            return render_to_response('activitytree/program.html', {'program_quiz':Activity.get(la.uri),
-                                                                'activity_uri':la.uri,
-                                                                'XML_NAV':None,
-                                   'breadcrumbs':None
-                                                                },
-                                  context_instance=RequestContext(request))
-
-
-
-        #return HttpResponseRedirect('/login/?next=%s' % request.path)
-        # Do something for anonymous users.
+        return HttpResponseNotFound('<h1>Activity not found</h1>')
 
 @csrf_protect
 def execute_queue(request):
