@@ -108,7 +108,7 @@ class Test(unittest.TestCase):
             print output
 ""","lang":"python", "type":"unit_test" },
 
- '/program/PPP/2':
+ '/program/PPP/1':
         {   'title':u"Clase Producto",
             'initial_code':u"""
 using System.IO;

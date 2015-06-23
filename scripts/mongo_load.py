@@ -9,8 +9,28 @@ activities = [
      'youtube_id':'GUxyQ6Mj_kc'
 
     },
-
-
+    {
+ '_id':'/activity/Preliminar',
+  'content':u"""
+    <h3> ¿Qué es Orientado a Objetos?</h3>
+          <p> La P.O.O. (también conocida como O.O.P., por sus siglas en inglés) es lo que se conoce como un paradigma o modelo de programación.
+          Esto significa que no es un lenguaje específico, o una tecnología, sino una forma de programar, una manera de plantearse la programación.
+          No es la única (o necesariamente mejor o peor que otras), pero se ha constituido en una de las formas de programar más populares
+          e incluso muchos de los lenguajes que usamos hoy día lo soportan o están diseñados bajo ese modelo (PHP, ActionScript, C#, Java).</p>
+          <p>
+          Lo que caracteriza a la POO es que intenta llevar al mundo del código lo mismo que encontramos en El Mundo Real™.
+          Cuando miramos a nuestro alrededor ¿qué vemos? pues, cosas, objetos, pero podemos reconocer estos objetos porque cada objeto pertenece a una clase,
+           eso nos permite distinguir, por ejemplo, un perro de un auto (porque son de clases diferentes) y también un TV de otro (porque, aunque sean iguales,
+           cada uno es un objeto distinto). Éste es el modelo que la POO intenta seguir para estructurar un sistema.
+          </p>
+          <p>
+          Es importante recalcar nuevamente que la POO no es un lenguaje de programación, es una forma de enfrentarse a ella.
+           Esto significa que la POO le servirá para desarrollar en muchos de los lenguajes comunes de hoy en día
+            manteniendo un mismo esquema mental. Incluso le permitirá enfrentar otros proyectos que no necesariamente estén relacionados con
+          escribir código.
+          </p>
+         <q>Programación Orientada a Objetos,</span> by <a rel="cc:attributionURL" href="http://thefricky.wordpress.com/poo/">César Frick</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Reconocimiento 3.0 Unported License</a>.</q>
+"""},
 
 
     {'_id':'/activity/video/startup/business-model-canvas',
@@ -61,7 +81,7 @@ activities = [
 
 
 
-    {'_id':'/program/PPP/1', 'title':u"Imprime Hola",
+    {'_id':'/program/POO/2', 'title':u"Imprime Hola",
             'initial_code':u"""
 # Funcion que imprime Hola
 def foo():
@@ -90,7 +110,7 @@ class Test(unittest.TestCase):
             print output
 ""","lang":"python", "type":"unit_test" },
 
-    {'_id':'/program/PPP/2',
+    {'_id':'/program/POO/1',
      'title':u"Clase Producto",
      'initial_code':u"""
 using System.IO;
@@ -114,7 +134,74 @@ public class Product
 }
 """,
             'correct_code':u""" """,
-             'instructions':u"""<p>Completa la clase llamada <code> Producto </code> """,
+             'instructions':u"""
+
+
+      <button class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-lg">Leer</button>
+      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel"> Secuenciado </h4>
+      </div>
+ <div class="modal-body">
+
+      <h3>Introducción</h3>
+		<p>
+		    Aprender a programar de forma autodidácta puede ser una tarea difícil. No sabemos por donde empezar, ¿que material debo leer
+		    primero?, ¿que ejercicios son los adecuados, para mi habilidad actual?, ¿que necesito instalar para empezar?,¿veo videos o leo?.
+			Uno de los problemas de la Web es que nos podemos perder entre tanta información, todos los recursos necesarios pueden estar ahí, pero
+			   ¿cual podría ser una secuencia adecuada para visitarlos?.
+		</p>
+		<p>
+		   Para Protoboard nos basamos en una especificación llamada <a href="http://www.imsglobal.org/simplesequencing/"> IMS Simple Sequencing Specification (SS) </a>,
+		   la cual sirve para 	"representar el  comportamiento deseado en una experiencia de aprendizaje", básicamente es una manera de especificar
+		   como se deberían ir entregando las actividades de aprendizaje a los alumnos. No pretendemos cumplir totalmente con la especificación y más bien
+		   se ha ido adaptando a nuestras necesidades. Trabajaremos en lograr que el sequenciado se adapte a los usuarios utilizando técnicas de
+		   personalización y sistemas de recomendación. Por ejemplo:
+		 </p>
+		   <ul>
+              <li> Agregando reglas difusas para especificar el secuenciado.</li>
+              <li> Implementando un sistema de recomendación híbrido para proponer actividades de aprendizaje.</li>
+		      <li> Proponiendo un modelo para medir de manera indirecta el nivel de fluidez que experimenta el
+                 estudiante para sugerirle ejercicios adecuados</li>
+              <li> Considerar información  contexto en los algoritmos de recomendación </li>
+           </ul>
+          <p>
+             Con este demo  iremos probando la funcionalidad básica de la plataforma sin agregar todavía los módulos de personalización,
+             ya que esta es una nueva versión en desarrollo.
+          </p>
+          <p>
+
+              Se irán explicando a lo largo del demo las capacidades de secuenciado y el
+             tipo de actividades de aprendizaje implementadas. En las explicaciones se tratará de reducir al mínimo
+             el uso de términos técnicos de computación.
+          </p>
+        <h3> Arbol de Secuencia</h3>
+    <p>
+        Una secuencia de dichas actividades puede establecerse al recorrer el árbol en pre-orden.
+    </p>
+			<img src="https://s3.amazonaws.com/mariogarcia/images/ActivityTree.png" class="img-responsive" alt="Responsive image">
+
+
+
+
+
+
+
+
+      </div>
+     </div>
+     </div>
+     </div>
+      <h3 id="welcome">Bienvenidos</h3>
+      <p> En esta clase aprenderas algunos conceptos básicos de la Programación Orientada a Objetos. </p>
+      <p> Como primer paso realizarás un pequeño examen para
+          evaluar tus conocimientos de Programación. </p>
+
+
+             """,
             'unit_test':u"""
 [TestFixture]
 public class ProductTest
@@ -370,8 +457,11 @@ public class ProductTest
 
 
 
-if __name__ == "__main__":
 
+import os
+
+if __name__ == "__main__":
+     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
      from pymongo import MongoClient
      from django.conf import settings
      client = MongoClient(settings.MONGO_DB)

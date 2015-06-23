@@ -9,7 +9,7 @@
 
     #editor {
 
-        height: 250px;
+        height: 640px;
 
     }
 
@@ -48,28 +48,12 @@
 
 {% block content %}
 
+
+
 <div class="row">
-  <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 style="display: inline;" class="panel-title">{{program_quiz.title}}</h3>
-            <div id="play_btn" class="btn-group pull-right">
 
-
-                <span id="send_btn_queue" class="glyphicon glyphicon-play"></span>
-
-
-
-
-      </div>
-      <div class="clearfix"></div>
-
-        </div>
-        <div class="panel-body">
-            <div id="editor">{{program_quiz.initial_code}}</div>
-        </div>
-    </div>
-
-            <!-- Nav tabs -->
+<div class="col-md-4">
+                <!-- Nav tabs -->
         <ul id="main_tab" class="nav nav-tabs">
           <li class="active"><a href="#instrucciones" data-toggle="tab">Instrucciones</a></li>
           <li><a href="#results" data-toggle="tab">Resultado</a></li>
@@ -97,6 +81,24 @@
 
           </div>
         </div>
+
+</div>
+    <div class="col-md-8">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 style="display: inline;" class="panel-title">{{program_quiz.title}}</h3>
+                <div id="play_btn" class="btn-group pull-right"> <span id="send_btn_queue" class="glyphicon glyphicon-play"></span>
+            </div>
+            <div class="clearfix"></div>
+
+            </div>
+            <div class="panel-body">
+                <div id="editor">{{program_quiz.initial_code}}</div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -255,7 +257,10 @@ $(document).ready(function() {
                     url: '/execute_queue',
                     type: "POST",
                     contentType: "application/json",
-                    data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code], "id": 1 ,
+                    data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code],
+             {% if uri_id %}
+                    "id": {{ uri_id }} ,
+             {% endif %}
                     "keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse }),
                     dataType: "json",
                     success: function(data, textStatus, jqXHR) {

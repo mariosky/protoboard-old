@@ -10,8 +10,14 @@
 
 if __name__ == "__main__":
     import os
+    from django.core.wsgi import get_wsgi_application
+
     print "####### DJANGO SETTINGS"
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
+
+    os.environ['DJANGO_SETTINGS_MODULE'] = "protoboard.settings"
+    application = get_wsgi_application()
+
+
 
 
 
@@ -23,7 +29,7 @@ from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
 
 LearningActivity.objects.all().delete()
-POO = LearningActivity( name = 'Intro a la POO', slug = 'POO',
+POO = LearningActivity( name = 'Prog OO en C#', slug = 'POO',
     uri = "/activity/POO",
     parent = None,
     root   = None,
@@ -46,7 +52,7 @@ POO.save()
 description= u"""
         <p> Que no te intimiden las palabras <code>class</code> , <code>abstract</code> , <code>override</code> o te dé miedo eso del
         <strong> polimorfismo </strong> o te emociones con la <strong> herencia múltiple</strong>.</p>
-        <p> Ya deberías saber programación básica en algún lenguaje de programación.</p>"""
+        <p> Ya deberías saber programación básica en algún lenguaje de programación. </p>"""
 
 
 cursoPOO = Course(short_description=description, root=POO)

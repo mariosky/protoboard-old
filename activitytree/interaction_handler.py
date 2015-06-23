@@ -166,7 +166,7 @@ class SimpleSequencing(object):
                     next = navlist[i + 1]
 
                     if next.get("is_container") == "False" and next.get("pre_condition") <> "disabled":
-                        return next.get("uri")
+                        return next.get("id")
             return None
         else:
             return None
@@ -188,7 +188,7 @@ class SimpleSequencing(object):
                     next = navlist[i + 1]
 
                     if next.get("is_container") == "False" and next.get("pre_condition") <> "disabled":
-                        return next.get("uri")
+                        return next.get("id")
             return None
         else:
             return None

@@ -124,7 +124,7 @@ def path_activity(request,path_id, uri):
                     s.assignActivityTree(request.user,learning_activity)
                     requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user)
                     _set_current(request,requested_activity, requested_activity, s)
-                    return HttpResponseRedirect( learning_activity.uri)
+                    return HttpResponseRedirect( '/%s%s'% (path_id , uri))
                 #If is not a root learning activity then sorry, not found
                 else:
                     return HttpResponseNotFound('<h1>Activity not found</h1>')
@@ -142,7 +142,7 @@ def path_activity(request,path_id, uri):
                 current_activity = s.get_current(requested_activity)
                 if current_activity:
                     requested_activity = current_activity
-                    return HttpResponseRedirect( requested_activity.learning_activity.uri)
+                    return HttpResponseRedirect(  '/%s%s'% requested_activity.learning_activity.id,requested_activity.learning_activity.uri)
                 else:
                     _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
             #Else is a
@@ -187,13 +187,14 @@ def path_activity(request,path_id, uri):
                 s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
                 next_uri = s.get_prev(root, current_activity)
 
+            print next_uri
             #No more activities ?
             if next_uri is None:
 
                 return HttpResponseRedirect( '/%s%s'% (root.learning_activity.id , root.learning_activity.uri))
 
             else:
-                next_activity = UserLearningActivity.objects.filter(learning_activity__uri = next_uri ,user = request.user )[0]
+                next_activity = UserLearningActivity.objects.get(learning_activity__id = next_uri ,user = request.user )
                 return HttpResponseRedirect( '/%s%s'% (next_activity.learning_activity.id,next_activity.learning_activity.uri))
 
 
@@ -218,7 +219,7 @@ def path_activity(request,path_id, uri):
 
                                   {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
-                                   'uri_id':requested_activity.learning_activity.uri,
+                                   'uri_id':requested_activity.learning_activity.id,
                                    'video':activity_content,
                                    'breadcrumbs':breadcrumbs,
                                    'root':requested_activity.learning_activity.get_root().uri,
@@ -240,7 +241,7 @@ def path_activity(request,path_id, uri):
                                    'breadcrumbs':breadcrumbs},
                                     context_instance=RequestContext(request))
         else:
-            return render_to_response('activitytree/'+ (requested_activity.learning_activity.uri).split('/')[1]+'.html',
+            return render_to_response('activitytree/activity.html',
 
                                   {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
@@ -407,6 +408,8 @@ def path_program(request,path_id, uri):
         print requested_activity.learning_activity.uri
         return render_to_response('activitytree/program.html', {'program_quiz':Activity.get(requested_activity.learning_activity.uri),
                                                                 'activity_uri':requested_activity.learning_activity.uri,
+                                                                'uri_id':'%s'% requested_activity.learning_activity.id,
+
                                                                 'breadcrumbs':breadcrumbs,
                                                                 'root':requested_activity.learning_activity.get_root().uri,
                                                                 'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
@@ -437,6 +440,7 @@ def program(request, uri):
 def execute_queue(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
+        print rpc
 
 
         code = rpc["params"][0]
@@ -448,10 +452,10 @@ def execute_queue(request):
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
         task_id = server.enqueue(**task)
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated() and 'id' in rpc:
             ula = None
             try:
-                ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["method"], user=request.user )
+                ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user )
 
                 s = SimpleSequencing()
                 s.update(ula)
