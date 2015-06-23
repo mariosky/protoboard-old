@@ -137,7 +137,7 @@ public class Product
              'instructions':u"""
 
 
-      <button class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-lg">Leer</button>
+      <button class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-lg">Leer Detalle</button>
       <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -168,26 +168,8 @@ public class Product
                  estudiante para sugerirle ejercicios adecuados</li>
               <li> Considerar información  contexto en los algoritmos de recomendación </li>
            </ul>
-          <p>
-             Con este demo  iremos probando la funcionalidad básica de la plataforma sin agregar todavía los módulos de personalización,
-             ya que esta es una nueva versión en desarrollo.
-          </p>
-          <p>
 
-              Se irán explicando a lo largo del demo las capacidades de secuenciado y el
-             tipo de actividades de aprendizaje implementadas. En las explicaciones se tratará de reducir al mínimo
-             el uso de términos técnicos de computación.
-          </p>
-        <h3> Arbol de Secuencia</h3>
-    <p>
-        Una secuencia de dichas actividades puede establecerse al recorrer el árbol en pre-orden.
-    </p>
 			<img src="https://s3.amazonaws.com/mariogarcia/images/ActivityTree.png" class="img-responsive" alt="Responsive image">
-
-
-
-
-
 
 
 
@@ -195,10 +177,37 @@ public class Product
      </div>
      </div>
      </div>
+
       <h3 id="welcome">Bienvenidos</h3>
-      <p> En esta clase aprenderas algunos conceptos básicos de la Programación Orientada a Objetos. </p>
-      <p> Como primer paso realizarás un pequeño examen para
-          evaluar tus conocimientos de Programación. </p>
+  <p>
+		   Para Protoboard nos basamos en una especificación llamada <a href="http://www.imsglobal.org/simplesequencing/"> IMS Simple Sequencing Specification (SS) </a>,
+		   la cual sirve para 	"representar el  comportamiento deseado en una experiencia de aprendizaje", básicamente es una manera de especificar
+		   como se deberían ir entregando las actividades de aprendizaje a los alumnos. No pretendemos cumplir totalmente con la especificación y más bien
+		   se ha ido adaptando a nuestras necesidades. Trabajaremos en lograr que el sequenciado se adapte a los usuarios utilizando técnicas de
+		   personalización y sistemas de recomendación. Por ejemplo:
+		 </p>
+		   <ul>
+              <li> Agregando reglas difusas para especificar el secuenciado.</li>
+              <li> Implementando un sistema de recomendación híbrido para proponer actividades de aprendizaje.</li>
+
+           </ul>
+   	<img src="https://s3.amazonaws.com/mariogarcia/images/ActivityTree.png" class="img-responsive" alt="Responsive image">
+
+<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  Ayuda
+</button>
+<div class="collapse" id="collapseExample">
+  <div class="well">
+    En este ejemplo debes de agregar algo como:
+    <code>
+                <p>>>> suma(3,4)</p>
+                <p>7</p>
+                <p>>>> suma(3,-4)</p>
+                <p>-1</p>
+    </code>
+  </div>
+</div>
+
 
 
              """,
