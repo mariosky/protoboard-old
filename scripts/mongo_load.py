@@ -81,7 +81,7 @@ activities = [
 
 
 
-    {'_id':'/program/POO/2', 'title':u"Imprime Hola",
+    {'_id':'/program/1', 'title':u"Imprime Hola",
             'initial_code':u"""
 # Funcion que imprime Hola
 def foo():
@@ -399,67 +399,34 @@ print json.dumps(result)
     'satisfied_at_least':3
                     },
 
-    {'_id':'/program/PPP/2000',
+    {'_id':'/program/java/1',
      'title':u"Clase Producto",
-     'initial_code':u"""
-using System.IO;
-using System;
-public class Product
-{
-        public   code;
-        public   desc;
+     'initial_code':r"""
+public class Calculator {
 
-        public Product(int c, string d)
-        {
-        code=c;
-        desc=d;
-        }
+  public int evaluate(String expression) {
 
-        public void Print()
-        {
-        Console.WriteLine("Producto {0}: {1}", code,desc);
-        }
-
-}
+    int sum = 0;
+    for (String summand: expression.split("\\+"))
+      sum += Integer.valueOf(summand);
+    return sum;
+  }
 """,
             'correct_code':u""" """,
              'instructions':u"""<p>Completa la clase llamada <code> Producto </code> """,
-            'unit_test':u"""
-[TestFixture]
-public class ProductTest
-{
+            'unit_test':r"""//CalculatorTest
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
-    [Test, Description("Prueba del Constructor")]
-    public void Constructor()
-    {
-        Product p = new Product(1,"hola");
-        // Constraint Syntax
-        Assert.AreEqual(p.code,1);
-    }
-
-
-    [Test, Description("Imprimir la Descripción")]
-    public void PrintTest()
-    {
-        Product p = new Product(1,"hola");
-        p.Print();
-
-        using (StringWriter sw = new StringWriter())
-        {
-            Console.SetOut(sw);
-
-
-            p.Print();
-
-        string expected = "Producto 1: hola";
-        StringAssert.StartsWith(expected, sw.ToString());
-
-
-        }
-
-    }
+public class CalculatorTest {
+  @Test
+  public void evaluatesExpression() {
+    Calculator calculator = new Calculator();
+    int sum = calculator.evaluate("1+2+3");
+    assertEquals(6, sum);
+  }
 }""",
-     "lang":"csharp" }
+     "lang":"java" }
 
     ]
 
@@ -477,11 +444,10 @@ if __name__ == "__main__":
      db = client.protoboard_database
 
      activities_collection = db.activities_collection
+     #print activities_collection.find_one({'_id':'/activity/Preliminar'})
      activities_collection.remove()
      activities_collection.insert(activities)
 
-     a = activities_collection.find_one({'_id':'/program/PPP/2000'})
-     print a['instructions']
 
      #activities_collection.remove()
      #activities_collection.insert(activities)

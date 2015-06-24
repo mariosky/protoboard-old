@@ -203,7 +203,7 @@ def path_activity(request,path_id, uri):
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
 
         breadcrumbs = s.get_current_path(requested_activity)
-
+        print "uri",requested_activity.learning_activity.uri
         activity_content = Activity.get(requested_activity.learning_activity.uri)
         print 'activity:', activity_content
 

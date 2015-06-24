@@ -322,7 +322,7 @@ $(document).ready(function() {
                         }
 
                           for (var i=0; i<result.errors.length; ++i)
-                            $( "#result_panel_body").append("<p class='test_error'> Error: "+ result.errors[i]+"</p>" );
+                            $( "#result_panel_body").append("<p class='test_error'>"+ result.errors[i]+"</p>" );
                           for (var i=0; i<result.failures.length; ++i)
                             $( "#result_panel_body").append("<p class='test_failure'>Falló la prueba: "+ result.failures[i]+"</p>" );
                           for (var i=0; i<result.successes.length; ++i)
