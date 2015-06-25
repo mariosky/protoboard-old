@@ -64,10 +64,7 @@ pretest = LearningActivity( name = 'Pretest', slug = 'Pretest',
 #   lom = ,
     parent = POO, root  = POO,
 
-    pre_condition_rule = """if self.num_attempts == 0 :
- self.pre_condition = 'stopForwardTraversal'
-else:
- self.pre_condition = 'disabled'""",
+    pre_condition_rule = "",
     post_condition_rule = "" ,
 
     rollup_rule  = "",
@@ -115,8 +112,7 @@ preliminar = LearningActivity( name = 'Comentario Preliminar', slug = 'Prelimina
 #   lom =
     parent = content, root   = POO,
 
-    pre_condition_rule = """if self.get_objective_measure('Pretest')  > 2:
-	                  self.pre_condition = 'skip' """,
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_rule  = "",
