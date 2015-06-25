@@ -9,7 +9,7 @@
 
     #editor {
 
-        height: 640px;
+        height: 540px;
 
     }
 
@@ -55,8 +55,8 @@
 <div class="col-md-4">
                 <!-- Nav tabs -->
         <ul id="main_tab" class="nav nav-tabs">
-          <li class="active"><a href="#instrucciones" data-toggle="tab">Instrucciones</a></li>
-          <li><a href="#results" data-toggle="tab">Resultado</a></li>
+          <li class="active"><a href="#instrucciones" data-toggle="tab">Actividad</a></li>
+          <li><a href="#results" data-toggle="tab">Consola</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -87,15 +87,20 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 style="display: inline;" class="panel-title">{{program_quiz.title}}</h3>
-                <div id="play_btn" class="btn-group pull-right"> <span id="send_btn_queue" class="glyphicon glyphicon-play"></span>
-            </div>
-            <div class="clearfix"></div>
+            <h5 style="display: inline;" class="panel-title">{{program_quiz.title}}</h5>
 
             </div>
+
+
             <div class="panel-body">
                 <div id="editor">{{program_quiz.initial_code}}</div>
             </div>
+
+             <div class="panel-footer">
+                 <button type="button" id="sendButton" data-complete-text="finished!" data-loading-text="Trabajando..."  class="btn btn-primary btn-sm" autocomplete="off">Ejecuta el código</button>
+
+             </div>
+
         </div>
     </div>
 
@@ -105,22 +110,7 @@
 
 </div>
 
-    {% if XML_NAV %}
- <div class="row">
 
-         <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
-
-
-               <ul class="pager">
-                     <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
-                    <li class="next"><span class="nav_next">  Continuar &rarr;</span></li>
-               </ul>
-
-       </form>
-
-
-    </div>
-  {% endif %}
 
  <!-- Keyboard & Mouse Dynamics
  <button onclick="report()">Reporte Keystrokes</button>
@@ -242,13 +232,10 @@ $(document).ready(function() {
             });
 
 
+     $("#sendButton").on("click", function (){
 
+         var $btn = $(this).button('loading');
 
-     $("#send_btn_queue").on("click", function (){
-
-         if ( $(this).hasClass("disabled") == false )
-         {
-         $("#send_btn_queue").addClass("disabled" );
          var code = editor.getValue();
 
 
@@ -278,12 +265,10 @@ $(document).ready(function() {
                         alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
                         }
                     });
-         }
-         else
-         {
-
-         }
      });
+
+
+
 
 
     function poll(){
@@ -299,7 +284,9 @@ $(document).ready(function() {
 
                     if (data.outcome != -1)
                     {
-                      $("#send_btn_queue").removeClass("disabled" );
+
+
+                        $("#sendButton").button('reset');
 
                         var result = data.result;
                         if (result.result == "Failure")
@@ -360,7 +347,8 @@ $(document).ready(function() {
 
                    else
                    {
-                        $("#send_btn_queue").removeClass("disabled" );
+                        $("#sendButton").button('reset');
+
                         $("#result_panel_body").html("");
                         $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
                         $('<p>'+ 'TIME OUT'+'<p/>', {class:"p"}).appendTo("#result_panel_body");

@@ -284,6 +284,11 @@ background-position: left top;
 .second-navbar{
     top:40px;
 }
+ .pager
+ {
+     margin: 0px 0px;
+
+ }
     .pager li > span
     {
      color: #428BCA;
@@ -385,7 +390,7 @@ background-position: left top;
     <div id="main_container" class="container-fluid">
 
      <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-9">
             {%if breadcrumbs%}
                  <ol class="breadcrumb">
                     {% for l in breadcrumbs %}
@@ -399,7 +404,25 @@ background-position: left top;
                 </ol>
             {%endif%}
         </div>
-        <div id="user_points" class="col-md-2 bg-info hidden-xs hidden-sm ">
+
+
+        <div id="user_points" class="col-md-3 ">
+             {% if XML_NAV %}
+ <div class="row">
+
+         <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
+
+
+               <ul class="pager">
+                     <li ><span class="nav_prev" > &larr; Anterior</span></li>
+                    <li ><span class="nav_next">  Continuar &rarr;</span></li>
+               </ul>
+
+       </form>
+
+
+    </div>
+  {% endif %}
         </div>
      </div>
 
@@ -438,7 +461,7 @@ background-position: left top;
 
         $( document ).ready(function() {
 
-            var puntos_totales = 0;
+         /*   var puntos_totales = 0;
             $xml.find("item[objective_measure!='None']").each(function() {
                 var val =  this.getAttribute("objective_measure");
                 if (isNaN(val)==false)
@@ -449,6 +472,8 @@ background-position: left top;
 
 
             $("#user_points").append($('<h5>').attr({ class:''}).text('Mis puntos: '+puntos_totales));
+
+         */
 
 
 

@@ -424,6 +424,7 @@ def path_program(request,path_id, uri):
 def program(request, uri):
     print request.path
     program_test = Activity.get(request.path)
+    print 'ppt',program_test
     if program_test:
         return render_to_response('activitytree/program.html', {'program_quiz':program_test,
                                                         'activity_uri':request.path,
