@@ -13,33 +13,17 @@
 
     }
 
- #send_btn_queue
-    {
-     color:green;
-     cursor:pointer;
-    }
-
- #send_btn_queue.disabled
-    {
-     color: #eee;
-     cursor:pointer;
-    }
-  #send_btn_queue.disabled:hover, #send_btn_queue.disabled:focus
-    {
-     color:#eee;
-    }
-
-    #send_btn_queue:hover, #send_btn_queue:focus
-    {
-     color:green;
-    }
-
  p.test_error, p.test_failure {
     color:#d9534f;
     }
 
  p.test_success{
     color:#5cb85c;
+    }
+
+  .alert{
+    margin:10px;
+    margin-bottom:0px;
     }
 
 
@@ -90,14 +74,17 @@
             <h5 style="display: inline;" class="panel-title">{{program_quiz.title}}</h5>
 
             </div>
+            <div id="editor_alert">
 
+                </div>
 
             <div class="panel-body">
                 <div id="editor">{{program_quiz.initial_code}}</div>
             </div>
 
              <div class="panel-footer">
-                 <button type="button" id="sendButton" data-complete-text="finished!" data-loading-text="Trabajando..."  class="btn btn-primary btn-sm" autocomplete="off">Ejecuta el código</button>
+                 <button type="button" id="sendButton"  data-complete-text="finished!" data-loading-text="Trabajando..."  class="btn btn-primary btn-sm" autocomplete="off">Ejecuta el código</button>
+                 <button type="button" id="resetButton" class="btn btn-default btn-sm"> Reinicia el código</button>
 
              </div>
 
@@ -118,10 +105,31 @@
  -->
 
 {% endblock content %}
+<div class='alert alert-success alert-dismissible' role='alert'>  <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <p>          <strong>Warning!</strong> Better check yourself, youre not looking too good.                </p><p>               <button class='btn btn-danger btn-sm' type='button'>
 
+
+    Take this action
+
+</button>
+</p>            </div>
 
 
 {% block scripts %}
+
+    <script id="success_template" type="x-tmpl-mustache">
+        <div class='alert alert-success alert-dismissible' role='alert'>
+          <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+            <span aria-hidden='true'>&times;</span></button>
+                <p>
+                       <strong>!Felicidades!</strong> Tu código pasó todas las pruebas.</p>
+               [[#in_path]]
+                <p>
+                    <button class='btn btn-success btn-sm nav_next ' type='button'> Continuar al siguiente ejercicio</button>
+                </p>
+                [[/in_path]]
+        </div>
+    </script>
+
 
     <script type="text/javascript" charset="utf-8">
 	/* Keyboard & Mouse Dynamics*/
@@ -191,8 +199,14 @@ $(document).ready(function() {
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
 
+            var original_code = editor.getValue();
             task_id = 0;
             number_of_tries = 0;
+
+            Mustache.tags = ['[[', ']]'];
+            success_template = $('#success_template').html();
+            Mustache.parse(success_template);
+
 
 
             function getCookie(name) {
@@ -267,6 +281,14 @@ $(document).ready(function() {
                     });
      });
 
+  $("#resetButton").on("click", function (){
+
+
+
+         editor.setValue(original_code);
+
+
+     });
 
 
 
@@ -306,6 +328,13 @@ $(document).ready(function() {
                         {
                            $("#result_panel").removeClass("panel-info").removeClass("panel-danger").addClass("panel-success");
                            $("#result_panel_heading").html("Pruebas exitosas");
+                           $("#editor_alert").html( Mustache.render(success_template,
+                                   {
+                                       in_path:in_path
+
+                                   }
+
+                           ));
                         }
 
                           for (var i=0; i<result.errors.length; ++i)

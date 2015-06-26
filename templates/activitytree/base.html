@@ -449,10 +449,12 @@ background-position: left top;
     <script  type="text/javascript" src="{{MEDIA_URL}}js/mustache.min.js"></script>
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
 
-{% if XML_NAV  %}
 
   <script type="text/javascript" charset="utf-8">
 
+      {% if XML_NAV  %}
+
+        in_path = true;
         XML_NAV = "{{XML_NAV|safe}}";
 
         xmlDoc= $.parseXML(XML_NAV);
@@ -475,9 +477,7 @@ background-position: left top;
 
          */
 
-
-
-            $( ".nav_next" ).bind( "click", function( event ) {
+            $(document).on("click",".nav_next",function( event ) {
 
                    var form =  $("#nav_form");
                    form.append( $('<input>').attr({ type: 'hidden',
@@ -490,8 +490,11 @@ background-position: left top;
 
 
              });
+/*
 
-            $( ".nav_prev" ).bind( "click", function( event ) {
+*/
+
+            $(document).on("click",".nav_prev",function( event ) {
                    var form =  $("#nav_form");
                    form.append( $('<input>').attr({ type: 'hidden',
                                                     name: 'nav_event',
@@ -517,14 +520,18 @@ $(document).ready(function() {
   });
 });
  
+          {% else %}
 
+          in_path = false;
 
-
-
-
-    </script>
 
     {% endif  %}
+    </script>
+
+
+
+
+
   {% block scripts %}
 
   {% endblock scripts %}
