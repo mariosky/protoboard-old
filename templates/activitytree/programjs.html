@@ -251,10 +251,19 @@ $(document).ready(function() {
          var $btn = $(this).button('loading');
 
          var code = editor.getValue();
+
          var s = document.createElement("script");
          s.type = "text/javascript";
          s.innerHTML = code;
+      try{
+
          $("head").append(s);
+            }
+        catch (err)
+        {
+            alert(err.message);
+
+        }
 
          QUnit.test("Suma", function( assert ) {
             assert.equal(suma(1, 2), 3);
