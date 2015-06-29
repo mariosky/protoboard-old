@@ -406,16 +406,24 @@ def path_program(request,path_id, uri):
         breadcrumbs = s.get_current_path(requested_activity)
         print Activity.get(requested_activity.learning_activity.uri),path_id,uri
         print requested_activity.learning_activity.uri
-        return render_to_response('activitytree/program.html', {'program_quiz':Activity.get(requested_activity.learning_activity.uri),
-                                                                'activity_uri':requested_activity.learning_activity.uri,
-                                                                'uri_id':'%s'% requested_activity.learning_activity.id,
 
-                                                                'breadcrumbs':breadcrumbs,
-                                                                'root':requested_activity.learning_activity.get_root().uri,
-                                                                'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
-                                                                'XML_NAV':XML
-                                                                },
-                                  context_instance=RequestContext(request))
+        program_quiz = Activity.get(requested_activity.learning_activity.uri)
+
+        if program_quiz['lang'] == 'javascript':
+            template = 'activitytree/programjs.html'
+        else:
+            template = 'activitytree/program.html'
+        print template
+        return render_to_response(template, {'program_quiz':Activity.get(requested_activity.learning_activity.uri),
+                                                                    'activity_uri':requested_activity.learning_activity.uri,
+                                                                    'uri_id':'%s'% requested_activity.learning_activity.id,
+
+                                                                    'breadcrumbs':breadcrumbs,
+                                                                    'root':requested_activity.learning_activity.get_root().uri,
+                                                                    'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
+                                                                    'XML_NAV':XML
+                                                                    },
+                                      context_instance=RequestContext(request))
 
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
@@ -423,10 +431,18 @@ def path_program(request,path_id, uri):
 @transaction.atomic
 def program(request, uri):
     print request.path
-    program_test = Activity.get(request.path)
-    print 'ppt',program_test
-    if program_test:
-        return render_to_response('activitytree/program.html', {'program_quiz':program_test,
+    program_quiz = Activity.get(request.path)
+    print 'ppt',program_quiz
+    if program_quiz:
+
+        if program_quiz['lang'] == 'javascript':
+            template = 'activitytree/programjs.html'
+        else:
+            template = 'activitytree/program.html'
+        print template
+
+
+        return render_to_response(template, {'program_quiz':program_quiz,
                                                         'activity_uri':request.path,
                                                         'breadcrumbs':None,
                                                         'root':None,

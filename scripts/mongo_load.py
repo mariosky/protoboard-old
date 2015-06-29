@@ -79,7 +79,34 @@ activities = [
                 <p> Empezamos con una serie de videos introductorios al tutorial y después EJERCICIOS. </p>
     """} ,
 
-
+    {'_id':'/program/js/1', 'title':u"javascript",
+            'initial_code':u"""
+# Funcion que imprime Hola
+def foo():
+    pass
+""",
+            'correct_code':u"""# Solution:
+def foo(l):
+    print 'hola'
+    """,
+            'instructions':u"""<p>Escribe una función llamada foo la cual imprima Hola.</p>
+            </code>""",
+            'unit_test':u"""
+class Test(unittest.TestCase):
+    def test_foo(self):
+        from StringIO import StringIO
+        saved_stdout = sys.stdout
+        output = None
+        try:
+            out = StringIO()
+            sys.stdout = out
+            foo()
+            output = out.getvalue().strip()
+            assert output == 'Hola'
+        finally:
+            sys.stdout = saved_stdout
+            print output
+""","lang":"javascript", "type":"unit_test" },
 
     {'_id':'/program/1', 'title':u"Imprime Hola",
             'initial_code':u"""
