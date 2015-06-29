@@ -92,13 +92,12 @@
     </div>
 
 
-<div id="qunit"></div>
-  <div id="qunit-fixture"></div>
 
 
 </div>
 
-
+<div id="qunit"></div>
+  <div id="qunit-fixture"></div>
 
  <!-- Keyboard & Mouse Dynamics
  <button onclick="report()">Reporte Keystrokes</button>
@@ -252,6 +251,19 @@ $(document).ready(function() {
          var $btn = $(this).button('loading');
 
          var code = editor.getValue();
+         var s = document.createElement("script");
+         s.type = "text/javascript";
+         s.innerHTML = code;
+         $("head").append(s);
+
+         QUnit.test("Suma", function( assert ) {
+            assert.equal(suma(1, 2), 3);
+            assert.equal(suma(22, 2), 24);
+            assert.equal(suma(1, -2), -1);
+            });
+
+
+
 
 
            $.ajax(
@@ -273,7 +285,6 @@ $(document).ready(function() {
                         $("#result_panel").removeClass("panel-danger").removeClass("panel-success").addClass("panel-info");
                         $("#result_panel_body").html("");
                         $("#result_panel_heading").html("Esperando resultados...");
-                        poll();
 
                         },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -394,7 +405,7 @@ $(document).ready(function() {
 </script>
 
   <script src="//code.jquery.com/qunit/qunit-1.18.0.js"></script>
-  <script src="tests.js"></script>
+
 
    <script src="{{ MEDIA_URL }}js/ace.js" type="text/javascript" charset="utf-8"></script>
    <script src="{{ MEDIA_URL }}js/theme-chrome.js" type="text/javascript" charset="utf-8"></script>
