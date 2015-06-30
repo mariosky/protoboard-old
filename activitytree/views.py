@@ -170,8 +170,8 @@ def path_activity(request,path_id, uri):
                 ###
                 ###  What if status in POST??
                 ###
-                progress_status = 'complete'
-                objective_status = 'satisfied'
+                progress_status = None
+                objective_status = None
 
             # 'next' REQUEST
             if request.POST['nav_event'] == 'next':
