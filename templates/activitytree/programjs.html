@@ -262,6 +262,7 @@ $(document).ready(function() {
           $(".alert").alert("close");
 
 
+
          var s = document.createElement("script");
          s.id ="test_script";
          s.type = "text/javascript";
@@ -317,6 +318,11 @@ $(document).ready(function() {
 
             result.totals = "Total de pruebas: " + details.total +" Fallidas: "+  details.failed + "Exitosas: " +  details.passed +" Tiempo: " + details.runtime;
             $("#test_script").innerHTML="";
+
+            if (suma !== undefined)
+            {
+                suma = "";
+            }
         });
 
          QUnit.test("Suma", function( assert ) {
