@@ -489,6 +489,38 @@ def execute_queue(request):
         result= {"result":"added" , "error": None, "id": task_id}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
 
+@csrf_protect
+def javascript_result(request):
+    if request.method == 'POST':
+        rpc=json.loads(request.body)
+        print rpc
+
+
+        code = rpc["params"][0]
+        activity_uri = rpc["method"]
+        program_test = Activity.get(activity_uri)
+
+
+        if request.user.is_authenticated() and 'id' in rpc:
+            ula = None
+            try:
+                ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user )
+
+                s = SimpleSequencing()
+                if rpc['result'] == 'Success':
+                    s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=30,attempt=True)
+                else:
+                    s.update(ula,attempt=True)
+                #s.update(ula)
+                ## Mouse Dynamics
+                event = ULA_Event.objects.create(ULA=ula,context=rpc)
+                event.save()
+            except ObjectDoesNotExist:
+                #Assume is a non assigned program
+                print "None"
+                pass
+
+        return HttpResponse(json.dumps({}), content_type='application/javascript')
 
 @csrf_protect
 def get_result(request):

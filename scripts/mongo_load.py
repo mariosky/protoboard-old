@@ -89,7 +89,7 @@ return a + b;
 def foo(l):
     print 'hola'
     """,
-            'instructions':u"""<p>Escribe una función llamada suma la cual tome dos argumentos a y b y regrese la
+            'instructions':u"""<p>Escribe una función llamada <code>suma</code> la cual tome dos argumentos a y b y regrese la
             suma de ambos.</p>
             </code>""",
             'unit_test':u"""

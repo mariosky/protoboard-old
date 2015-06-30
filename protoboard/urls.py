@@ -23,6 +23,7 @@ urlpatterns = patterns('',
       (r'^(?P<uri>program/([\w+](\/*)(-*))+)$','activitytree.views.program'),
 
       (r'^execute_queue$','activitytree.views.execute_queue'),
+      (r'^javascript_result$','activitytree.views.javascript_result'),
       (r'^get_result$','activitytree.views.get_result'),
 
       (r'^rate_object$','activitytree.views.rate_object'),

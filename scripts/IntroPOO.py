@@ -100,11 +100,11 @@ preliminar = LearningActivity( name = 'Comentario Preliminar', slug = 'Prelimina
 preliminar.save()
 
 
-program_1 = LearningActivity( name = 'Imprime Hola', slug = 'E1',
-    uri = "/program/POO/1",
+program_1 = LearningActivity( name = 'javascript', slug = 'js1',
+    uri = "/program/js/1",
 
-    heading="La Clase Producto",
-    description = "Escribe tu primera clase",
+    heading="js",
+    description = "Escribe tu primera función",
     image = "https://s3.amazonaws.com/learning-python/images.png",
 
 

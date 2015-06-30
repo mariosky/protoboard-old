@@ -365,12 +365,14 @@ $(document).ready(function() {
          for (var i=0; i<result.successes.length; ++i)
              $( "#result_panel_body").append("<p class='test_success'>" + result.successes[i].message+"</p>" );
          $( "#result_panel_body").append("<p>" + result.totals+"</p>" );
-           $.ajax(
+
+          {% if user.is_authenticated %}
+         $.ajax(
                 {
-                    url: '/execute_queue',
+                    url: '/javascript_result',
                     type: "POST",
                     contentType: "application/json",
-                    data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code],
+                    data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code],"result":result.result,
              {% if uri_id %}
                     "id": {{ uri_id }} ,
              {% endif %}
@@ -388,6 +390,8 @@ $(document).ready(function() {
                         alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
                         }
                     });
+
+         {% endif %}
 
       $('#main_tab a[href="#results"]').tab('show');
 
