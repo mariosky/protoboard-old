@@ -79,35 +79,68 @@ activities = [
                 <p> Empezamos con una serie de videos introductorios al tutorial y después EJERCICIOS. </p>
     """} ,
 
-    {'_id':'/program/js/1', 'title':u"javascript",
-            'initial_code':u"""
-function suma(a, b){
-return a + b;
-}
-""",
-            'correct_code':u"""# Solution:
-def foo(l):
-    print 'hola'
-    """,
-            'instructions':u"""<p>Escribe una función llamada <code>suma</code> la cual tome dos argumentos a y b y regrese la
-            suma de ambos.</p>
-            </code>""",
-            'unit_test':u"""
-class Test(unittest.TestCase):
-    def test_foo(self):
-        from StringIO import StringIO
-        saved_stdout = sys.stdout
-        output = None
-        try:
-            out = StringIO()
-            sys.stdout = out
-            foo()
-            output = out.getvalue().strip()
-            assert output == 'Hola'
-        finally:
-            sys.stdout = saved_stdout
-            print output
-""","lang":"javascript", "type":"unit_test" },
+
+
+    {'_id':'/program/js/1', 'title':u"suma.js",
+                'initial_code':u"""//Completa el código
+
+ function suma(a, b){
+    return ;
+ }
+                                """,
+                'correct_code':u"""""",
+                'instructions':u"""<p>Escribe una función llamada <code>suma</code> la cual tome dos argumentos <code>a</code> y <code>b</code> y regrese la
+                                        suma de ambos.</p> </code>""",
+                'unit_test':u"""
+                    QUnit.test("JQuery", function( assert ) {
+                        assert.equal(suma(2,3), 5, "Debe sumar positivos");
+                        assert.equal(suma(2,-3), -1, "Debe sumar negativos");
+                        });""",
+                "lang":"javascript",
+                "type":"unit_test" },
+
+
+
+    {'_id':'/program/js/2', 'title':u"titulo.js",
+                'initial_code':u"""//Corrige el código
+
+$('.panel-title').html("Hola");
+                                """,
+                'correct_code':u"""
+                                    """,
+                'instructions':u"""
+                <h4> Modificando el texto dentro de un elemento</h4>
+
+                <p> Podemos utilizar JQuery para cambiar el texto de un elemento en particular.  Primero buscamos el
+                elemento, si el elemento tiene un <code> id </code> es fácil, lo encontramos con el selector <code> # </code>.
+                Una vez que lo tenemos  modificamos el texto con la función <code>html()</code>.
+
+                <h4> Instrucciones</h4>
+
+                Cambia el titulo del HTML Renderizado en la parte superior, en lugar de Hola debería decir: <strong>Hola JQuery</strong>.</p>
+
+                <h5> El HTML original es el siguiente:</h5>
+                """,
+                'unit_test':u"""
+                    QUnit.test("JQuery", function( assert ) {
+                        assert.equal($('#titulo').html(), "Hola JQuery", "El titulo debe decir 'Hola JQuery'");
+
+                        });""",
+                'HTML_code': u""" <h3 id='titulo'> Hola </h3> """,
+                "CSS": """
+
+                """,
+                "lang":"javascript",
+                "type":"unit_test",
+                "hint":u"""
+                Recuerda que se utiliza el selector <code> . </code> para encontrar los elementos que tienen cierta clase.
+                En este caso buscamos un <code>id</code>. Algo como:
+                <pre>
+$('<strong>#</strong>nombre_del_elemento');
+                </pre>
+                """},
+
+
 
     {'_id':'/program/1', 'title':u"Imprime Hola",
             'initial_code':u"""

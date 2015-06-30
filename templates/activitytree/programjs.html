@@ -32,26 +32,27 @@
 
 {% block content %}
 
+    {% if program_quiz.HTML_code %}
     <div class="row">
 
         <div class="col-md-12">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-            <h5 class="panel-title"> HTML Renderizado </h5>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                <h5 class="panel-title"> HTML Renderizado </h5>
+
+                </div>
+
+                <div class="panel-body">
+                    {{ program_quiz.HTML_code|safe }}
+                </div>
+
 
             </div>
-
-            <div class="panel-body">
-                <h3 id="respuesta"> Nada </h3>
-            </div>
-
-
-
         </div>
-    </div>
 
     </div>
+    {% endif %}
 
 <div class="row">
 
@@ -69,6 +70,22 @@
 
                     <div id="info_panel_body" class="panel-body">
                        {{ program_quiz.instructions|safe }}
+
+                       {% if program_quiz.HTML_code %}
+                        <pre>{{ program_quiz.HTML_code }} </pre>
+                       {% endif %}
+
+                         {% if program_quiz.hint %}
+                        <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample"
+                                aria-expanded="false" aria-controls="collapseExample">
+                          Ayuda
+                        </button>
+                            <div class="collapse" id="collapseExample">
+                              <div class="well">
+                                {{ program_quiz.hint|safe }}
+                              </div>
+                        </div>
+                     {% endif %}
                     </div>
                 </div>
 
@@ -339,21 +356,12 @@ $(document).ready(function() {
             {  result.result = "Success";
                 }
 
-            result.totals = "Total de pruebas: " + details.total +"\nFallidas: "+  details.failed + "\nExitosas: " +  details.passed +" \nTiempo: " + details.runtime;
+            result.totals = "Total de pruebas: " + details.total +"\nFallidas: "+  details.failed + "\nExitosas: " +  details.passed;
             $("#test_script").innerHTML="";
 
-            if (suma !== undefined)
-            {
-                suma = "";
-            }
         });
 
-         QUnit.test("Suma", function( assert ) {
-            assert.equal(suma(1, 2), 3, "La suma 1 + 2 es correcta.");
-            assert.equal(suma(22, 2), 24,"La suma  22 + 2 es correcta.");
-            assert.equal(suma(1, -2), -1, "La suma de 1 + (-1) es correcta.");
-            });
-
+         {{ program_quiz.unit_test|safe }}
 
 
          $("#sendButton").button('reset');
@@ -381,12 +389,12 @@ $(document).ready(function() {
          for (var i=0; i<result.errors.length; ++i)
              $( "#result_panel_body").append("<p class='test_error'>"+ result.errors[i]+"</p>" );
          for (var i=0; i<result.failures.length; ++i)
-         {
-             $( "#result_panel_body").append("<p class='test_success'>Se esperaba: "+ result.failures[i].expected+"</p>");
+         {   $( "#result_panel_body").append("<p class='test_failure'><strong> "+ result.failures[i].message+"</strong></p>");
+             $( "#result_panel_body").append("<p>Se esperaba: "+ result.failures[i].expected+"</p>");
              $( "#result_panel_body").append("<p class='test_failure'>Se encontró: "+ result.failures[i].actual+"</p>");
          }
          for (var i=0; i<result.successes.length; ++i)
-             $( "#result_panel_body").append("<p class='test_success'>" + result.successes[i].message+"</p>" );
+             $( "#result_panel_body").append("<p class='test_success'> OK </p>" );
          $( "#result_panel_body").append("<pre>" + result.totals+"</pre>" );
 
           {% if user.is_authenticated %}

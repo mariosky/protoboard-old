@@ -413,7 +413,7 @@ def path_program(request,path_id, uri):
             template = 'activitytree/programjs.html'
         else:
             template = 'activitytree/program.html'
-        print template
+        print program_quiz
         return render_to_response(template, {'program_quiz':Activity.get(requested_activity.learning_activity.uri),
                                                                     'activity_uri':requested_activity.learning_activity.uri,
                                                                     'uri_id':'%s'% requested_activity.learning_activity.id,
@@ -441,8 +441,8 @@ def program(request, uri):
             template = 'activitytree/program.html'
         print template
 
-
-        return render_to_response(template, {'program_quiz':program_quiz,
+        print program_quiz
+        return render_to_response(template, {           'program_quiz':program_quiz,
                                                         'activity_uri':request.path,
                                                         'breadcrumbs':None,
                                                         'root':None,
