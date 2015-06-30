@@ -38,8 +38,11 @@
 <script id="container_template" type="x-tmpl-mustache">
 	<div class="col-xs-12 col-md-4 col-sm-6">
 		<div class="thumbnail">
+
 		   <a href="/[[path_id]][[uri]]">
-		       <img src="[[image]]" alt="...">
+		   [[#image]]
+		       <img src="[[image]]" alt="..."/>
+		   [[/image]]
 		   </a>
 
 			<div class="caption">
@@ -78,7 +81,9 @@
 	<div class="col-xs-12 col-md-4 col-sm-6">
 		<div class="thumbnail">
 		   <a href="/[[path_id]][[uri]]">
-		       <img src="[[image]]" alt="...">
+            [[#image]]
+		       <img src="[[image]]" alt="..."/>
+		    [[/image]]
 		   </a>
 
 			<div class="caption">
@@ -111,8 +116,11 @@
 <script id="activity_template" type="x-tmpl-mustache">
 	<div class="col-xs-12 col-md-4 col-sm-6">
 		<div class="thumbnail">
+
 		   <a href="/[[path_id]][[uri]]">
-		       <img src="[[image]]" alt="...">
+            [[#image]]
+		       <img src="[[image]]" alt="..."/>
+		    [[/image]]
 		   </a>
 
 			<div class="caption">
@@ -152,7 +160,7 @@
 
                      [[#show_attempts]]
                         <div class="col-md-4 text-center">
-                              <span class="h3">[[num_attempts]] de [[attempt_limit]]</span>
+                              <span class="h3">[[num_attempts]]</span>
                               <br/>
 
                              <small>INTENTOS</small>
@@ -162,7 +170,7 @@
                          <div class="col-md-4 text-center">
                               <span class="h3">[[objective_measure]]</span>
                                 <br/>
-                             <small>PUNTOS ALCANZADOS</small>
+                             <small>PUNTOS</small>
                          </div>
                       [[/show_objective_measure]]
 
@@ -238,7 +246,7 @@
                 var icon = get_icon(uri_string);
                 if (this.getAttribute("objective_status")=="satisfied")
                     {
-                    icon.icon = "fa fa-check"
+                    icon.icon = icon.icon + " fa fa-check"
                     }
                 children[children.length] =  {
                     heading: this.getAttribute("heading"),

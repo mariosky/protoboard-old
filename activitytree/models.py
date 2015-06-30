@@ -53,7 +53,7 @@ class LearningActivity(models.Model):
     rollup_objective = models.BooleanField(default=True)
     rollup_progress = models.BooleanField(default=True)
         
-    attempt_limit = models.PositiveSmallIntegerField(default=1000)
+    attempt_limit = models.PositiveSmallIntegerField(default=100)
     duration_limit = models.PositiveSmallIntegerField(null=True) 
     available_from = models.DateTimeField(null=True)
     available_until = models.DateTimeField(null=True)
@@ -281,7 +281,7 @@ class UserLearningActivity(models.Model):
         
     def rollup_rules(self):
         ##Until root
-            if self.learning_activity.rollup_rule:
+            if self.learning_activity.rollup_rule and self.learning_activity.is_container:
                 self.eval_rollup_rule(self.learning_activity.rollup_rule)
             if self.learning_activity.parent != None:
                 parent = UserLearningActivity.objects.filter(learning_activity=self.learning_activity.parent,user=self.user)[0]

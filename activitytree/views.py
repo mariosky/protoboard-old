@@ -112,8 +112,6 @@ def path_activity(request,path_id, uri):
             except (ObjectDoesNotExist, IndexError) as e:
                 requested_activity = None
 
-            print requested_activity
-
 
             # The requested_activity was NOT FOUND
             if not requested_activity: # The requested_activity was not found
@@ -187,7 +185,6 @@ def path_activity(request,path_id, uri):
                 s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
                 next_uri = s.get_prev(root, current_activity)
 
-            print next_uri
             #No more activities ?
             if next_uri is None:
 
@@ -203,9 +200,9 @@ def path_activity(request,path_id, uri):
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
 
         breadcrumbs = s.get_current_path(requested_activity)
-        print "uri",requested_activity.learning_activity.uri
+
         activity_content = Activity.get(requested_activity.learning_activity.uri)
-        print 'activity:', activity_content
+
 
         if activity_content and 'content' in activity_content:
             content = activity_content['content']
@@ -213,7 +210,7 @@ def path_activity(request,path_id, uri):
             content = ""
 
         update_pool(requested_activity.learning_activity.uri)
-        print activity_content,uri
+
         if (requested_activity.learning_activity.uri).split('/')[2] =='video':
             return render_to_response('activitytree/video.html',
 
@@ -263,7 +260,7 @@ def activity(request, uri=None):
         # Check if public, all public for now
         if False:
             return HttpResponseRedirect('/login/?next=%s' % request.path)
-        print '/%s' % uri
+
         activity_content = Activity.get('/%s' % uri)
 
         if activity_content and 'content' in activity_content:
@@ -273,7 +270,7 @@ def activity(request, uri=None):
 
 
         if (uri).split('/')[1] =='video':
-            print activity_content
+
             return render_to_response('activitytree/video.html',
 
                                   {'XML_NAV':None,
@@ -349,6 +346,7 @@ def path_test(request,path_id, uri):
 
         test = Activity.get(requested_activity.learning_activity.uri)
 
+
         if feedback:
             for q in test['questions']:
                 if q['id'] in feedback:
@@ -404,16 +402,13 @@ def path_program(request,path_id, uri):
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
 
         breadcrumbs = s.get_current_path(requested_activity)
-        print Activity.get(requested_activity.learning_activity.uri),path_id,uri
-        print requested_activity.learning_activity.uri
-
         program_quiz = Activity.get(requested_activity.learning_activity.uri)
 
         if program_quiz['lang'] == 'javascript':
             template = 'activitytree/programjs.html'
         else:
             template = 'activitytree/program.html'
-        print program_quiz
+
         return render_to_response(template, {'program_quiz':Activity.get(requested_activity.learning_activity.uri),
                                                                     'activity_uri':requested_activity.learning_activity.uri,
                                                                     'uri_id':'%s'% requested_activity.learning_activity.id,
@@ -430,18 +425,16 @@ def path_program(request,path_id, uri):
 
 @transaction.atomic
 def program(request, uri):
-    print request.path
+
     program_quiz = Activity.get(request.path)
-    print 'ppt',program_quiz
+
     if program_quiz:
 
         if program_quiz['lang'] == 'javascript':
             template = 'activitytree/programjs.html'
         else:
             template = 'activitytree/program.html'
-        print template
 
-        print program_quiz
         return render_to_response(template, {           'program_quiz':program_quiz,
                                                         'activity_uri':request.path,
                                                         'breadcrumbs':None,
@@ -481,7 +474,7 @@ def execute_queue(request):
                 event.save()
             except ObjectDoesNotExist:
                 #Assume is a non assigned program
-                print "Non"
+
                 pass
 
         rpc['task_id']=task_id
@@ -493,8 +486,6 @@ def execute_queue(request):
 def javascript_result(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
-        print rpc
-
 
         code = rpc["params"][0]
         activity_uri = rpc["method"]
@@ -517,7 +508,6 @@ def javascript_result(request):
                 event.save()
             except ObjectDoesNotExist:
                 #Assume is a non assigned program
-                print "None"
                 pass
 
         return HttpResponse(json.dumps({}), content_type='application/javascript')
@@ -594,13 +584,14 @@ def _get_ula(request, uri):
         return None
     return requested_activity
 
-def _set_current(request,requested_activity, root, s,objective_status=None, progress_status=None):
+def _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None):
     # Sets the requested  Learning Activity as current
 
     atree = ActivityTree.objects.get(user=request.user,root_activity=root.learning_activity.get_root())
 
     # Exits last activty
     if atree.current_activity:
+        print atree.current_activity,atree.current_activity.learning_activity.choice_exit,objective_status,progress_status
         if request.method == 'GET' and atree.current_activity.learning_activity.choice_exit:
             objective_status='satisfied'
             progress_status='complete'
@@ -821,6 +812,6 @@ def update_pool(uri):
     if uri:
         if uri in multi_device_activities:
             for device in multi_device_activities[uri]:
-                print device
+
                 redis_service.set(device["dispositivo"],{"url":ip_couch + device["url"] ,"estado":device["estado"],"tipo":device["tipo"]} )
 

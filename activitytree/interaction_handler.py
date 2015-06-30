@@ -3,6 +3,7 @@
 from activitytree.models import ActivityTree, UserLearningActivity
 import datetime
 from lxml import etree
+
 #Exceptions
 
 
@@ -105,6 +106,7 @@ class SimpleSequencing(object):
             if attempt:
                 ula.num_attempts += 1
             ula.save()
+            print ula.progress_status,ula.objective_status
             atree.save()
             ###
             ### IF rollup_objective = True or rollup_progress = True
@@ -370,7 +372,9 @@ def _get_nav(id,xml_tree=None):
 
 
 def get_attr(uri, attr):
+
     for k,v in RECORDS.items():
+
         if uri == v["uri"]:
             return v[attr]
     return None

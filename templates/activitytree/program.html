@@ -36,7 +36,7 @@
 
 <div class="row">
 
-<div class="col-md-4">
+<div class="col-md-5">
                 <!-- Nav tabs -->
         <ul id="main_tab" class="nav nav-tabs">
           <li class="active"><a href="#instrucciones" data-toggle="tab">Actividad</a></li>
@@ -67,7 +67,7 @@
         </div>
 
 </div>
-    <div class="col-md-8">
+    <div class="col-md-7">
 
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -347,7 +347,7 @@ $(document).ready(function() {
                         if (typeof result.stdout != 'undefined'  &&  result.stdout != "\n" )
                         {
                           $( "#result_panel_body").append("<p> Se imprimió en la consola:</p>" );
-                          $("<code></code>").text(result.stdout).appendTo("#result_panel_body");
+                          $("<pre></pre>").text(result.stdout).appendTo("#result_panel_body");
                          // $( "#result_panel_body").append("<code>"+ result.stdout +"</code>" );
                         }
                         //for (var i=0; i<info_list.length; i++){
