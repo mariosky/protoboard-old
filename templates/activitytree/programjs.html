@@ -96,8 +96,7 @@
 
 </div>
 
-<div id="qunit"></div>
-  <div id="qunit-fixture"></div>
+
 
  <!-- Keyboard & Mouse Dynamics
  <button onclick="report()">Reporte Keystrokes</button>
@@ -252,29 +251,114 @@ $(document).ready(function() {
 
          var code = editor.getValue();
 
+         var result =
+         {
+            result:"ProcessError",
+            errors: [],
+            failures: [],
+            successes:[]
+         };
+
+          $(".alert").alert("close");
+
+
          var s = document.createElement("script");
+         s.id ="test_script";
          s.type = "text/javascript";
          s.innerHTML = code;
-      try{
 
-         $("head").append(s);
+         try{
+             $("head").append(s);
+             }
+            catch (err)
+            {   $("#sendButton").button('reset');
+                result.errors.push(err.message);
+                $("#result_panel_body").html("");
+                $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
+                $("#result_panel_heading").html("Error al cargar el script: ");
+                for (var i=0; i<result.errors.length; ++i)
+                    $( "#result_panel_body").append("<p class='test_error'>"+ result.errors[i]+"</p>" );
+                $('#main_tab a[href="#results"]').tab('show');
+
+                return
             }
-        catch (err)
-        {
-            alert(err.message);
 
-        }
+
+
+         $("#result_panel").removeClass("panel-danger").removeClass("panel-success").addClass("panel-info");
+         $("#result_panel_body").html("");
+         $("#result_panel_heading").html("Esperando resultados...");
+
+        QUnit.config.testTimeout = 2000;
+        QUnit.log(function( details ) {
+                if (details.result ){
+
+
+                    result.successes.push(details);
+
+                }else{
+
+                    result.failures.push(details);
+                }
+
+
+            });
+
+        QUnit.testDone(function( details ) {
+
+            if (details.failed > 0)
+                {
+                result.result = "Failure";
+
+                }
+            else if(details.passed == details.total)
+            {  result.result = "Success";
+                }
+
+            result.totals = "Total de pruebas: " + details.total +" Fallidas: "+  details.failed + "Exitosas: " +  details.passed +" Tiempo: " + details.runtime;
+            $("#test_script").innerHTML="";
+        });
 
          QUnit.test("Suma", function( assert ) {
-            assert.equal(suma(1, 2), 3);
-            assert.equal(suma(22, 2), 24);
-            assert.equal(suma(1, -2), -1);
+            assert.equal(suma(1, 2), 3, "La suma 1 + 2 es correcta.");
+            assert.equal(suma(22, 2), 24,"La suma  22 + 2 es correcta.");
+            assert.equal(suma(1, -2), -1, "La suma de 1 + (-1) es correcta.");
             });
 
 
 
+         $("#sendButton").button('reset');
 
+         if (result.result == "Failure") {
+                 $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
+                 $("#result_panel_heading").html("No pasó las pruebas");
+            }
+         else if (result.result == "ProcessError") {
+                 $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
+                 $("#result_panel_heading").html("Error al procesar las pruebas");
+         }
 
+         else if (result.result == "Success") {
+                 $("#result_panel").removeClass("panel-info").removeClass("panel-danger").addClass("panel-success");
+                 $("#result_panel_heading").html("Pruebas exitosas");
+                 $("#editor_alert").html(Mustache.render(success_template,
+                         {
+                             in_path: in_path
+
+                         }
+                 ));
+         }
+
+         for (var i=0; i<result.errors.length; ++i)
+             $( "#result_panel_body").append("<p class='test_error'>"+ result.errors[i]+"</p>" );
+         for (var i=0; i<result.failures.length; ++i)
+         {
+             $( "#result_panel_body").append("<p class='test_success'>Se esperaba: "+ result.failures[i].expected+"</p>");
+             $( "#result_panel_body").append("<p class='test_failure'>Se encontro: "+ result.failures[i].actual+"</p>");
+         }
+         for (var i=0; i<result.successes.length; ++i)
+             $( "#result_panel_body").append("<p class='test_success'>" + result.successes[i].message+"</p>" );
+         $( "#result_panel_body").append("<p>" + result.totals+"</p>" );
            $.ajax(
                 {
                     url: '/execute_queue',
@@ -291,15 +375,16 @@ $(document).ready(function() {
                             task_id =data.id;
                             number_of_tries=0;
 
-                        $("#result_panel").removeClass("panel-danger").removeClass("panel-success").addClass("panel-info");
-                        $("#result_panel_body").html("");
-                        $("#result_panel_heading").html("Esperando resultados...");
+
 
                         },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
                         }
                     });
+
+      $('#main_tab a[href="#results"]').tab('show');
+
      });
 
   $("#resetButton").on("click", function (){
@@ -312,102 +397,6 @@ $(document).ready(function() {
      });
 
 
-
-
-    function poll(){
-        $.ajax({ url: '/get_result',
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "params": ["{{ activity_uri }}"], "id": task_id }),
-            success: function(data){
-            //Update your dashboard gauge
-            number_of_tries++;
-
-              $("#result_panel_body").html("");
-
-                    if (data.outcome != -1)
-                    {
-
-
-                        $("#sendButton").button('reset');
-
-                        var result = data.result;
-                        if (result.result == "Failure")
-                        {
-                          $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
-                          $("#result_panel_heading").html("No pasó las pruebas");
-
-
-                       }
-                        else if (result.result == "ProcessError")
-                        {
-                          $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
-                          $("#result_panel_heading").html("Error al procesar las pruebas");
-                        }
-
-                        else if (result.result == "Success")
-                        {
-                           $("#result_panel").removeClass("panel-info").removeClass("panel-danger").addClass("panel-success");
-                           $("#result_panel_heading").html("Pruebas exitosas");
-                           $("#editor_alert").html( Mustache.render(success_template,
-                                   {
-                                       in_path:in_path
-
-                                   }
-
-                           ));
-                        }
-
-                          for (var i=0; i<result.errors.length; ++i)
-                            $( "#result_panel_body").append("<p class='test_error'>"+ result.errors[i]+"</p>" );
-                          for (var i=0; i<result.failures.length; ++i)
-                            $( "#result_panel_body").append("<p class='test_failure'>Falló la prueba: "+ result.failures[i]+"</p>" );
-                          for (var i=0; i<result.successes.length; ++i)
-                            $( "#result_panel_body").append("<p class='test_success'>Pasó la prueba: "+ result.successes[i]+"</p>" );
-
-                        if (typeof result.stdout != 'undefined'  &&  result.stdout != "\n" )
-                        {
-                          $( "#result_panel_body").append("<p> Se imprimió en la consola:</p>" );
-                          $("<code></code>").text(result.stdout).appendTo("#result_panel_body");
-                         // $( "#result_panel_body").append("<code>"+ result.stdout +"</code>" );
-                        }
-                        //for (var i=0; i<info_list.length; i++){
-                        // $('<p>'+ info_list[i]+'<p/>', {class:"p"}).appendTo("#result_panel_body");
-                        //}
-                    }
-                    else
-                    {
-
-                    }
-            $('#main_tab a[href="#results"]').tab('show')
-            console.log(data.outcome);
-
-            }, dataType: "json",
-
-            complete: function (jqXHR,textStatus ){
-               var data = $.parseJSON(jqXHR.responseText);
-               console.log(data.outcome);
-               console.log(data);
-               if (data.outcome == -1)
-               {
-                   if (number_of_tries < 150)
-                   {
-                       poll();
-                   }
-
-                   else
-                   {
-                        $("#sendButton").button('reset');
-
-                        $("#result_panel_body").html("");
-                        $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
-                        $('<p>'+ 'TIME OUT'+'<p/>', {class:"p"}).appendTo("#result_panel_body");
-
-                   }
-               }
-            },
-            timeout: 5000 });
-    };
 
   });
 
