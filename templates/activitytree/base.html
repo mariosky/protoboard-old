@@ -242,7 +242,7 @@ code {
                 <li><a href="{{root}}">Curso</a></li>
                 <li><a href="/dashboard{{ root_id }}">Dashboard</a></li>
                 {% endif %}
-            <li><a href="#"> {{ user.first_name }} {{ user.last_name }}</a></li>
+            <li><a href="#"> {{ user.first_name }} {{ user.last_name }}</a> <span id="user_points"></span></li>
             <li><a class="navbar-user" href="#"><img src="http://graph.facebook.com/{{user.email}}/picture?type=square"/>  </a></li>
             <li><a href="/logout">Log out</a></li>
 
@@ -342,7 +342,7 @@ code {
 
         $( document ).ready(function() {
 
-         /*   var puntos_totales = 0;
+            var puntos_totales = 0;
             $xml.find("item[objective_measure!='None']").each(function() {
                 var val =  this.getAttribute("objective_measure");
                 if (isNaN(val)==false)
@@ -352,9 +352,9 @@ code {
             });
 
 
-            $("#user_points").append($('<h5>').attr({ class:''}).text('Mis puntos: '+puntos_totales));
+            $("#user_points").html("("+ puntos_totales+")");
 
-         */
+
 
             $(document).on("click",".nav_next",function( event ) {
 
