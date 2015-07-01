@@ -242,7 +242,8 @@ code {
                 <li><a href="{{root}}">Curso</a></li>
                 <li><a href="/dashboard{{ root_id }}">Dashboard</a></li>
                 {% endif %}
-            <li><a href="#"> {{ user.first_name }} {{ user.last_name }}</a> <span id="user_points"></span></li>
+            <li><a href="#"> {{ user.first_name }} {{ user.last_name }}</a> </li>
+            <li><p id="user_points" class="navbar-text"></p></li>
             <li><a class="navbar-user" href="#"><img src="http://graph.facebook.com/{{user.email}}/picture?type=square"/>  </a></li>
             <li><a href="/logout">Log out</a></li>
 
@@ -352,7 +353,7 @@ code {
             });
 
 
-            $("#user_points").html("("+ puntos_totales+")");
+            $("#user_points").html("("+ puntos_totales+" puntos)");
 
 
 
