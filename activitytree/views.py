@@ -163,13 +163,10 @@ def path_activity(request,path_id, uri):
             current_activity = s.get_current(root)
 
 
-            if current_activity.learning_activity.is_container:
-                progress_status = None
-                objective_status = None
+            if current_activity.learning_activity.choice_exit:
+                objective_status='satisfied'
+                progress_status='complete'
             else:
-                ###
-                ###  What if status in POST??
-                ###
                 progress_status = None
                 objective_status = None
 
@@ -591,7 +588,6 @@ def _set_current(request,requested_activity, root, s, objective_status=None, pro
 
     # Exits last activty
     if atree.current_activity:
-        print atree.current_activity,atree.current_activity.learning_activity.choice_exit,objective_status,progress_status
         if request.method == 'GET' and atree.current_activity.learning_activity.choice_exit:
             objective_status='satisfied'
             progress_status='complete'

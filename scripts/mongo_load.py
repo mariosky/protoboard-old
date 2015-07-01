@@ -115,7 +115,7 @@ else:
                     'interaction': 'textEntryInteraction',
                     'inline': 0,
                     'title': "Pregunta Abierta",
-                    'question': "Cual fué la primera selección en ganar el primer mundial",
+                    'question': "Cual fué la primera selección en ganar el mundial de Fútbol",
                     'can_check': "True",
                     'can_show': "True",
                     'can_hint': "True",
@@ -366,20 +366,21 @@ print json.dumps(result)
 
 
     {'_id':'/program/java/1',
-     'title':u"Clase Producto",
+     'title':u"Calculator.class",
      'initial_code':r"""
 public class Calculator {
 
   public int evaluate(String expression) {
 
-    int sum = 0;
-    for (String summand: expression.split("\\+"))
-      sum += Integer.valueOf(summand);
+
     return sum;
   }
 """,
             'correct_code':u""" """,
-             'instructions':u"""<p>Completa la clase llamada <code> Producto </code> """,
+             'instructions':u"""<p>Completa el método <code> evaluate </code> de la clase <code>Calculator</code>. Este
+              método toma como parámetro una cadena con número enteros y el operador de adición, por ejemplo: <code>"2+2+4+4"</code>
+             y regresa un entero con la suma
+              de los números, para el caso de ejemplo sería 12.""",
             'unit_test':r"""//CalculatorTest
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
