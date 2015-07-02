@@ -140,7 +140,13 @@ body {
 
             <h2>{{c.root.name}}</h2>
             {{ c.short_description|safe }}
-            <a class="btn btn-primary" href="{{c.root.id }}{{c.root.uri }}" role="button">Vamos &raquo;</a>
+        {% if user.is_authenticated %}
+
+            <a class="btn btn-primary" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button">Continúa &raquo;</a>
+        {% else %}
+            <a class="btn btn-primary" href="/{{c.root.id }}{{c.root.uri }}" role="button">Registrate &raquo;</a>
+        {% endif %}
+
         </div>
 
          {% endfor %}

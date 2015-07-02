@@ -140,7 +140,7 @@ def path_activity(request,path_id, uri):
                 current_activity = s.get_current(requested_activity)
                 if current_activity:
                     requested_activity = current_activity
-                    return HttpResponseRedirect(  '/%s%s'% requested_activity.learning_activity.id,requested_activity.learning_activity.uri)
+                    return HttpResponseRedirect(  '/%s%s'% (requested_activity.learning_activity.id, requested_activity.learning_activity.uri))
                 else:
                     _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
             #Else is a
@@ -676,17 +676,20 @@ def _check_survey(post_dict, quiz):
     return checked
 
 def login_view(request,template_name='registration/login.html',  redirect_field_name=REDIRECT_FIELD_NAME):
+    context = {}
+    if 'next' in request.GET:
+        context['next'] = request.GET['next']
+
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-        context = {}
+
 
         if user is not None:
             if user.is_active:
                 login(request, user)
                 if 'next' in request.GET:
-                    request.session['after_login'] = request.GET['next']
                     return HttpResponseRedirect(request.GET['next'])
                 else:
 
@@ -704,7 +707,9 @@ def login_view(request,template_name='registration/login.html',  redirect_field_
         return TemplateResponse(request, template_name,context, current_app=None)
 
     else:
-            return TemplateResponse(request, template_name, current_app=None)
+            print 'GET',request.GET
+            request.session['after_login'] = request.GET['next']
+            return TemplateResponse(request, template_name,context ,current_app=None)
 
 
 
@@ -727,6 +732,10 @@ def ajax_vote(request, type, uri):
 
 def facebook_get_login(request):
     state = request.session.session_key
+
+    if 'next' in request.GET:
+        request.session['after_login']=request.GET['next']
+    print 'facebook_get_login', request.session.keys(),request.GET
     url = """https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&state=%s""" % \
               (settings.FACEBOOK_APP_ID ,settings.FACEBOOK_REDIRECT_URL,
                state
@@ -737,7 +746,7 @@ def facebook_get_login(request):
 def facebook_login(request):
     if 'error' in request.GET:
         return HttpResponseRedirect('/')
-
+    print 'facebook_login', request.session.keys(), request.GET
 
     code = request.GET['code']
     UID = request.GET['state']
@@ -769,6 +778,7 @@ def facebook_login(request):
     if user:
         if user.is_active:
             login(request, user)
+            print request.session
             if 'after_login' in request.session:
                 return HttpResponseRedirect(request.session['after_login'])
             return HttpResponseRedirect('/')
