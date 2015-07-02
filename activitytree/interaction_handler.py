@@ -113,19 +113,19 @@ class SimpleSequencing(object):
             ula.rollup_rules()
 
     def update(self, ula, progress_status=None, objective_status=None, objective_measure=None, attempt=False):
-        if not ula.is_current:
-            raise NotAllowed('Update', "Can only update a current activity")
-        else:
-            if progress_status is not None:
-                ula.progress_status = progress_status
-            if objective_status is not None :
-                ula.objective_status = objective_status
-            if objective_measure is not None:
-                ula.objective_measure = objective_measure
-            ula.last_visited = datetime.datetime.now()
-            if attempt:
-                ula.num_attempts += 1
-            ula.save()
+        #if not ula.is_current:
+        #    raise NotAllowed('Update', "Can only update a current activity")
+        #else:
+        if progress_status is not None:
+            ula.progress_status = progress_status
+        if objective_status is not None :
+            ula.objective_status = objective_status
+        if objective_measure is not None:
+            ula.objective_measure = objective_measure
+        ula.last_visited = datetime.datetime.now()
+        if attempt:
+            ula.num_attempts += 1
+        ula.save()
 
     def suspend(self, user, activity):
         pass
