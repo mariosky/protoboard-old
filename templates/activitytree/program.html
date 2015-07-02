@@ -215,17 +215,13 @@ $(document).ready(function() {
             task_id = 0;
             number_of_tries = 0;
 
+            {% if XML_NAV %}
             var num_attempts = $xml.find("item[is_current='True']").attr('num_attempts');
             var attempt_limit = $xml.find("item[is_current='True']").attr('attempt_limit');
 
             $('#num_attempts').html("intentos: " + num_attempts );
-            if (attempt_limit <100 && num_attempts >= attempt_limit) {
-                    setTimetout(function() {
-                           $("#sendButton").attr('disabled', 'disabled'); // Disables the button correctly.
 
-                           }, 0);
-                    }
-
+            {% endif %}
 
             Mustache.tags = ['[[', ']]'];
             success_template = $('#success_template').html();
@@ -382,18 +378,15 @@ $(document).ready(function() {
                         //for (var i=0; i<info_list.length; i++){
                         // $('<p>'+ info_list[i]+'<p/>', {class:"p"}).appendTo("#result_panel_body");
                         //}
+                        $("#sendButton").button('reset');
 
-                         $("#sendButton").button('reset');
+                        {% if XML_NAV %}
+
                          num_attempts++;
                          $('#num_attempts').html("intentos: " + num_attempts );
-                         if (attempt_limit <100 && num_attempts >= attempt_limit) {
-                                 setTimetout(function() {
-                                        $("#sendButton").attr('disabled', 'disabled'); // Disables the button correctly.
-
-                                        }, 0);
-                                 }
 
 
+                        {% endif %}
 
 
 
