@@ -128,7 +128,6 @@ test = LearningActivity( name = 'Quiz', slug = '',
 
     pre_condition_rule = "",
     post_condition_rule = "",
-    attempt_limit=4,
     is_container = False,
     is_visible = True,
     order_in_container = 1
@@ -148,8 +147,8 @@ programas = LearningActivity( name = 'Ejercicios de Programación', slug = '',
     post_condition_rule = "",
 
     flow = True,
-    forward_only = False,
-    choice = True,
+    forward_only = True,
+    choice = False,
     choice_exit = False,
 
 
@@ -172,10 +171,9 @@ csharp = LearningActivity( name = 'CSharp', slug = '',
     choice_exit = False,
     pre_condition_rule = "",
     post_condition_rule = "",
-    attempt_limit=4,
     is_container = False,
     is_visible = True,
-    order_in_container = 1
+    order_in_container = 0
     )
 csharp.save()
 
@@ -188,7 +186,6 @@ javascript = LearningActivity( name = 'Javascript', slug = '',
     choice_exit = False,
     pre_condition_rule = "",
     post_condition_rule = "",
-    attempt_limit=4,
     is_container = False,
     is_visible = True,
     order_in_container = 1
@@ -205,10 +202,9 @@ Java = LearningActivity( name = 'Java', slug = '',
     choice_exit = False,
     pre_condition_rule = "",
     post_condition_rule = "",
-    attempt_limit=4,
     is_container = False,
     is_visible = True,
-    order_in_container = 1
+    order_in_container = 2
     )
 Java.save()
 
@@ -222,10 +218,9 @@ JQuery= LearningActivity( name = 'jQuery', slug = '',
     choice_exit = False,
     pre_condition_rule = "",
     post_condition_rule = "",
-    attempt_limit=4,
     is_container = False,
     is_visible = True,
-    order_in_container = 1
+    order_in_container = 3
     )
 JQuery.save()
 
@@ -234,13 +229,17 @@ Py = LearningActivity( name = 'Python', slug = '',
 #   lom =
     parent = programas, root  = Demo,
     heading="Python",
-    description = u"""Es un lenguaje interpretado, usa tipado dinámico y es multiplataforma.""",
+    description = u"""Es un lenguaje interpretado, usa tipado dinámico y es multiplataforma. Debes completar la actividad de JQuery para desbloquear esta actividad.""",
     choice_exit = False,
-    pre_condition_rule = "",
+    pre_condition_rule = """
+if get_attr('/program/js/2','objective_status') == 'satisfied':
+    activity['pre_condition'] = ''
+else:
+    activity['pre_condition'] = 'disabled'
+""",
     post_condition_rule = "",
-    attempt_limit=4,
     is_container = False,
     is_visible = True,
-    order_in_container = 1
+    order_in_container = 4
     )
 Py.save()

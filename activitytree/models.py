@@ -52,7 +52,7 @@ class LearningActivity(models.Model):
     
     rollup_objective = models.BooleanField(default=True)
     rollup_progress = models.BooleanField(default=True)
-        
+    #default value of attempt_limit (100) means no restriction in number of attempts, max attempts = 99
     attempt_limit = models.PositiveSmallIntegerField(default=100)
     duration_limit = models.PositiveSmallIntegerField(null=True) 
     available_from = models.DateTimeField(null=True)

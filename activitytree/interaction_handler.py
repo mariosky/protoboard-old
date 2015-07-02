@@ -106,7 +106,6 @@ class SimpleSequencing(object):
             if attempt:
                 ula.num_attempts += 1
             ula.save()
-            print ula.progress_status,ula.objective_status
             atree.save()
             ###
             ### IF rollup_objective = True or rollup_progress = True
@@ -153,9 +152,6 @@ class SimpleSequencing(object):
             raise NotAllowed('Assign Activity Tree', "Only Root Nodes can be assigned")
 
     def get_next(self, ula, current):
-
-        #current = self.get_current(ula)
-
         if current:
             eroot = get_nav(ula)
             navlist = [e for e in eroot.iter()]
@@ -175,8 +171,6 @@ class SimpleSequencing(object):
 
     def get_prev(self, ula, current):
 
-        #current = self.get_current(ula)
-
         if current:
             eroot = get_nav(ula)
             navlist = [e for e in eroot.iter()]
@@ -194,66 +188,6 @@ class SimpleSequencing(object):
             return None
         else:
             return None
-
-
-    def get_nav(self, ula):
-        #print "get_nav call",ula
-        #If nodes is None we are at root
-        if ula.learning_activity.parent is None:
-            #Refresh root in case it was changed elsewhere
-            ula = UserLearningActivity.objects.get(id=ula.id)
-            ula.children = []
-        #Get children activities
-        children = ula.get_children(recursive=False)
-        if children:
-            #Process child nodes-*
-            for child in children:
-                child.children = []
-                child.eval_pre_condition_rule()
-
-                #IF Parent ForwardOnly is True, disable if already tried
-                #print child.learning_activity.uri, child.pre_condition
-                if child.pre_condition == 'stopForwardTraversal':
-                    ula.children.append(child)
-                    return ula
-                elif child.pre_condition == 'skip':
-                    pass
-                elif ula.learning_activity.forward_only and child.num_attempts > 0:
-                    child.pre_condition = 'disabled'
-                    ula.children.append(self.get_nav(child))
-                else:
-                    # disabled, hidden are still returned
-                    ula.children.append(self.get_nav(child))
-
-            return ula
-        else:
-
-            #no more nodes to process return nodes
-            ula.children = []
-            return ula
-
-
-    def nav_to_xml(self, node=None, s="", root=None):
-        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s" heading ="%s" secondary_text="%s" description="%s" image ="%s" num_attempts="%s" attempt_limit="%s">'
-        single_tag_template = open_tag_template[:-1]+'/>'
-        if node is None:
-            node = root
-        vals = (node.learning_activity.id, node.learning_activity.uri, node.learning_activity.name, node.is_current,
-                node.learning_activity.is_container, node.pre_condition,
-                node.recommendation_value,
-                node.objective_status, node.objective_measure,node.learning_activity.is_visible,
-                node.learning_activity.heading,node.learning_activity.secondary_text,node.learning_activity.description,node.learning_activity.image,
-                node.num_attempts,node.learning_activity.attempt_limit)
-        if len(node.children) > 0:
-
-            s += open_tag_template % vals
-            for child in node.children:
-                s += self.nav_to_xml(node=child)
-            s += '</item>'
-            return s
-        else:
-            s += single_tag_template % vals
-            return s
 
 
 
@@ -357,11 +291,11 @@ def _get_nav(id,xml_tree=None):
                 return xml_tree
             elif activity['pre_condition']  == 'skip':
                 pass
-            elif activity['forward_only'] == 'True' and int(activity['num_attempts']) > 0:
-                activity['pre_condition'] = 'disabled'
-
-            #elif activity['num_attempts'] >=  int(activity['attempt_limit']):
+            #elif activity['forward_only'] == 'True' and int(activity['num_attempts']) > 0:
             #    activity['pre_condition'] = 'disabled'
+
+            elif activity['num_attempts'] >=  int(activity['attempt_limit']) and int(activity['attempt_limit']) < 100:
+                activity['pre_condition'] = 'disabled'
 
 
 
@@ -372,9 +306,8 @@ def _get_nav(id,xml_tree=None):
 
 
 def get_attr(uri, attr):
-
     for k,v in RECORDS.items():
-
+        #print uri,v["uri"],attr,v[attr],RECORDS.items()
         if uri == v["uri"]:
             return v[attr]
     return None
