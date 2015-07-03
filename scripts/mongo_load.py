@@ -308,40 +308,35 @@ $('<strong>#</strong>nombre_del_elemento');
                 </pre>
                 """},
 
-
-
-    {'_id':'/program/suma/3', 'title':u"Imprime Hola",
-     'description':u"Imprime Hola Mundo",
-     'type':"Encuentra el error",
-     'icon':"bug",
-     'level':'principiante',
+ {'_id': '/program/suma/3',
+     'title':u"Suma dos números",
             'initial_code':u"""
-# Funcion que imprime Hola
-def foo():
+# Funcion que suma dos números
+def suma():
     pass
 """,
             'correct_code':u"""# Solution:
-def foo(l):
-    print 'hola'
-    """,
-            'instructions':u"""<p>Escribe una función llamada foo la cual imprima Hola.</p>
+def suma(a,b):
+    return a + b""",
+            'instructions':u"""<p>Escribe una función llamada <code> suma() </code> la cual reciba como parámetros
+                dos enteros y regrese la suma de ambos.</p>
+            <code>
+                <p>>>> suma(3,4)</p>
+                <p>7</p>
+                <p>>>> suma(3,-4)</p>
+                <p>-1</p>
             </code>""",
             'unit_test':u"""
 class Test(unittest.TestCase):
-    def test_foo(self):
-        from StringIO import StringIO
-        saved_stdout = sys.stdout
-        output = None
-        try:
-            out = StringIO()
-            sys.stdout = out
-            foo()
-            output = out.getvalue().strip()
-            assert output == 'Hola'
-        finally:
-            sys.stdout = saved_stdout
-            print output
-""","lang":"python" },
+    def setUp(self):
+        pass
+    def test_suma_positivos(self):
+        self.assertEqual(suma(3,9),12)
+    def test_negativos(self):
+        self.assertEqual(suma(5,-12),-7)
+"
+print json.dumps(result)
+""", "lang":"python", "type":"unit_test"  },
 
 
 

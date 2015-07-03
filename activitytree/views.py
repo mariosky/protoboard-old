@@ -526,6 +526,7 @@ def get_result(request):
         if t.get_result(task_id.split(':')[0]):
 
             if t.result:
+                print t.result
                 string_json=""
                 try:
                     string_json = json.loads( t.result[0])
