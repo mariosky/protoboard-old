@@ -27,6 +27,7 @@ urlpatterns = patterns('',
       (r'^get_activities$','activitytree.views.get_activities'),
 
       (r'^get_result$','activitytree.views.get_result'),
+      (r'^get_users','activitytree.views.get_users'),
 
       (r'^rate_object$','activitytree.views.rate_object'),
       (r'^facebook/get_login/?$', 'activitytree.views.facebook_get_login'),

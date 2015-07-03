@@ -6,7 +6,7 @@ from django.template.response import TemplateResponse
 from django.db.models import Avg, Count
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout as auth_logout, get_user_model
+from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.template import RequestContext
 from django.db import transaction
 
@@ -14,8 +14,8 @@ from django.db import transaction
 import xml.etree.ElementTree as ET
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
-
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import permission_required
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.interaction_handler import get_nav
@@ -796,6 +796,12 @@ def get_activities(request):
     activities = Activity.get_all_programming()
     json_docs = [doc for doc in activities]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+
+def get_users(request):
+    users = User.objects.all()
+
+    return render_to_response ('activitytree/users.html',{'users':users} ,context_instance=RequestContext(request))
+
 
 
 @csrf_protect
