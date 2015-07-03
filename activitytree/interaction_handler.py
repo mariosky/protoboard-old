@@ -59,6 +59,7 @@ class SimpleSequencing(object):
         # Set current activity if everything is fine 
         atree.current_activity = ula
         ula.is_current = True
+        ula.last_visited = datetime.datetime.now()
         ula.save()
         atree.save()
 

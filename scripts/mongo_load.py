@@ -310,7 +310,7 @@ $('<strong>#</strong>nombre_del_elemento');
 
 
 
-    {'_id':'/program/1', 'title':u"Imprime Hola",
+    {'_id':'/program/suma/3', 'title':u"Imprime Hola",
      'description':u"Imprime Hola Mundo",
      'type':"Encuentra el error",
      'icon':"bug",

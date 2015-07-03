@@ -18,7 +18,7 @@
 <tr>
     <td>{{ user.username }}</td>
     <td>{{ user.email }}</td>
-    <td>{{ user.first_name }}</td>
+    <td><a href="/users/{{ user.id }}">{{ user.first_name }}</a></td>
     <td>{{ user.last_name }}</td>
 </tr>
 {% endfor %}

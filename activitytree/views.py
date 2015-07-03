@@ -797,10 +797,32 @@ def get_activities(request):
     json_docs = [doc for doc in activities]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
-def get_users(request):
-    users = User.objects.all()
+def users(request,user_id=None,course_id=None,):
+    print 'user',user_id
+    if user_id == None or user_id == "":
+        users = User.objects.all()
 
-    return render_to_response ('activitytree/users.html',{'users':users} ,context_instance=RequestContext(request))
+        return render_to_response ('activitytree/users.html',{'users':users} ,context_instance=RequestContext(request))
+    elif course_id == None or course_id == "":
+        user = User.objects.get(pk=user_id)
+        cursos = user.activitytree_set.all()
+
+        return render_to_response ('activitytree/user.html',{'user':user, 'cursos':user} ,context_instance=RequestContext(request))
+
+    else:
+        user = User.objects.get(pk=user_id)
+        # Gets the current navegation tree as HTML
+        root = None
+
+        try:
+                root = UserLearningActivity.objects.get(learning_activity__id = course_id ,user = user_id )
+        except (ObjectDoesNotExist, IndexError) as e:
+                root = None
+        _XML = get_nav(root)
+        #Escape for javascript
+        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
+        return render_to_response ('activitytree/user_course.html',{'user':user, 'XML_NAV':XML} ,context_instance=RequestContext(request))
+
 
 
 
