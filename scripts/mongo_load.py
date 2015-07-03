@@ -132,7 +132,7 @@ else:
 
 
 {'_id':'/program/csharp/1',
-     'title':u"product.cs",
+     'title':u"Product.cs",
      'initial_code':u"""
 using System.IO;
 using System;
@@ -154,6 +154,12 @@ public class Product
 
 }
 """,
+     'description':u"Completa la definción de una clase sencilla",
+     'type':"Completa",
+     'icon':"puzzle-piece",
+     'level':'principiante',
+
+
             'correct_code':u""" """,
              'instructions':u"""
 
@@ -227,8 +233,7 @@ public class ProductTest
 
     }
 }""",
-     "lang":"csharp",
-     "type":"unit_test" },
+     "lang":"csharp" },
 
 
 
@@ -238,6 +243,10 @@ public class ProductTest
 
 
     {'_id':'/program/js/1', 'title':u"suma.js",
+     'description':u"Programa una función sencilla",
+     'type':"Programa",
+     'icon':"coffee",
+     'level':'principiante',
                 'initial_code':u"""//Completa el código
 
  function suma(a, b){
@@ -252,8 +261,7 @@ public class ProductTest
                         assert.equal(suma(2,3), 5, "Debe sumar positivos");
                         assert.equal(suma(2,-3), -1, "Debe sumar negativos");
                         });""",
-                "lang":"javascript",
-                "type":"unit_test" },
+                "lang":"javascript" },
 
 
 
@@ -286,8 +294,12 @@ $('.panel-title').html("Hola");
                 "CSS": """
 
                 """,
+                     'description':u"¿Como cambiar el titulo de una página con jQuery?",
+     'type':"jQuery",
+     'icon':"code",
+     'level':'principiante',
                 "lang":"javascript",
-                "type":"unit_test",
+
                 "hint":u"""
                 Recuerda que se utiliza el selector <code> . </code> para encontrar los elementos que tienen cierta clase.
                 En este caso buscamos un <code>id</code>. Algo como:
@@ -299,6 +311,10 @@ $('<strong>#</strong>nombre_del_elemento');
 
 
     {'_id':'/program/1', 'title':u"Imprime Hola",
+     'description':u"Imprime Hola Mundo",
+     'type':"Encuentra el error",
+     'icon':"bug",
+     'level':'principiante',
             'initial_code':u"""
 # Funcion que imprime Hola
 def foo():
@@ -325,40 +341,7 @@ class Test(unittest.TestCase):
         finally:
             sys.stdout = saved_stdout
             print output
-""","lang":"python", "type":"unit_test" },
-
-
-
-    {'_id': '/program/suma/3',
-     'title':u"Suma dos números",
-            'initial_code':u"""
-# Funcion que suma dos números
-def suma():
-    pass
-""",
-            'correct_code':u"""# Solution:
-def suma(a,b):
-    return a + b""",
-            'instructions':u"""<p>Escribe una función llamada <code> suma() </code> la cual reciba como parámetros
-                dos enteros y regrese la suma de ambos.</p>
-            <code>
-                <p>>>> suma(3,4)</p>
-                <p>7</p>
-                <p>>>> suma(3,-4)</p>
-                <p>-1</p>
-            </code>""",
-            'unit_test':u"""
-class Test(unittest.TestCase):
-    def setUp(self):
-        pass
-    def test_suma_positivos(self):
-        self.assertEqual(suma(3,9),12)
-    def test_negativos(self):
-        self.assertEqual(suma(5,-12),-7)
-"
-print json.dumps(result)
-""", "lang":"python", "type":"unit_test"  },
-
+""","lang":"python" },
 
 
 
@@ -376,6 +359,10 @@ public class Calculator {
     return sum;
   }
 """,
+                     'description':u"Utiliza split() para procesar una lista elementos",
+     'type':"Programa",
+     'icon':"coffee",
+     'level':'intermedio',
             'correct_code':u""" """,
              'instructions':u"""<p>Completa el método <code> evaluate </code> de la clase <code>Calculator</code>. Este
               método toma como parámetro una cadena con número enteros y el operador de adición, por ejemplo: <code>"2+2+4+4"</code>

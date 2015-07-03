@@ -39,6 +39,10 @@ body {
     padding-bottom: 20px;
 }
 
+.media-heading > h5,h4{
+    margin-top: 0px;
+
+}
     </style>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -105,7 +109,7 @@ body {
 
 
         <div class="col-md-6">
-        <h4>Min-cursos <small>Es una secuencia de actividades, se registra tú avance. Te debes registrar.</small></h4>
+        <h4>Min-cursos <small>Una secuencia de actividades, se registra tú avance. Te debes registrar.</small></h4>
             {% for c in courses %}
         <div class="media">
             <div class="media-left">
@@ -130,26 +134,10 @@ body {
          {% endfor %}
         </div>
 
-      <div class="col-md-6">
-       <h4>Actividades <small> Son las actividades independientes, tú decides que ver. No requiere registro, velas como quieras.</small></h4>
-
-         <div class="media">
-            <div class="media-left">
-                <a href="#">
-                    <i class="fa fa-bug fa-lg"></i>
-                </a>
-
-            </div>
-             <div class="media-body">
-
-               <a class="media-heading" href="/" role="button"> <h5>{{c.root.name}} &raquo;</h5></a>
+      <div id='activities' class="col-md-6">
+       <h4>Actividades <small> Son actividades independientes, tú decides que ver. No requiere registro, velas como quieras.</small></h4>
 
 
-            <p><span class="label label-info"> Encuentra el bug</span> <span class="label label-default">python</span> <span class="label label-default">principiante</span></p>
-
-
-            </div>
-        </div>
 
 
       </div>
@@ -181,11 +169,31 @@ body {
 
 
         $.get( '/get_activities',  function (data) {
-            for (var i =0; i< data.length; i++)
-            {
+
+            Mustache.tags = ['[[', ']]'];
+            var activities_template = $('#activities_template').html();
+            Mustache.parse(activities_template);
+            var obj = jQuery.parseJSON( data );
 
 
-            }
+            $.each(obj, function( index, value ) {
+
+                rendered = Mustache.render(activities_template, {
+                    title: value.title,
+                    uri: value._id,
+                    icon:value.icon,
+                    description: value.description,
+                    lang:value.lang,
+                    level:value.level,
+                    type:value.type});
+
+                $("#activities").append(rendered);
+
+            });
+
+
+
+
 
             });
 
@@ -193,8 +201,32 @@ body {
 
 </script>
 
+<script id="activities_template" type="x-tmpl-mustache">
+         <div class="media">
+            <div class="media-left">
+                <a href="[[uri]]">
+                    <i class="fa fa-[[icon]] fa-lg"></i>
+                </a>
+
+            </div>
+             <div class="media-body">
+
+               <a class="media-heading" href="[[uri]]" role="button"> <h4>[[description]] &raquo;</h4></a>
 
 
+            <p>
+              <span class="label label-info">[[type]]</span>
+              <span class="label label-success">[[lang]]</span>
+              <span class="label label-default">[[level]]</span>
+            </p>
+
+            </div>
+        </div>
+
+</script>
+
+
+<script  type="text/javascript" src="{{MEDIA_URL}}js/mustache.min.js"></script>
 
  </body>
 </html>
