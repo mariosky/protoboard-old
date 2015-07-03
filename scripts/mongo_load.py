@@ -336,7 +336,8 @@ class Test(unittest.TestCase):
         self.assertEqual(suma(5,-12),-7)
 "
 print json.dumps(result)
-""", "lang":"python", "type":"unit_test"  },
+""", "lang":"python", "type":"Programa" , 'icon':"coffee", 'level':'principiante','description':u"Programa una función sencilla: 'Hola Mundo'",
+     },
 
 
 
