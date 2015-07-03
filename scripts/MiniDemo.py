@@ -53,8 +53,8 @@ preliminar = LearningActivity( name = 'El secuenciado simple', slug = 'Prelimina
     uri = "/activity/SecuenciadoSimple",
 #   lom =
     parent = Demo, root   = Demo,
-    heading="Secuenciado simple",
-    description = u"""Protoboard utiliza reglas para el secuenciado de actividades de aprendizaje. Aquí se explica de que se trata. De hecho hay unas reglas que estipulan que no puedes continuar si no visitas esta actividad. """,
+    heading="1. Secuenciado simple",
+    description = u"""Protoboard utiliza reglas para el secuenciado de actividades de aprendizaje. Aquí se explica de que se trata. De hecho hay una regla que estipula que no puedes visitar la actividad siguiente hasta ver esta.""",
     image = "https://s3.amazonaws.com/learning-python/IntroVideo.png",
 
     pre_condition_rule = "",
@@ -75,7 +75,7 @@ recursos = LearningActivity( name = 'Recursos', slug = 'Recursos',
     uri = "/activity/Recursos",
 #   lom =
     parent = Demo, root  = Demo,
-    heading="Recursos",
+    heading="2. Recursos",
     secondary_text = "Contenedor",
     description = u"""Este es un contenedor con varias actividades, estará deshabilitado hasta que visites la actividad Secuenciado Simple.""",
 
@@ -139,7 +139,7 @@ programas = LearningActivity( name = 'Ejercicios de Programación', slug = '',
     uri = "/activity/Ejercicios",
 #   lom =
     parent = Demo, root  = Demo,
-    heading="Ejercicios",
+    heading="3. Ejercicios",
     secondary_text = "Contenedor",
     description = u"""Ejemplos de los distintos lenguajes de programación, con los que se pueden hacer ejercicios""",
 

@@ -13,4 +13,9 @@ class Activity:
     def get(uri):
         return _activities_collection.find_one({'_id':uri})
 
+    @staticmethod
+    def get_all_programming():
+        return _activities_collection.find( {'lang':{ '$exists': True}}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1})
+
+
 

@@ -9,7 +9,8 @@
 
     <!-- Bootstrap core CSS -->
     <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
 
         <!-- Custom styles for this template -->
 
@@ -31,6 +32,12 @@ body {
     padding-bottom: 0px;
     padding-top: 0px;
     }
+
+ .jumbotron{
+
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
 
     </style>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -83,80 +90,83 @@ body {
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h2> <code> !Hola Mundo!</code></h2>
-        <p>Bienvenidos a <strong> protoboard.org</strong>, estamos desarrollando una plataforma para generar tutoriales de programación
+
+        <p> <code> !Hola Mundo!</code> estamos desarrollando una plataforma para desarrollar tutoriales de programación
             personalizados. La plataforma es de código abierto asi como el material didáctico que producimos.</p>
-        <p>En este prototipo nos enfocaremos a brindar tutorías de programación de manera informal,
-            <a href="/login"> ingresa como uno de los estudiantes de prueba </a> y elige algún mini-curso.</p>
+        <p>En este prototipo nos enfocaremos a brindar tutorías de programación de manera informal,<strong> elige algún mini-curso o alguna actividad de aprendizaje</strong>.
+        </p>
 
-          <button class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-lg">Ver más &raquo;</button>
-      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel"> Secuenciado Adaptativo</h4>
-      </div>
- <div class="modal-body">
-
-      <h3>Introducción</h3>
-		<p>
-		    Aprender a programar de forma autodidácta puede ser una tarea difícil. No sabemos por donde empezar, ¿que material debo leer
-		    primero?, ¿que ejercicios son los adecuados, para mi habilidad actual?, ¿que necesito instalar para empezar?,¿veo videos o leo?.
-			Uno de los problemas de la Web es que nos podemos perder entre tanta información, todos los recursos necesarios pueden estar ahí, pero
-			   ¿cual podría ser una secuencia adecuada para visitarlos?.
-		</p>
-		<p>
-		   Para el dise;o de protoboard nos basamos en una especificación llamada <a href="http://www.imsglobal.org/simplesequencing/"> IMS Simple Sequencing Specification (SS) </a>,
-		   la cual sirve para 	"representar el  comportamiento deseado en una experiencia de aprendizaje", básicamente es una manera de especificar
-		   como se deberían ir entregando las actividades de aprendizaje a los alumnos. No pretendemos cumplir totalmente con la especificación y más bien
-		   se ha ido adaptando a nuestras necesidades. Trabajamos en lograr que el sequenciado se adapte a los usuarios utilizando técnicas de
-		   personalización y sistemas de recomendación. Por ejemplo:
-
-		   <ul class="lead">
-              <li> Agregando reglas difusas para especificar el secuenciado.</li>
-              <li> Implementando un sistema de recomendación híbrido para proponer actividades de aprendizaje.</li>
-		      <li> Proponiendo un modelo para medir de manera indirecta el nivel de fluidez que experimenta el
-                 estudiante para sugerirle ejercicios adecuados.</li>
-              <li> Considerar información  contexto en los algoritmos de recomendación.</li>
-           </ul>
-     </p>
-
-			<img src="https://s3.amazonaws.com/mariogarcia/images/ActivityTree.png" class="img-responsive" alt="Responsive image">
-
-      </div>
-     </div>
-     </div>
-     </div>
     </div>
     </div>
 
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
-         {% for c in courses %}
 
-        <div class="col-md-4">
 
-            <h2>{{c.root.name}}</h2>
-            {{ c.short_description|safe }}
-        {% if user.is_authenticated %}
+        <div class="col-md-6">
+        <h4>Min-cursos <small>Es una secuencia de actividades, se registra tú avance. Te debes registrar.</small></h4>
+            {% for c in courses %}
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                     <i class="fa fa-graduation-cap fa-lg"></i>
+                </a>
 
-            <a class="btn btn-primary" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button">Continúa &raquo;</a>
-        {% else %}
-            <a class="btn btn-primary" href="/{{c.root.id }}{{c.root.uri }}" role="button">Registrate &raquo;</a>
-        {% endif %}
+            </div>
+             <div class="media-body">
+             {% if user.is_authenticated %}
+               <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> <h4>{{c.root.name}} &raquo;</h4></a>
+             {% else %}
+                <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}" role="button"> <h5>{{c.root.name}} &raquo;</h5></a>
+             {% endif %}
 
+
+            <p><span class="label label-info">mini-curso</span> <span class="label label-default">python</span> <span class="label label-default">principiantes</span></p>
+                 {{ c.short_description|safe }}
+
+            </div>
+        </div>
+         {% endfor %}
+        </div>
+
+      <div class="col-md-6">
+       <h4>Actividades <small> Son las actividades independientes, tú decides que ver. No requiere registro, velas como quieras.</small></h4>
+          {% for c in courses %}
+         <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <i class="fa fa-bug fa-lg"></i>
+                </a>
+
+            </div>
+             <div class="media-body">
+             {% if user.is_authenticated %}
+               <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> <h5>{{c.root.name}} &raquo;</h5></a>
+             {% else %}
+                <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}" role="button"> <h5>{{c.root.name}} &raquo;</h5></a>
+             {% endif %}
+
+
+            <p><span class="label label-info"> Encuentra el bug</span> <span class="label label-default">python</span> <span class="label label-default">principiante</span></p>
+
+
+            </div>
         </div>
 
          {% endfor %}
 
       </div>
 
+
+      </div>
+
       <hr>
 
       <footer>
-        <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />El contennido de los cursos es: <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
+        <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
+            <br />El contenido de los cursos es: <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> y
+            otras licencias abiertas.</p>
       </footer>
     </div> <!-- /container -->
 
@@ -164,24 +174,21 @@ body {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
+  <script type="text/javascript" charset="utf-8">
+
+         $(document).ready(function() {
 
 
-  <script type="text/javascript">
-    (function () {
-        var po = document.createElement('script');
-        po.type = 'text/javascript';
-        po.async = true;
-        po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(po, s);
-    })();
+        alert('dd');
 
 
 
-        $('#signout').on('click', function(event) {
-    gapi.auth.signOut();
-});
 
+        $.get( '/get_activities',  function () {
+                alert("s");
+            });
+
+ });
 
 </script>
 

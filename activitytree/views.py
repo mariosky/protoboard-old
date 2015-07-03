@@ -790,6 +790,14 @@ def facebook_login(request):
     ### TO DO Log Error
     return HttpResponseRedirect('/')
 
+
+
+def get_activities(request):
+    activities = Activity.get_all_programming()
+    json_docs = [doc for doc in activities]
+    return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+
+
 @csrf_protect
 def rate_object(request):
     if request.method == 'POST':

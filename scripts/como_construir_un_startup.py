@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
 from activitytree.models import LearningStyleInventory, LearningActivity, Course, UserLearningActivity
 
-LearningActivity.objects.all().delete()
+#LearningActivity.objects.all().delete()
 
 startup = LearningActivity( name = 'Como construir un startup', slug = 'como_construir_un_startup',
     uri = "/activity/startup",

@@ -24,6 +24,8 @@ urlpatterns = patterns('',
 
       (r'^execute_queue$','activitytree.views.execute_queue'),
       (r'^javascript_result$','activitytree.views.javascript_result'),
+      (r'^get_activities$','activitytree.views.get_activities'),
+
       (r'^get_result$','activitytree.views.get_result'),
 
       (r'^rate_object$','activitytree.views.rate_object'),

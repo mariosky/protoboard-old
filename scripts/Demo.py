@@ -16,7 +16,7 @@ from activitytree.models import LearningStyleInventory, LearningActivity, Course
 from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
 
-LearningActivity.objects.all().delete()
+#LearningActivity.objects.all().delete()
 
 
 POO = LearningActivity( name = 'Prog OO en C#', slug = 'POO',
