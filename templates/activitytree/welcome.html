@@ -132,7 +132,7 @@ body {
 
       <div class="col-md-6">
        <h4>Actividades <small> Son las actividades independientes, tú decides que ver. No requiere registro, velas como quieras.</small></h4>
-          {% for c in courses %}
+
          <div class="media">
             <div class="media-left">
                 <a href="#">
@@ -141,11 +141,8 @@ body {
 
             </div>
              <div class="media-body">
-             {% if user.is_authenticated %}
-               <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> <h5>{{c.root.name}} &raquo;</h5></a>
-             {% else %}
-                <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}" role="button"> <h5>{{c.root.name}} &raquo;</h5></a>
-             {% endif %}
+
+               <a class="media-heading" href="/" role="button"> <h5>{{c.root.name}} &raquo;</h5></a>
 
 
             <p><span class="label label-info"> Encuentra el bug</span> <span class="label label-default">python</span> <span class="label label-default">principiante</span></p>
@@ -154,7 +151,6 @@ body {
             </div>
         </div>
 
-         {% endfor %}
 
       </div>
 
@@ -179,13 +175,18 @@ body {
          $(document).ready(function() {
 
 
-        alert('dd');
 
 
 
 
-        $.get( '/get_activities',  function () {
-                alert("s");
+
+        $.get( '/get_activities',  function (data) {
+            for (var i =0; i< data.length; i++)
+            {
+
+
+            }
+
             });
 
  });
