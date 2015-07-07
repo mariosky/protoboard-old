@@ -40,16 +40,16 @@
                        Pre
 
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-center">
 
                        Estatus
 
                     </div>
                       <div class="col-md-1">
-                       Cal
+                       Pts.
 
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-left">
 
                        Intentos
 
@@ -83,12 +83,14 @@
 {% block scripts %}
 
 <script id="progress_template" type="x-tmpl-mustache">
- <a href="[[uri]]" class="list-group-item [[item_class]] ">
+ <div class="list-group-item [[item_class]] ">
                 <div class="row">
                     <div class="col-md-8">
+                        <a href="/[[root_id]][[uri]]">
                         <p class="list-group-item-text"><i class="fa [[icon]]"></i>
                          [[heading]]
                          </p>
+                         </a>
                     </div>
                     <div class="col-md-4">
                         <div class="progress">
@@ -99,28 +101,42 @@
 
                     </div>
                 </div>
-            </a>
+            </div>
 
 </script>
 
 <script id="activity_template" type="x-tmpl-mustache">
- <a href="[[uri]]" class="list-group-item">
+ <div class="list-group-item">
                 <div class="row">
                     <div class="col-md-4">
+                    <a href="/[[root_id]][[uri]]">
                         <p class="list-group-item-text"><i class="fa [[icon]]"></i>
                          [[name]]
                          </p>
+                    </a>
                     </div>
 
                     <div class="col-md-1">
                        [[pre_condition]]
 
                     </div>
-                    <div class="col-md-2">
 
-                       [[objective_status ]]
+                    [[#objective_status]]
+                         <div class="col-md-2 text-center">
+                           <i class="fa fa-check"></i><br/>
 
-                    </div>
+
+
+                         </div>
+                     [[/objective_status]]
+                     [[^objective_status]]
+                        <div class="col-md-2">
+
+                         </div>
+                     [[/objective_status]]
+
+
+
                       <div class="col-md-1">
                        [[objective_measure]]
 
@@ -138,7 +154,7 @@
 
                 </div>
 
-   </a>
+   </div>
 
 </script>
 
@@ -252,7 +268,8 @@
                         icon: icon,
                         item_class:item_class,
                         progress:percentage,
-                        progress_type:progress_type
+                        progress_type:progress_type,
+                        root_id:this.getAttribute("root_id")
 
 
                     });
@@ -272,10 +289,24 @@
          $xml.find('item').each(function (index) {
              var rendered = "";
              var uri_string = this.getAttribute("uri");
-
+             var objective_measure = "";
              var activity_type = get_icon(uri_string);
+             var satisfied = (this.getAttribute("objective_status")=='satisfied');
              if (this.getAttribute("is_container")=='True')
                 activity_type.icon = "fa fa-folder";
+
+             if (this.getAttribute("root_id")=='None')
+                var root_id = this.getAttribute("id")
+             else
+                var root_id = this.getAttribute("root_id")
+
+            if ( !isNaN(Math.floor(this.getAttribute("objective_measure")))  )
+                 objective_measure = Math.floor(this.getAttribute("objective_measure"));
+
+
+
+
+
 
 
              var data = {
@@ -284,8 +315,9 @@
                             name: this.getAttribute("name"),
                             description:this.getAttribute("description"),
                             uri: uri_string,
+                            root_id:root_id,
                             pre_condition:this.getAttribute("pre_condition"),
-                            objective_status: this.getAttribute("objective_status"),
+                            objective_status: satisfied,
 
                             image: this.getAttribute("image"),
 
@@ -296,7 +328,7 @@
                             num_attempts: this.getAttribute("num_attempts"),
                             attempt_limit: this.getAttribute("attempt_limit"),
                             last_visited:this.getAttribute("last_visited"),
-                            objective_measure: Math.floor(this.getAttribute("objective_measure")),
+                            objective_measure: objective_measure
 
                         };
 
