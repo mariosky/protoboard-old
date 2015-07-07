@@ -3,13 +3,14 @@
 
 
 {% block content %}
-
+<div class="row"><h3>Dashboard</h3>
+</div>
 
 <div class="row">
-<div class="col-md-4">
+ <div class="col-md-4">
 
     <div class="panel panel-info">
-        <div class="panel-heading"><h3 class="panel-title"> Mi Avance </h3></div>
+        <div class="panel-heading"><h3 class="panel-title"> Avance </h3></div>
 
         <div id="progress" class="list-group">
 
@@ -22,8 +23,60 @@
 
   </div>
 
+</div>
+<div class="col-md-8">
 
-    </div>
+<div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title"> Detalle </h3></div>
+
+        <div id="activity_detail" class="list-group">
+     <div class="list-group-item">
+<div class="row">
+                    <div class="col-md-4">
+                        Actividad
+                    </div>
+
+                    <div class="col-md-1">
+                       Pre
+
+                    </div>
+                    <div class="col-md-2">
+
+                       Estatus
+
+                    </div>
+                      <div class="col-md-1">
+                       Cal
+
+                    </div>
+                    <div class="col-md-2">
+
+                       Intentos
+
+                    </div>
+                    <div class="col-md-1">
+
+                       Visitado
+
+                    </div>
+
+                </div>
+
+
+
+        </div>
+
+
+</div>
+  </div>
+
+
+
+
+
+  </div>
+
+</div>
 
 {% endblock content %}
 
@@ -50,11 +103,63 @@
 
 </script>
 
+<script id="activity_template" type="x-tmpl-mustache">
+ <a href="[[uri]]" class="list-group-item">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="list-group-item-text"><i class="fa [[icon]]"></i>
+                         [[name]]
+                         </p>
+                    </div>
+
+                    <div class="col-md-1">
+                       [[pre_condition]]
+
+                    </div>
+                    <div class="col-md-2">
+
+                       [[objective_status ]]
+
+                    </div>
+                      <div class="col-md-1">
+                       [[objective_measure]]
+
+                    </div>
+                    <div class="col-md-1">
+
+                       [[num_attempts ]]
+
+                    </div>
+                    <div class="col-md-1">
+
+                       [[last_visited ]]
+
+                    </div>
+
+                </div>
+
+   </a>
+
+</script>
 
 
 <script type="text/javascript" charset="utf-8">
 
+    function get_icon(uri_string)
+    {
 
+        if (uri_string.lastIndexOf("/test/", 0) === 0)
+            return {icon:"fa fa-pencil",activity_type: "Quiz"} ;
+        else if (uri_string.lastIndexOf("/survey/", 0) === 0)
+            return {icon:"fa fa-pencil-square-o",activity_type: "Encuesta"} ;
+        else if (uri_string.lastIndexOf("/activity/video/", 0) === 0)
+            return {icon:"fa fa-video-camera",activity_type: "Video"} ;
+        else if (uri_string.lastIndexOf("/activity/", 0) === 0)
+            return {icon:"fa fa-book",activity_type: "Lectura"} ;
+        else if (uri_string.lastIndexOf("/program/", 0) === 0)
+            return {icon:"fa fa-coffee",activity_type: "Ejercicio en Consola"} ;
+
+    }
 
     function get_children_activities( element)
     {
@@ -104,6 +209,8 @@
         xmlDoc= $.parseXML(XML_NAV);
         $xml = $(xmlDoc)
         $root  = $xml.children();
+
+
         if ($root[0].getAttribute("is_container")=="True") {
             var progress_template = $('#progress_template').html();
             Mustache.parse(progress_template);   // optional, speeds up future uses
@@ -159,7 +266,54 @@
 
         }
 
+        var activity_template = $('#activity_template').html();
+        Mustache.parse(activity_template);   // optional, speeds up future uses
+
+         $xml.find('item').each(function (index) {
+             var rendered = "";
+             var uri_string = this.getAttribute("uri");
+
+             var activity_type = get_icon(uri_string);
+             if (this.getAttribute("is_container")=='True')
+                activity_type.icon = "fa fa-folder";
+
+
+             var data = {
+                            icon: activity_type.icon,
+                            is_container:this.getAttribute("is_container"),
+                            name: this.getAttribute("name"),
+                            description:this.getAttribute("description"),
+                            uri: uri_string,
+                            pre_condition:this.getAttribute("pre_condition"),
+                            objective_status: this.getAttribute("objective_status"),
+
+                            image: this.getAttribute("image"),
+
+                            activity_type: activity_type.activity_type,
+                            id: this.getAttribute("activity"),
+                            path_id: this.getAttribute("id"),
+
+                            num_attempts: this.getAttribute("num_attempts"),
+                            attempt_limit: this.getAttribute("attempt_limit"),
+                            last_visited:this.getAttribute("last_visited"),
+                            objective_measure: Math.floor(this.getAttribute("objective_measure")),
+
+                        };
+
+
+
+
+                        rendered = Mustache.render(activity_template, data);
+
+              $("#activity_detail").append(rendered);
+         });
+
+
     });
+
+
+
+
 
 </script>
 
