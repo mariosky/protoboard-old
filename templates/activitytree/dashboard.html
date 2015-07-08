@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-md-2 text-center">
 
-                       Estatus
+                       Completo
 
                     </div>
                       <div class="col-md-1">
@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-md-1">
 
-                       Visitado
+                       Visitado hace
 
                     </div>
 
@@ -141,12 +141,12 @@
                        [[objective_measure]]
 
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
 
                        [[num_attempts ]]
 
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
 
                        [[last_visited ]]
 
@@ -217,6 +217,28 @@
            return percentage;
        }
 
+    function prettyDate(now, time){
+            var date = new Date(time || ""),
+                diff = (((new Date(now)).getTime() - date.getTime()) / 1000),
+                day_diff = Math.floor(diff / 86400);
+
+            if ( isNaN(day_diff) || day_diff < 0 || day_diff >= 31 )
+                return;
+
+              return day_diff == 0 && (
+                  diff < 60 && "nada" ||
+                  diff < 120 && "un minuto" ||
+                  diff < 3600 && Math.floor( diff / 60 ) + " mins."
+                    ||
+                  diff < 7200 && "1 hora" ||
+                  diff < 86400 && Math.floor( diff / 3600 ) +
+                    " hrs.") ||
+                day_diff == 1 && "ayer" ||
+                day_diff < 7 && day_diff + " dias" ||
+                day_diff < 31 && Math.ceil( day_diff / 7 ) +
+                  " semanas";
+    }
+
     $( document ).ready(function() {
 
         Mustache.tags = ['[[', ']]'];
@@ -252,6 +274,7 @@
                        icon  = "fa fa-folder-open";
                      }
                     var percentage = get_percentage(this);
+
                     if (percentage > 90)
                     {
                         progress_type="progress-bar-success";
@@ -287,27 +310,27 @@
         Mustache.parse(activity_template);   // optional, speeds up future uses
 
          $xml.find('item').each(function (index) {
-             var rendered = "";
+
              var uri_string = this.getAttribute("uri");
-             var objective_measure = "";
+
              var activity_type = get_icon(uri_string);
-             var satisfied = (this.getAttribute("objective_status")=='satisfied');
+
              if (this.getAttribute("is_container")=='True')
                 activity_type.icon = "fa fa-folder";
 
-             if (this.getAttribute("root_id")=='None')
-                var root_id = this.getAttribute("id")
-             else
-                var root_id = this.getAttribute("root_id")
+             var satisfied = (this.getAttribute("objective_status")=='satisfied');
 
-            if ( !isNaN(Math.floor(this.getAttribute("objective_measure")))  )
-                 objective_measure = Math.floor(this.getAttribute("objective_measure"));
+             var root_id = this.getAttribute("root_id")=='None' && this.getAttribute("id") ||  this.getAttribute("root_id");
 
 
+             var objective_measure =  !isNaN(Math.floor(this.getAttribute("objective_measure")))
+                                    && Math.floor(this.getAttribute("objective_measure")) ||  "";
 
+             var last_visited_ISO = this.getAttribute("last_visited").replace(" ","T");
 
+             var last_visited = prettyDate(Date(),last_visited_ISO);
 
-
+             var num_attempts = this.getAttribute("num_attempts") > 0 && this.getAttribute("num_attempts") || "";
 
              var data = {
                             icon: activity_type.icon,
@@ -325,9 +348,9 @@
                             id: this.getAttribute("activity"),
                             path_id: this.getAttribute("id"),
 
-                            num_attempts: this.getAttribute("num_attempts"),
+                            num_attempts: num_attempts,
                             attempt_limit: this.getAttribute("attempt_limit"),
-                            last_visited:this.getAttribute("last_visited"),
+                            last_visited:last_visited,
                             objective_measure: objective_measure
 
                         };
@@ -335,7 +358,7 @@
 
 
 
-                        rendered = Mustache.render(activity_template, data);
+             var  rendered = Mustache.render(activity_template, data) || "";
 
               $("#activity_detail").append(rendered);
          });

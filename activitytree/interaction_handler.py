@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from activitytree.models import ActivityTree, UserLearningActivity
+from django.utils import timezone
 import datetime
 from lxml import etree
 
@@ -59,7 +60,7 @@ class SimpleSequencing(object):
         # Set current activity if everything is fine 
         atree.current_activity = ula
         ula.is_current = True
-        ula.last_visited = datetime.datetime.now()
+        ula.last_visited = timezone.now()
         ula.save()
         atree.save()
 
@@ -103,7 +104,7 @@ class SimpleSequencing(object):
                 ula.objective_measure = objective_measure
             if kmdynamics is not None:
                 ula.kmdynamics = kmdynamics
-            ula.last_visited = datetime.datetime.now()
+            ula.last_visited = timezone.now()
             if attempt:
                 ula.num_attempts += 1
             ula.save()
@@ -123,7 +124,7 @@ class SimpleSequencing(object):
             ula.objective_status = objective_status
         if objective_measure is not None:
             ula.objective_measure = objective_measure
-        ula.last_visited = datetime.datetime.now()
+        ula.last_visited = timezone.now()
         if attempt:
             ula.num_attempts += 1
         ula.save()
