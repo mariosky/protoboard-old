@@ -822,7 +822,7 @@ def users(request,user_id=None,course_id=None,):
         _XML = get_nav(root)
         #Escape for javascript
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
-        return render_to_response ('activitytree/user_course.html',{'user':user, 'XML_NAV':XML} ,context_instance=RequestContext(request))
+        return render_to_response ('activitytree/dashboard.html',{'user':user, 'XML_NAV':XML} ,context_instance=RequestContext(request))
 
 
 
