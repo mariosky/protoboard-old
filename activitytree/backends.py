@@ -18,7 +18,6 @@ class FacebookBackend:
 
         profile = facebook_session.query('me')
 
-        print profile
         try:
             user = auth_models.User.objects.get(username=profile['id'])
         except auth_models.User.DoesNotExist, e:

@@ -737,9 +737,9 @@ def facebook_get_login(request):
     if 'next' in request.GET:
         request.session['after_login']=request.GET['next']
     print 'facebook_get_login', request.session.keys(),request.GET
-    url = """https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&state=%s""" % \
+    url = """https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&state=%s&scope=%s""" % \
               (settings.FACEBOOK_APP_ID ,settings.FACEBOOK_REDIRECT_URL,
-               state
+               state,"email,public_profile,user_friends"
                 )
 
     return HttpResponseRedirect(url)
@@ -766,6 +766,8 @@ def facebook_login(request):
     profile = json.load(urllib.urlopen(
         "https://graph.facebook.com/me?" +
         urllib.urlencode(dict(access_token=access_token))))
+
+    print profile
     expires = response['expires'][0]
 
     facebook_session = FacebookSession.objects.get_or_create(
@@ -773,6 +775,8 @@ def facebook_login(request):
 
     facebook_session.expires = expires
     facebook_session.save()
+
+    print facebook_session.query('me',fields=['email'])
 
 
     user = authenticate(token=access_token)
