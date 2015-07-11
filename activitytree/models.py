@@ -19,6 +19,7 @@ class LearningStyleInventory(models.Model):
     
 class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True)
+    facebook_uid = models.BigIntegerField(unique=True, null=True)
 
 
 

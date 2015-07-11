@@ -8,15 +8,51 @@ import datetime
 from django.contrib.auth import models as auth_models
 from activitytree import models
 
+import urllib
+import json
+
+def facebook_query_me(access_token, fields=None, metadata=False):
+
+        url = 'https://graph.facebook.com/me'
+
+        params = {'access_token':access_token}
+
+        if metadata:
+            params['metadata'] = 1
+        if fields:
+            params['fields'] = fields
+
+        url += '?' + urllib.urlencode(params)
+
+        print urllib.urlencode(params)
+        print url
+
+        response = ''
+        try:
+            response = json.load(urllib.urlopen(url))
+
+            if 'error' in response:
+                error = response['error']
+                raise Exception(error['type'], error['message'])
+        except:
+            return None
+
+
+
+        return response
+
+
 class FacebookBackend:
 
     def authenticate(self, token=None):
 
-        facebook_session = models.FacebookSession.objects.get(
-            access_token=token,
-        )
 
-        profile = facebook_session.query('me')
+        #get profile
+
+        profile = facebook_query_me(token)
+        print profile
+
+
 
         try:
             user = auth_models.User.objects.get(username=profile['id'])

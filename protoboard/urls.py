@@ -37,7 +37,7 @@ urlpatterns = patterns('',
       (r'^facebook/login/?$','activitytree.views.facebook_login'),
       (r'^logout/?$', 'activitytree.views.logout_view'),
       (r'^login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
-      url(r'^register/$', RegistrationView.as_view(), name='registration_register'),
+#      url(r'^register/$', RegistrationView.as_view(), name='registration_register'),
 
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout

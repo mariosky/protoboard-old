@@ -736,47 +736,49 @@ def facebook_get_login(request):
 
     if 'next' in request.GET:
         request.session['after_login']=request.GET['next']
-    print 'facebook_get_login', request.session.keys(),request.GET
+
+    #Ask for access_token, with email,public_profile,user_friends permitions
+    #First we construct the petition
     url = """https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&state=%s&scope=%s""" % \
               (settings.FACEBOOK_APP_ID ,settings.FACEBOOK_REDIRECT_URL,
                state,"email,public_profile,user_friends"
                 )
-
+    #We redirect to facebook
     return HttpResponseRedirect(url)
 
 def facebook_login(request):
+
+    #We recieve the answer
+    # If an error
     if 'error' in request.GET:
         return HttpResponseRedirect('/')
-    print 'facebook_login', request.session.keys(), request.GET
-
+    # If not an error get the access code and state variable
     code = request.GET['code']
+
+    #We could later validate if state is the same
     UID = request.GET['state']
 
-
+    #With the code and our credentials we can now get the access token
     args = { "client_id" : settings.FACEBOOK_APP_ID,
              "redirect_uri" : settings.FACEBOOK_REDIRECT_URL ,
              "client_secret" : settings.FACEBOOK_APP_SECRET,
              "code" : code }
 
-
+    # We get the access token
     response = urllib.urlopen( "https://graph.facebook.com/oauth/access_token?" + urllib.urlencode(args))
 
-    response = urlparse.parse_qs(response.read())
-    access_token = response["access_token"][-1]
-    profile = json.load(urllib.urlopen(
-        "https://graph.facebook.com/me?" +
-        urllib.urlencode(dict(access_token=access_token))))
+    access_token_response = urlparse.parse_qs(response.read())
+    print access_token_response
+    access_token = access_token_response["access_token"][-1]
 
-    print profile
-    expires = response['expires'][0]
 
-    facebook_session = FacebookSession.objects.get_or_create(
-        access_token=access_token)[0]
+    #facebook_session = FacebookSession.objects.get_or_create(
+    #    access_token=access_token)[0]
 
-    facebook_session.expires = expires
-    facebook_session.save()
+    #facebook_session.expires = access_token_response["expires"][-1]
+    #facebook_session.save()
 
-    print facebook_session.query('me',fields=['email'])
+    #print facebook_session.query('me',fields=['email'])
 
 
     user = authenticate(token=access_token)
@@ -792,6 +794,8 @@ def facebook_login(request):
 
     if 'error_reason' in request.GET:
         error = 'AUTH_DENIED'
+
+
     ### TO DO Log Error
     return HttpResponseRedirect('/')
 
@@ -861,4 +865,8 @@ def update_pool(uri):
             for device in multi_device_activities[uri]:
 
                 redis_service.set(device["dispositivo"],{"url":ip_couch + device["url"] ,"estado":device["estado"],"tipo":device["tipo"]} )
+
+
+
+
 
