@@ -6,7 +6,7 @@ __author__ = 'mariosky'
 #Posted: June 15, 2010
 import datetime
 from django.contrib.auth import models as auth_models
-from activitytree import models
+from activitytree.models import FacebookSession, UserProfile
 
 import urllib
 import json
@@ -44,39 +44,54 @@ def facebook_query_me(access_token, fields=None, metadata=False):
 
 class FacebookBackend:
 
-    def authenticate(self, token=None):
+    def authenticate(self, access_token, expires):
 
 
         #get profile
 
-        profile = facebook_query_me(token)
-        print profile
 
-
+        profile = facebook_query_me(access_token)
 
         try:
             user = auth_models.User.objects.get(username=profile['id'])
         except auth_models.User.DoesNotExist, e:
-            user = auth_models.User(username=profile['id'])
+            user = auth_models.User(username=profile['id'], is_active=True)
 
 
         user.set_unusable_password()
-        if 'username' in profile:
-            user.email = profile['username']
+        if 'email' in profile:
+            user.email = profile['email']
+            user.username = profile['id']
         else:
             user.email = profile['id']
+            user.username = profile['id']
+
 
         user.first_name = profile['first_name']
         user.last_name = profile['last_name']
         user.save()
 
+        if hasattr(user, 'userprofile'):
+            print "ya tiene"
+        else:
+            print "no tiene"
+            user_profile = UserProfile(facebook_uid = profile['id'],user=user)
+            user_profile.save()
+
+
+
         try:
-            models.FacebookSession.objects.get(uid=profile['id']).delete()
-        except models.FacebookSession.DoesNotExist, e:
+            FacebookSession.objects.get(uid=profile['id']).delete()
+        except FacebookSession.DoesNotExist, e:
             pass
 
+        facebook_session = FacebookSession.objects.get_or_create(
+        access_token=access_token)[0]
+
         facebook_session.uid = profile['id']
+        facebook_session.expires = expires
         facebook_session.user = user
+
         facebook_session.save()
 
         return user

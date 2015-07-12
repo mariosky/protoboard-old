@@ -769,19 +769,12 @@ def facebook_login(request):
 
     access_token_response = urlparse.parse_qs(response.read())
     print access_token_response
-    access_token = access_token_response["access_token"][-1]
+    access_token = access_token_response["access_token"][0]
+    expires = access_token_response["expires"][0]
 
 
-    #facebook_session = FacebookSession.objects.get_or_create(
-    #    access_token=access_token)[0]
+    user = authenticate(access_token=access_token,expires=expires)
 
-    #facebook_session.expires = access_token_response["expires"][-1]
-    #facebook_session.save()
-
-    #print facebook_session.query('me',fields=['email'])
-
-
-    user = authenticate(token=access_token)
     if user:
         if user.is_active:
             login(request, user)
