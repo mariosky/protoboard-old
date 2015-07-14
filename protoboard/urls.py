@@ -29,19 +29,24 @@ urlpatterns = patterns('',
       (r'^get_activities$','activitytree.views.get_activities'),
 
       (r'^get_result$','activitytree.views.get_result'),
+      (r'^me$','activitytree.views.me'),
       (r'^users/(?P<user_id>[0-9]*)(\/*)(?P<course_id>[0-9]*)$','activitytree.views.users'),
 
 
       (r'^rate_object$','activitytree.views.rate_object'),
       (r'^facebook/get_login/?$', 'activitytree.views.facebook_get_login'),
       (r'^facebook/login/?$','activitytree.views.facebook_login'),
+
+      (r'^GoogleCallback/?$','activitytree.views.google_callback'),
+
       (r'^logout/?$', 'activitytree.views.logout_view'),
       (r'^login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
+
 #      url(r'^register/$', RegistrationView.as_view(), name='registration_register'),
 
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout
-      (r'^accounts/login/$', 'activitytree.views.welcome'),
+      (r'^accounts/login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
       url('', include('django.contrib.auth.urls')),
       ('', include('registration.backends.default.urls')),
       #url('', include('social.apps.django_app.urls', namespace='social')),

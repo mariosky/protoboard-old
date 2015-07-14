@@ -19,7 +19,9 @@ class LearningStyleInventory(models.Model):
     
 class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True)
-    facebook_uid = models.BigIntegerField(unique=True, null=True)
+    facebook_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
+    google_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
+
 
 
 
@@ -369,7 +371,11 @@ class FacebookSession(models.Model):
 
         return response
 
-
+class GoogleSession(models.Model):
+    access_token = models.TextField(unique=True)
+    expires_in = models.IntegerField(null=True)
+    user = models.ForeignKey(User, null=False)
+    refresh_token =  models.TextField(null=True)
 
 
 

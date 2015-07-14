@@ -26,8 +26,8 @@ cur.execute("""CREATE OR REPLACE VIEW activitytree_ula_vw AS
 
 
 cur.execute( """ALTER TABLE activitytree_ula_vw OWNER TO %s;""" % settings.DATABASES['default']['USER'])
-cur.execute("""ALTER TABLE auth_user
-  DROP CONSTRAINT auth_user_email_key;""" )
+#cur.execute("""ALTER TABLE auth_user
+#  DROP CONSTRAINT auth_user_email_key;""" )
 
 cur.execute("""ALTER TABLE auth_user
   ADD CONSTRAINT auth_user_email_key UNIQUE(email);

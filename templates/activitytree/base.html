@@ -1,3 +1,4 @@
+{% load gravatar %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -235,24 +236,37 @@ code {
 
         <div  id="navbar" class=" collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-
-            {% if user.is_authenticated %}
+          {% if user.is_authenticated %}
 
                 {% if XML_NAV %}
                 <li><a href="{{root}}">Curso</a></li>
                 <li><a href="/dashboard{{ root_id }}">Dashboard</a></li>
+                <li><p id="user_points" class="navbar-text"></p></li>
+
                 {% endif %}
-            <li><a href="#"> {{ user.first_name }} {{ user.last_name }}</a> </li>
-            <li><p id="user_points" class="navbar-text"></p></li>
-            <li><a class="navbar-user" href="#"><img src="http://graph.facebook.com/{{user.email}}/picture?type=square"/>  </a></li>
+
+            <li><a href="#"></a></li>
+            {% if user.first_name %}
+            <li><a href="#"> {{ user.first_name }} {{ user.last_name }}</a></li>
+            {% else %}
+            <li><a href="#"> {{ user.username }} </a></li>
+            {% endif %}
+
+            <li><a class="navbar-user" href="#">
+                {%  if user.userprofile.facebook_uid %}
+                <img src="http://graph.facebook.com/{{ user.userprofile.facebook_uid}}/picture?type=square"/>
+               {% else %}
+                <img src="{% gravatar_url user.email 50%}">
+               {% endif %}
+                 </a>
+            </li>
+
             <li><a href="/logout">Log out</a></li>
 
-            {% else %}
-
+          {% else %}
 
             <li><a href="/login">Log in</a></li>
-
-            {% endif %}
+          {% endif %}
 
 
           </ul>

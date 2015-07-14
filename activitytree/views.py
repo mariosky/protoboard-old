@@ -678,8 +678,7 @@ def _check_survey(post_dict, quiz):
 
 def login_view(request,template_name='registration/login.html',  redirect_field_name=REDIRECT_FIELD_NAME):
     context = {}
-    if 'next' in request.GET:
-        context['next'] = request.GET['next']
+
 
     if request.method == "POST":
         username = request.POST['username']
@@ -708,9 +707,10 @@ def login_view(request,template_name='registration/login.html',  redirect_field_
         return TemplateResponse(request, template_name,context, current_app=None)
 
     else:
-            print 'GET',request.GET
+        if 'next' in request.GET:
+            context['next'] = request.GET['next']
             request.session['after_login'] = request.GET['next']
-            return TemplateResponse(request, template_name,context ,current_app=None)
+        return TemplateResponse(request, template_name,context ,current_app=None)
 
 
 
@@ -747,7 +747,6 @@ def facebook_get_login(request):
     return HttpResponseRedirect(url)
 
 def facebook_login(request):
-
     #We recieve the answer
     # If an error
     if 'error' in request.GET:
@@ -769,16 +768,15 @@ def facebook_login(request):
 
     access_token_response = urlparse.parse_qs(response.read())
     print access_token_response
-    access_token = access_token_response["access_token"][0]
-    expires = access_token_response["expires"][0]
 
 
-    user = authenticate(access_token=access_token,expires=expires)
+
+    user = authenticate(app="facebook",**access_token_response)
+    print user,"u"
 
     if user:
         if user.is_active:
             login(request, user)
-            print request.session
             if 'after_login' in request.session:
                 return HttpResponseRedirect(request.session['after_login'])
             return HttpResponseRedirect('/')
@@ -792,15 +790,53 @@ def facebook_login(request):
     ### TO DO Log Error
     return HttpResponseRedirect('/')
 
+def google_callback(request):
+    #We recieve the answer
+    # If an error
+    json_code = json.loads(request.body)
+    code = json_code['code']
+
+    #With the code and our credentials we can now get the access token
+    args = urllib.urlencode(
+             { "client_id" : settings.GOOGLE_APP_ID,
+             "redirect_uri" : settings.GOOGLE_REDIRECT_URL ,
+             "client_secret" : settings.GOOGLE_APP_SECRET,
+             "code" : code,
+             "grant_type":"authorization_code"})
 
 
+
+    # We get the access token
+    response = urllib.urlopen( "https://www.googleapis.com/oauth2/v3/token", args)
+
+
+    access_token_response = json.loads(response.read())
+    user = authenticate(app="google",**access_token_response)
+
+
+    if user:
+        if user.is_active:
+            login(request, user)
+            if 'after_login' in request.session:
+                return HttpResponse(json.dumps({"success":True , "error": None, "after_login":request.session['after_login']}), content_type='application/javascript')
+
+            return HttpResponse(json.dumps({"success":True , "error": None, "after_login":"/"}), content_type='application/javascript')
+        else:
+            return HttpResponse(json.dumps({"success":False, "error": 'AUTH_DISABLED', "after_login":"/"}), content_type='application/javascript')
+
+    else:
+        return HttpResponse(json.dumps({"success":False, "error": 'AUTH_DISABLED', "after_login":"/"}), content_type='application/javascript')
+
+
+
+@login_required
 def get_activities(request):
     activities = Activity.get_all_programming()
     json_docs = [doc for doc in activities]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
+@login_required
 def users(request,user_id=None,course_id=None,):
-    print 'user',user_id
     if user_id == None or user_id == "":
         users = User.objects.all()
 
@@ -824,6 +860,13 @@ def users(request,user_id=None,course_id=None,):
         #Escape for javascript
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
         return render_to_response ('activitytree/dashboard.html',{'user':user, 'XML_NAV':XML} ,context_instance=RequestContext(request))
+
+@login_required
+def me(request):
+    if request.method == 'GET':
+        return render_to_response ('activitytree/me.html',context_instance=RequestContext(request))
+
+
 
 
 
