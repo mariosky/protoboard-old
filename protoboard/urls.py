@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-
+from activitytree.forms import ProtoPasswordResetForm
 from registration.backends.default.views import RegistrationView
 
 #from django.contrib import admin
@@ -43,10 +43,11 @@ urlpatterns = patterns('',
       (r'^login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
 
 #      url(r'^register/$', RegistrationView.as_view(), name='registration_register'),
-
+      url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',{'password_reset_form':ProtoPasswordResetForm } ),
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout
       (r'^accounts/login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
+
       url('', include('django.contrib.auth.urls')),
       ('', include('registration.backends.default.urls')),
       #url('', include('social.apps.django_app.urls', namespace='social')),
