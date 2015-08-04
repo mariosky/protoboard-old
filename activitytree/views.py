@@ -829,7 +829,6 @@ def google_callback(request):
 
 
 
-@login_required
 def get_activities(request):
     activities = Activity.get_all_programming()
     json_docs = [doc for doc in activities]
