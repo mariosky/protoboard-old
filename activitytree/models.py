@@ -19,6 +19,9 @@ class LearningStyleInventory(models.Model):
     
 class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True)
+    facebook_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
+    google_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
+
 
 
 
@@ -48,12 +51,12 @@ class LearningActivity(models.Model):
 
     match_rule = models.TextField(blank=True)
     filter_rule = models.TextField(blank=True)
-    rollup_rule  = models.TextField(blank=True)
+    rollup_rule  = models.TextField(blank=True, default="satisfied IF All satisfied")
     
     rollup_objective = models.BooleanField(default=True)
     rollup_progress = models.BooleanField(default=True)
-        
-    attempt_limit = models.PositiveSmallIntegerField(null=True)
+    #default value of attempt_limit (100) means no restriction in number of attempts, max attempts = 99
+    attempt_limit = models.PositiveSmallIntegerField(default=100)
     duration_limit = models.PositiveSmallIntegerField(null=True) 
     available_from = models.DateTimeField(null=True)
     available_until = models.DateTimeField(null=True)
@@ -281,7 +284,7 @@ class UserLearningActivity(models.Model):
         
     def rollup_rules(self):
         ##Until root
-            if self.learning_activity.rollup_rule:
+            if self.learning_activity.rollup_rule and self.learning_activity.is_container:
                 self.eval_rollup_rule(self.learning_activity.rollup_rule)
             if self.learning_activity.parent != None:
                 parent = UserLearningActivity.objects.filter(learning_activity=self.learning_activity.parent,user=self.user)[0]
@@ -368,7 +371,11 @@ class FacebookSession(models.Model):
 
         return response
 
-
+class GoogleSession(models.Model):
+    access_token = models.TextField(unique=True)
+    expires_in = models.IntegerField(null=True)
+    user = models.ForeignKey(User, null=False)
+    refresh_token =  models.TextField(null=True)
 
 
 

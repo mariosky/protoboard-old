@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
 from activitytree.models import ActivityTree, UserLearningActivity
+from django.utils import timezone
 import datetime
 from lxml import etree
+
 #Exceptions
 
 
@@ -58,6 +60,7 @@ class SimpleSequencing(object):
         # Set current activity if everything is fine 
         atree.current_activity = ula
         ula.is_current = True
+        ula.last_visited = timezone.now()
         ula.save()
         atree.save()
 
@@ -101,7 +104,7 @@ class SimpleSequencing(object):
                 ula.objective_measure = objective_measure
             if kmdynamics is not None:
                 ula.kmdynamics = kmdynamics
-            ula.last_visited = datetime.datetime.now()
+            ula.last_visited = timezone.now()
             if attempt:
                 ula.num_attempts += 1
             ula.save()
@@ -112,19 +115,19 @@ class SimpleSequencing(object):
             ula.rollup_rules()
 
     def update(self, ula, progress_status=None, objective_status=None, objective_measure=None, attempt=False):
-        if not ula.is_current:
-            raise NotAllowed('Update', "Can only update a current activity")
-        else:
-            if progress_status is not None:
-                ula.progress_status = progress_status
-            if objective_status is not None :
-                ula.objective_status = objective_status
-            if objective_measure is not None:
-                ula.objective_measure = objective_measure
-            ula.last_visited = datetime.datetime.now()
-            if attempt:
-                ula.num_attempts += 1
-            ula.save()
+        #if not ula.is_current:
+        #    raise NotAllowed('Update', "Can only update a current activity")
+        #else:
+        if progress_status is not None:
+            ula.progress_status = progress_status
+        if objective_status is not None :
+            ula.objective_status = objective_status
+        if objective_measure is not None:
+            ula.objective_measure = objective_measure
+        ula.last_visited = timezone.now()
+        if attempt:
+            ula.num_attempts += 1
+        ula.save()
 
     def suspend(self, user, activity):
         pass
@@ -151,9 +154,6 @@ class SimpleSequencing(object):
             raise NotAllowed('Assign Activity Tree', "Only Root Nodes can be assigned")
 
     def get_next(self, ula, current):
-
-        #current = self.get_current(ula)
-
         if current:
             eroot = get_nav(ula)
             navlist = [e for e in eroot.iter()]
@@ -166,14 +166,12 @@ class SimpleSequencing(object):
                     next = navlist[i + 1]
 
                     if next.get("is_container") == "False" and next.get("pre_condition") <> "disabled":
-                        return next.get("uri")
+                        return next.get("id")
             return None
         else:
             return None
 
     def get_prev(self, ula, current):
-
-        #current = self.get_current(ula)
 
         if current:
             eroot = get_nav(ula)
@@ -188,70 +186,10 @@ class SimpleSequencing(object):
                     next = navlist[i + 1]
 
                     if next.get("is_container") == "False" and next.get("pre_condition") <> "disabled":
-                        return next.get("uri")
+                        return next.get("id")
             return None
         else:
             return None
-
-
-    def get_nav(self, ula):
-        #print "get_nav call",ula
-        #If nodes is None we are at root
-        if ula.learning_activity.parent is None:
-            #Refresh root in case it was changed elsewhere
-            ula = UserLearningActivity.objects.get(id=ula.id)
-            ula.children = []
-        #Get children activities
-        children = ula.get_children(recursive=False)
-        if children:
-            #Process child nodes-*
-            for child in children:
-                child.children = []
-                child.eval_pre_condition_rule()
-
-                #IF Parent ForwardOnly is True, disable if already tried
-                #print child.learning_activity.uri, child.pre_condition
-                if child.pre_condition == 'stopForwardTraversal':
-                    ula.children.append(child)
-                    return ula
-                elif child.pre_condition == 'skip':
-                    pass
-                elif ula.learning_activity.forward_only and child.num_attempts > 0:
-                    child.pre_condition = 'disabled'
-                    ula.children.append(self.get_nav(child))
-                else:
-                    # disabled, hidden are still returned
-                    ula.children.append(self.get_nav(child))
-
-            return ula
-        else:
-
-            #no more nodes to process return nodes
-            ula.children = []
-            return ula
-
-
-    def nav_to_xml(self, node=None, s="", root=None):
-        open_tag_template = '<item activity = "%s"  uri = "%s"   identifier = "%s" is_current = "%s" is_container  = "%s" pre_condition = "%s"  recomended_value = "%s" objective_status ="%s" objective_measure ="%s" is_visible ="%s" heading ="%s" secondary_text="%s" description="%s" image ="%s" num_attempts="%s" attempt_limit="%s">'
-        single_tag_template = open_tag_template[:-1]+'/>'
-        if node is None:
-            node = root
-        vals = (node.learning_activity.id, node.learning_activity.uri, node.learning_activity.name, node.is_current,
-                node.learning_activity.is_container, node.pre_condition,
-                node.recommendation_value,
-                node.objective_status, node.objective_measure,node.learning_activity.is_visible,
-                node.learning_activity.heading,node.learning_activity.secondary_text,node.learning_activity.description,node.learning_activity.image,
-                node.num_attempts,node.learning_activity.attempt_limit)
-        if len(node.children) > 0:
-
-            s += open_tag_template % vals
-            for child in node.children:
-                s += self.nav_to_xml(node=child)
-            s += '</item>'
-            return s
-        else:
-            s += single_tag_template % vals
-            return s
 
 
 
@@ -268,7 +206,8 @@ con = psycopg2.connect(database=settings.DATABASES['default']['NAME'],user=setti
 RECORDS = {}
 
 def _get_children(id):
-    return [v for k,v in RECORDS.items() if id == v["parent_id"] ]
+    children = [v for k,v in RECORDS.items() if id == v["parent_id"] ]
+    return children
 
 def xml_row(row):
     str_dict = {}
@@ -277,7 +216,6 @@ def xml_row(row):
     return str_dict
 
 def sql(root_id,user_id):
-    print root_id,user_id
     cur = con.cursor(cursor_factory=DictCursor)
     query= """
 WITH RECURSIVE nodes_cte AS (
@@ -346,12 +284,22 @@ def _get_nav(id,xml_tree=None):
         xml_tree.attrib = xml_row(RECORDS[id])
 
     children = _get_children(id)
+    children.sort(key=lambda x: x['order_in_container'])
     if children:
         for activity in children:
-            print activity['pre_condition_rule']
-
             exec(activity['pre_condition_rule'])
-            #print activity['pre_condition']
+            if activity['pre_condition'] == 'stopForwardTraversal':
+                ET.SubElement(xml_tree,'item',xml_row(activity))
+                return xml_tree
+            elif activity['pre_condition']  == 'skip':
+                pass
+            #elif activity['forward_only'] == 'True' and int(activity['num_attempts']) > 0:
+            #    activity['pre_condition'] = 'disabled'
+
+            elif activity['num_attempts'] >=  int(activity['attempt_limit']) and int(activity['attempt_limit']) < 100:
+                activity['pre_condition'] = 'disabled'
+
+
 
             _get_nav(activity['id'],ET.SubElement(xml_tree,'item',xml_row(activity)))
     else:
@@ -361,6 +309,7 @@ def _get_nav(id,xml_tree=None):
 
 def get_attr(uri, attr):
     for k,v in RECORDS.items():
+        #print uri,v["uri"],attr,v[attr],RECORDS.items()
         if uri == v["uri"]:
             return v[attr]
     return None
@@ -370,5 +319,4 @@ def get_attr(uri, attr):
 
 def get_nav(root):
     sql(root.learning_activity.id,root.user_id)
-    print RECORDS
     return _get_nav(root.learning_activity.id)

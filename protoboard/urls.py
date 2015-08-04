@@ -1,4 +1,6 @@
 from django.conf.urls import patterns, include, url
+from activitytree.forms import ProtoPasswordResetForm
+from registration.backends.default.views import RegistrationView
 
 #from django.contrib import admin
 #admin.autodiscover()
@@ -11,28 +13,43 @@ urlpatterns = patterns('',
     # Example:
       (r'^$','activitytree.views.welcome'),
       (r'^welcome/$','activitytree.views.welcome'),
-      (r'^dashboard/(?P<uri>(\w(\/*))+)$','activitytree.views.dashboard'),
+      (r'^dashboard/(?P<path_id>[0-9]+)$','activitytree.views.dashboard'),
 
-      (r'^activity/(?P<uri>\w+)$','activitytree.views.activity'),
-      (r'^activity/video/(?P<uri>\w+)$','activitytree.views.activity'),
-      (r'^test/(?P<uri>\w+)$','activitytree.views.test'),
-      (r'^survey/(?P<uri>\w+)$','activitytree.views.survey'),
+      (r'^(?P<uri>activity/([\w+](\/*)(-*))+)$','activitytree.views.activity'),
+      (r'^(?P<path_id>[0-9]+)(?P<uri>/activity/([\w+](\/*)(-*))+)$','activitytree.views.path_activity'),
 
-      (r'^program/(?P<uri>\w(\/*))+$','activitytree.views.program'),
+      (r'^(?P<path_id>[0-9]+)(?P<uri>/test/([\w+](\/*)(-*))+)$','activitytree.views.path_test'),
+
+      (r'^(?P<path_id>[0-9]+)(?P<uri>/program/([\w+](\/*)(-*))+)$','activitytree.views.path_program'),
+
+      (r'^(?P<uri>program/([\w+](\/*)(-*))+)$','activitytree.views.program'),
+
       (r'^execute_queue$','activitytree.views.execute_queue'),
+      (r'^javascript_result$','activitytree.views.javascript_result'),
+      (r'^get_activities$','activitytree.views.get_activities'),
+
       (r'^get_result$','activitytree.views.get_result'),
+      (r'^me$','activitytree.views.me'),
+      (r'^users/(?P<user_id>[0-9]*)(\/*)(?P<course_id>[0-9]*)$','activitytree.views.users'),
+
 
       (r'^rate_object$','activitytree.views.rate_object'),
       (r'^facebook/get_login/?$', 'activitytree.views.facebook_get_login'),
       (r'^facebook/login/?$','activitytree.views.facebook_login'),
+
+      (r'^GoogleCallback/?$','activitytree.views.google_callback'),
+
       (r'^logout/?$', 'activitytree.views.logout_view'),
-
-
-
       (r'^login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
+
+#      url(r'^register/$', RegistrationView.as_view(), name='registration_register'),
+      url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',{'password_reset_form':ProtoPasswordResetForm } ),
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout
-      (r'^accounts/login/$', 'activitytree.views.welcome'),
+      (r'^accounts/login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
+
+      url('', include('django.contrib.auth.urls')),
+      ('', include('registration.backends.default.urls')),
       #url('', include('social.apps.django_app.urls', namespace='social')),
 
 

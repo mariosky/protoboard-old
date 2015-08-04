@@ -7,7 +7,6 @@
 ##
 
 
-
 if __name__ == "__main__":
     import os
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
@@ -16,16 +15,11 @@ if __name__ == "__main__":
     django.setup()
 
 
-
-
-
 from activitytree.models import LearningStyleInventory, LearningActivity, Course, UserLearningActivity
-from django.contrib.auth.models import User
-from activitytree.interaction_handler import SimpleSequencing
 
 
 
-LearningActivity.objects.all().delete()
+#LearningActivity.objects.all().delete()
 
 
 PPP = LearningActivity( name = 'Python Básico', slug = 'PB',
@@ -63,34 +57,6 @@ description= u"""
 cursoPPP = Course(short_description=description, root=PPP)
 cursoPPP.save()
 
-pretest = LearningActivity( name = 'Experiencia Programando', slug = 'Pretest',
-    uri = '/test/poo',
-    parent = PPP, root  = PPP,
-
-    heading="¿Que tanto sabes POO?",
-    description = "Antes de empezar, dinos algo sobre tu experiencia en programación orientada a objetos.",
-    image = "https://s3.amazonaws.com/learning-python/survey.jpg",
-
-    choice_exit = False,
-
-    pre_condition_rule = """
-if activity['objective_status'] == 'notSatisfied' :
-    activity['pre_condition'] = 'stopForwardTraversal'
-else:
-    activity['pre_condition'] = 'hidden'
-""",
-
-    post_condition_rule = "",
-
-    rollup_objective = False,
-    rollup_progress = False,
-
-    is_container = False,
-    is_visible = True,
-    order_in_container = 0
-    )
-pretest.save()
-
 
 
 intro = LearningActivity( name = 'Introduccion', slug = 'Intro',
@@ -100,7 +66,7 @@ intro = LearningActivity( name = 'Introduccion', slug = 'Intro',
     heading="Introducción al lenguaje",
     description = "Vemos las principales características del lenguaje y hacemos los primeros ejercicios.",
     image = "https://s3.amazonaws.com/learning-python/python-logo.png",
-    secondary_text = "Lección",
+    secondary_text = "Lección 1",
 #   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
     pre_condition_rule = ""  ,
     post_condition_rule = "",
@@ -121,9 +87,38 @@ intro = LearningActivity( name = 'Introduccion', slug = 'Intro',
     )
 intro.save()
 
+pretest = LearningActivity(
+    name = 'Experiencia Programando', slug = 'Pretest',
+    uri = '/test/poo',
+    parent = intro, root  = PPP,
+    secondary_text = "Unidad 1",
+    heading="¿Que tanto sabes POO?",
+    description = "Antes de empezar, dinos algo sobre tu experiencia en programación orientada a objetos.",
+    image = "https://s3.amazonaws.com/learning-python/survey.jpg",
+
+    choice_exit = False,
+
+    pre_condition_rule = """
+if int(activity['num_attempts']) == 0 :
+    activity['pre_condition'] = ''
+elif activity['objective_status'] == 'satisfied':
+    activity['pre_condition'] = 'hidden'
+""",
+
+    post_condition_rule = "",
+
+    rollup_objective = False,
+    rollup_progress = False,
+    attempt_limit=3,
+
+    is_container = False,
+    is_visible = True,
+    order_in_container = 0
+    )
+pretest.save()
 
 secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
-    uri = "/activity/secuencias",
+    uri = "/activity/introduccion",
 #   lom =
     image = "https://s3.amazonaws.com/learning-python/sequence.jpg",
     heading="Objetos Tipo Secuencia",
@@ -137,7 +132,7 @@ secuencias = LearningActivity( name = 'Secuencias', slug = 'Intro',
 if get_attr('/activity/introduccion','objective_status') == 'satisfied':
     activity['pre_condition'] = ''
 else:
-    activity['pre_condition'] = 'disabled'
+    activity['pre_condition'] = ''
 """,
     post_condition_rule = "",
 
@@ -152,7 +147,7 @@ else:
     rollup_progress = True,
 
     is_container = True,
-    is_visible = True,
+    is_visible = False,
     order_in_container = 2
     )
 secuencias.save()
@@ -193,7 +188,8 @@ tema_2 = LearningActivity( name = 'Ejercicios Basados en Pruebas', slug = 'Ejerc
     rollup_progress = True,
 
     is_container = False,
-    is_visible = True,    order_in_container = 1
+    is_visible = False,
+    order_in_container = 1
     )
 tema_2.save()
 
@@ -294,14 +290,10 @@ program_3 = LearningActivity( name = 'Suma dos números', slug = 'E3',
     heading="Uno + Uno",
     description = "Escribe una función que sume dos números",
     image = "https://s3.amazonaws.com/learning-python/suma.png",
-
+    attempt_limit=3,
 
     parent = EjerciciosIntro, root  = PPP,
-    pre_condition_rule = """
-if activity['num_attempts'] == 0 :
-    activity['pre_condition'] = 'stopForwardTraversal'
-else:
-    activity['pre_condition'] = ''""",
+    pre_condition_rule = """""",
     post_condition_rule = "",
 
     choice_exit = False,
@@ -496,7 +488,40 @@ program_13 = LearningActivity( name ='Producto punto' , slug = 'E10',
 program_13.save()
 
 
+from django.contrib.auth.models import User
+from activitytree.interaction_handler import SimpleSequencing
+estudiantes = [
+('edgar',          '1234',17,13,16,12,14,16, 9),
+('osuna',       '1234',15,12,14,18,14,19, 8),
+('malu',         '1234', 7,10, 4, 8,17,14,16),
+('jose',        '1234',17, 6,16,13,14,11, 8),
+('david',         '1234',15,10,13,14,17,15,11),
+('juan',    '1234',11,13,11,10,13,18, 8),
+('cota',              '1234',13, 7,18,14,12,10,13),
+('omar',            '1234', 7, 3, 7,12,16,17, 6),
+('santana',           '1234',10, 9,13,13,13,14,13),
+('hector',  '1234', 1,11,11,11,18,13,13),
+('edie',           '1234',14, 6,16,12,12,13,12),
+('baby',      '1234',15,18,20,17,13,18,17),
+('saul',            '1234',13,11,14,11,14,14,13),
+('brenda',             '1234',17,13,20,12,14,11,16),
+('samara',         '1234',14,15,13,12,15,16,12),
+('daniel',      '1234', 9, 8,15,11,13,14,13),
+('jorge',           '1234',17,12,14,17,19,18,14),
+('mike',             '1234',15,16,17,18,18,13,11),
+('luis',            '1234',11, 7,11,10,11,12, 6),
+('anguiano.ae22@hotmail.com',       '1234',12,10,12,13,10,18,10)]
 
+for e in estudiantes:
+    User.objects.filter(username=e[0]).delete()
+    u = User.objects.create_user(e[0],e[0], e[1])
+    u.is_active = True
+    u.save()
+    lsu=LearningStyleInventory(visual=e[2],verbal=e[3],aural=e[4],physical=e[5],logical=e[6],
+                          social=e[7], solitary=e[8], user = u)
+    lsu.save()
+    ss = SimpleSequencing()
+    ss.assignActivityTree(u,PPP)
 
 import os
 

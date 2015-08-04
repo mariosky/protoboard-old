@@ -3,67 +3,12 @@
 
 
 {% block content %}
+<form class="form-horizontal" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}"
+      xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
-{% comment %}
-    <button class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-sm">Usuarios de Prueba</button>
+ <p class="lead">  Por el momento solo puedes regístrate con <a href="/facebook/get_login"> Facebook </a></p>
 
-      <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel"> Usuarios de Prueba </h4>
-
-      </div>
-    <div class="modal-body">
-        <table class="table">
-            <tr>
-              <th>Usuario</th>
-              <th>Password</th>
-             </tr>
-            <tr>
-              <td>ana</td>
-              <td>1234</td>
-             </tr>
-            <tr>
-              <td>paul</td>
-              <td>1234</td>
-              </tr>
-<tr><td>edgar </td>          <td>1234</td></tr>
-<tr><td>osuna </td>       <td>1234</td></tr>
-<tr><td>malu  </td>         <td>1234</td></tr>
-<tr><td>jose  </td>        <td>1234</td></tr>
-<tr><td>david  </td>         <td>1234</td></tr>
-<tr><td>juan</td>    <td>1234</td></tr>
-<tr><td>cota</td>              <td>1234</td></tr>
-<tr><td>omar</td>            <td>1234</td></tr>
-<tr><td>santana</td>           <td>1234</td></tr>
-<tr><td>hector</td>  <td>1234</td></tr>
-<tr><td>edie</td>           <td>1234</td></tr>
-<tr><td>baby</td>      <td>1234</td></tr>
-<tr><td>saul</td>            <td>1234</td></tr>
-<tr><td>brenda</td>             <td>1234</td></tr>
-<tr><td>samara</td>         <td>1234</td></tr>
-<tr><td>daniel</td>      <td>1234</td></tr>
-<tr><td>jorge</td>           <td>1234</td></tr>
-<tr><td>mike</td>             <td>1234</td></tr>
-<tr><td>luis</td>            <td>1234</td></tr>
-            </table>
-
-
-     </div>
-     </div>
-     </div>
-     </div>
-
-{% endcomment %}
-<form class="form-horizontal" role="form" method="post" action="{% url 'activitytree.views.login_view' %}" >{% csrf_token %}
-
-
-
-  <p class="lead">  Por el momento solo puedes regístrate con <a href="/facebook/get_login"> Facebook </a></p>
-
-{% if form.errors %}
+{% if errors %}
 
 <div class="alert alert-danger alert-dismissable">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -76,18 +21,23 @@
   <div class="form-group">
     <label for="id_username" class="col-sm-2 control-label">Usuario:</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control disabled" id="inputEmail3" placeholder="Usuario" id="id_username" maxlength="254" name="username">
+      <input type="text" class="form-control" id="inputEmail3" placeholder="Usuario" id="id_username" maxlength="254" name="username">
+        {{ form.username }}
+        </input>
+
     </div>
   </div>
   <div class="form-group">
     <label for="id_password" class="col-sm-2 control-label">Password:</label>
     <div class="col-sm-10">
-      <input type="password" class="form-control disabled" id="id_password" placeholder="Password" name="password">
+      <input type="password" class="form-control" id="id_password" placeholder="Password" name="password">
+        {{ form.password }}
+      </input>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default disabled">Login</button>
+      <button type="submit" class="btn btn-default">Login</button>
     </div>
   </div>
 <input type="hidden" name="next" value="{{ next }}" />
@@ -97,13 +47,13 @@
 
 <div class="row">
   <div class="col-md-6">
-      <a id="login-facebook-btn" href="/facebook/get_login" class="btn btn-block btn-social btn-facebook "> <i class="fa fa-facebook"></i>
+      <a id="login-facebook-btn" href="/facebook/get_login?next={{ next }}" class="btn btn-block btn-social btn-facebook "> <i class="fa fa-facebook"></i>
         Regístrate con Facebook</a></div>
   <div class="col-md-1"> </div>
 
 
   <div class="col-md-6">
-      <a id="loginGoogle" class="btn btn-block btn-social btn-google-plus disabled"><i class="fa fa-google-plus"></i>
+      <a id="loginGoogle" class="btn btn-block btn-social btn-google-plus"><i class="fa fa-google-plus"></i>
        Regístrate con Google </a>
   </div>
 </div>
@@ -118,67 +68,96 @@
 
 
 {% block scripts %}
+  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+  </script>
+<script>
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+    function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
 
 
- {% comment %}
-    <script type="text/javascript">
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
 
-  window.___gcfg = {
-    lang: 'es-mx',
-    parsetags: 'explicit'
-  }
-</script>
 
-<script type="text/javascript">
 
-  (function () {
-        var po = document.createElement('script');
-        po.type = 'text/javascript';
-        po.async = true;
-        po.src = 'https://plus.google.com/js/client:plusone.js?onload=render';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(po, s);
-    })();
+    function start() {
+      gapi.load('auth2', function() {
+        auth2 = gapi.auth2.init({
+          client_id: '95891402620-36t537m45mim9todkv6vno7k6lqbpqvp.apps.googleusercontent.com',
+          'scope': 'profile email'
+          // Scopes to request in addition to 'profile' and 'email'
+          //scope: 'additional_scope'
+        });
+      });
+    }
+    $( document ).ready(function() {
+    $('#loginGoogle').click(function() {
+    // signInCallback defined in step 6.
+    auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(function(authResult) {
+        if (authResult['code']) {
 
-   Executed when the APIs finish loading
- function render() {
+    // Hide the sign-in button now that the user is authorized, for example:
+    //$('#signinButton').attr('style', 'display: none');
 
-   // Additional params including the callback, the rest of the params will
-   // come from the page-level configuration.
-   var additionalParams = {
-     'callback': signInCallback,
-     'cookiepolicy': "single_host_origin" ,
-     'clientid':  "{{ plus_id }}"
+    // Send the code to the server
+    $.ajax({
+      type: 'POST',
+      url: '/GoogleCallback',
+      contentType: 'application/json',
+      success: function(result) {
+        // Handle or verify the server response.
+          ///alert(result.result);
 
-   };
+          window.location.href=result.after_login;
 
-   // Attach a click listener to a button to trigger the flow.
-   var signinButton = document.getElementById('loginGoogle');
-   signinButton.addEventListener('click', function() {
-     gapi.auth.signIn(additionalParams); // Will use page level configuration
-   });
- }
+      },
+      processData: false,
+      dataType: "json",
+      data: JSON.stringify({code:authResult['code']}),
+      error: function(jqXHR, textStatus, errorThrown) {
+                        alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
+                        }
 
-    var signInCallback = function (result) {
-        if (result['error'] ) {
-            //alert('An error happened:', result['error']);
-            console.log(result['error']);
-        }
+    });
+    }
         else {
-            $('#code').attr('value', result['code']);
-            $('#at').attr('value', result['access_token']);
-            $('#google-plus').submit();
-        }
-    };
-
-</script>
-
-   <form id="google-plus" method="post" action="{% url 'social:complete' "google-plus" %}">{% csrf_token %}
-    <input id="at" type="hidden" name="access_token" value="" />
-    <input id="code" type="hidden" name="code" value="" />
+    // There was an error.
+  }
 
 
-</form>
- {% endcomment %}
+
+        });
+
+    });
+
+     });
+  </script>
+
+
 
 {% endblock scripts %}

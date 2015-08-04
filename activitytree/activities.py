@@ -1,28 +1,47 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
+
+
+
+
 activities = {
+
+
+'/activity/video/lo-que-ahora-sabemos':
+    {'title':u'Introducción',
+     'url':u"https://www.youtube.com/watch?v=GUxyQ6Mj_kc",
+      'youtube_id':'GUxyQ6Mj_kc'
+
+      },
+
+
+
+
 '/activity/video/intro':
     {'title':u'Introducción',
-     'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
+      'youtube_id':'iUrrwxOG9uU',
+      'startSeconds':20,
+      'endSeconds':25,
+
+      } ,
 
 '/activity/video/secuencias':
     {'title':u'Secuencias:Listas, Tuplas y Cadenas',
-     'url':u"http://www.youtube.com/embed/aTDJDB_ZjXA?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/aTDJDB_ZjXA?rel=0",
+      'youtube_id':'KovkopcILQ8'} ,
 
 '/activity/video/ejercicios_basados_en_pruebas':
     {'title':u'Ejercicios Basados en Pruebas',
-     'url':u"http://www.youtube.com/embed/6BL6P48r_9A?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/6BL6P48r_9A?rel=0",
+      'youtube_id':'iUrrwxOG9uU'} ,
 
 '/activity/video/ejemplo_ejercicio':
     {'title':u'Ejercicios en Protoboard',
-     'url':u"http://www.youtube.com/embed/Htk9KAl1GxU?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/Htk9KAl1GxU?rel=0",
+      'youtube_id':'Htk9KAl1GxU'} ,
 
-'/activity/PB':u"""<h3 id="welcome">Bienvenidos</h3>
-      <p> En este tutorial aprenderás los conceptos básicos de la programación en Python </p>
-      <p> Orientado a principiantes muy avanzados, que se maravillen con la simplicidad de este hola mundo: </p>
-            <p><code>print "hola mundo"</code></p>
-          <p> Python es utilizado por la  Nasa, Google, Instagram y por su puesto protoboard.org</p>
-    """,
+'/activity/PB':u"""""",
 
 '/activity/introduccion': u""" <h3>Introducción</h3>
   <p> Empezamos con una serie de videos introductorios al tutorial y después EJERCICIOS.
@@ -72,18 +91,7 @@ def foo(l):
     """,
             'instructions':u"""<p>Escribe una función llamada foo la cual imprima Hola.</p>
             </code>""",
-            'unit_test':u"""import unittest, sys
-import json
-
-class ResultadoPrueba(unittest.TestResult):
-    def __init__(self):
-         super(ResultadoPrueba, self).__init__()
-         self.success = []
-    def addSuccess(self, test):
-         self.success.append(test)
-    def shouldStop(self, test):
-         return False
-
+            'unit_test':u"""
 class Test(unittest.TestCase):
     def test_foo(self):
         from StringIO import StringIO
@@ -98,72 +106,68 @@ class Test(unittest.TestCase):
         finally:
             sys.stdout = saved_stdout
             print output
+""","lang":"python", "type":"unit_test" },
 
-suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-Resultado = ResultadoPrueba()
-suite.run(Resultado)
-result = {}
-
-if Resultado.wasSuccessful():
-    result['result'] = "Success"
-else:
-    result['result'] = "Failure"
-result['errors']=  [str(e[0])   for e in Resultado.errors]
-result['failures']=  [str(e[0]) for e in Resultado.failures]
-result['successes']=  [str(e)  for e in Resultado.success]
-print "!!!---"
-print json.dumps(result)
-"""},
-
- '/program/PPP/2':
-        {   'title':u"¿Es par?",
+ '/program/PPP/1':
+        {   'title':u"Clase Producto",
             'initial_code':u"""
-def es_par():
-    pass
+using System.IO;
+using System;
+public class Product
+{
+        public   code;
+        public   desc;
+
+        public Product(int c, string d)
+        {
+        code=c;
+        desc=d;
+        }
+
+        public void Print()
+        {
+        Console.WriteLine("Producto {0}: {1}", code,desc);
+        }
+
+}
 """,
             'correct_code':u""" """,
-             'instructions':u"""<p>Escribe una función llamada <code> es_par </code> la cual tome un
-             parámetro entero y regrese <code> True </code> si es entero y <code> False </code>
-             si no lo es.</p>
-            </code>""",
+             'instructions':u"""<p>Completa la clase llamada <code> Producto </code> """,
             'unit_test':u"""
-import sys
-import unittest
-import json
+[TestFixture]
+public class ProductTest
+{
 
-class ResultadoPrueba(unittest.TestResult):
-    def __init__(self):
-         super(ResultadoPrueba, self).__init__()
-         self.success = []
-    def addSuccess(self, test):
-         self.success.append(test)
-    def shouldStop(self, test):
-         return False
+    [Test, Description("Prueba del Constructor")]
+    public void Constructor()
+    {
+        Product p = new Product(1,"hola");
+        // Constraint Syntax
+        Assert.AreEqual(p.code,1);
+    }
 
 
-class Test(unittest.TestCase):
-    def setUp(self):
-        pass
-    def test_cero(self):
-        self.assertEqual(es_par(0),True)
-    def test_par(self):
-        self.assertEqual(es_par(6),True)
+    [Test, Description("Imprimir la Descripción")]
+    public void PrintTest()
+    {
+        Product p = new Product(1,"hola");
+        p.Print();
 
-suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-Resultado = ResultadoPrueba()
-suite.run(Resultado)
-result = {}
+        using (StringWriter sw = new StringWriter())
+        {
+            Console.SetOut(sw);
 
-if Resultado.wasSuccessful():
-    result['result'] = "Success"
-else:
-    result['result'] = "Failure"
-result['errors']=  [str(e[0])   for e in Resultado.errors]
-result['failures']=  [str(e[0]) for e in Resultado.failures]
-result['successes']=  [str(e)  for e in Resultado.success]
-print "!!!---"
-print json.dumps(result)
-"""},
+
+            p.Print();
+
+        string expected = "Producto 1: hola";
+        StringAssert.StartsWith(expected, sw.ToString());
+
+
+        }
+
+    }
+}""","lang":"csharp", "type":"unit_test" },
 
 
  '/program/PPP/3':
@@ -185,20 +189,6 @@ def suma(a,b):
                 <p>-1</p>
             </code>""",
             'unit_test':u"""
-import sys
-import unittest
-import json
-
-class ResultadoPrueba(unittest.TestResult):
-    def __init__(self):
-         super(ResultadoPrueba, self).__init__()
-         self.success = []
-    def addSuccess(self, test):
-         self.success.append(test)
-    def shouldStop(self, test):
-         return False
-
-
 class Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -206,22 +196,12 @@ class Test(unittest.TestCase):
         self.assertEqual(suma(3,9),12)
     def test_negativos(self):
         self.assertEqual(suma(5,-12),-7)
-
-suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-Resultado = ResultadoPrueba()
-suite.run(Resultado)
-result = {}
-
-if Resultado.wasSuccessful():
-    result['result'] = "Success"
-else:
-    result['result'] = "Failure"
-result['errors']=  [str(e[0])   for e in Resultado.errors]
-result['failures']=  [str(e[0]) for e in Resultado.failures]
-result['successes']=  [str(e)  for e in Resultado.success]
-print "!!!---"
+"
 print json.dumps(result)
-"""},
+""", "lang":"python", "type":"unit_test"  },
+
+
+
 
  '/program/PPP/4':
         {   'title':u"distancia()",
@@ -239,20 +219,6 @@ def distancia():
                 <p>7</p>
             </code>""",
             'unit_test':u"""
-import sys
-import unittest
-import json
-
-class ResultadoPrueba(unittest.TestResult):
-    def __init__(self):
-         super(ResultadoPrueba, self).__init__()
-         self.success = []
-    def addSuccess(self, test):
-         self.success.append(test)
-    def shouldStop(self, test):
-         return False
-
-
 class Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -260,21 +226,6 @@ class Test(unittest.TestCase):
         self.assertEqual(distancia(3,9),6)
     def test_negativos(self):
         self.assertEqual(distancia(5,-12),17)
-
-suite = unittest.TestLoader().loadTestsFromTestCase(Test)
-Resultado = ResultadoPrueba()
-suite.run(Resultado)
-result = {}
-
-if Resultado.wasSuccessful():
-    result['result'] = "Success"
-else:
-    result['result'] = "Failure"
-result['errors']=  [str(e[0])   for e in Resultado.errors]
-result['failures']=  [str(e[0]) for e in Resultado.failures]
-result['successes']=  [str(e)  for e in Resultado.success]
-print "!!!---"
-print json.dumps(result)
 """},
 
 
@@ -1308,7 +1259,8 @@ No necesitamos saber cómo se programó el objeto, ni saber las variables que us
 
 '/activity/video/Objetos_y_Clases_YouTube':
     {'title':u'Una introducción a Objetos y Clases',
-     'url':u"http://www.youtube.com/embed/D-w9RKQlAsA?rel=0"} ,
+     'url':u"http://www.youtube.com/embed/D-w9RKQlAsA?rel=0",
+      'youtube_id':"D-w9RKQlAsA"} ,
 
 
 
@@ -3008,6 +2960,81 @@ print json.dumps(result)
      'satisfied_at_least':3
                     },
 
+'/activity/actividad1': u""" <h3>Redes</h3>
+  <p>Actividad 1 </p> """ ,
+
+'/activity/actividad2': u""" <h3>Redes</h3>
+  <p>Actividad 2 </p> """ ,
+'/activity/actividad3': u""" <h3>Redes</h3>
+  <p>Actividad 3 </p> """ ,
+'/activity/actividad4': u""" <h3>Redes</h3>
+  <p>Actividad 4 </p> """ ,
+'/activity/actividad5': u""" <h3>Redes</h3>
+  <p>Actividad 5 </p> """ ,
+'/activity/actividad6': u""" <h3>Redes</h3>
+  <p>Actividad 6 </p> """ ,
+'/activity/Redes': u""" <h3>Redes</h3>
+  <p>Blah </p> """ ,
+
 }
+
+
+
+multi_device_activities = {
+              '/activity/Redes':
+                            [{'url': '/objetos/Actividad1/Dispositivo1_Imagen1.png', 'estado': 'play', 'dispositivo':  '1', 'tipo': 'imagen'}
+                              ],
+
+
+              '/activity/actividad1':
+                             [{'url': '/objetos/Actividad1/Dispositivo1_Imagen1.png', 'estado': 'play', 'dispositivo':  '1', 'tipo': 'imagen'} ,
+                              {'url': '/objetos/Actividad1/Dispositivo2_Imagen2.png', 'estado': 'play', 'dispositivo':  '2', 'tipo': 'imagen'},
+                              {'url': '/objetos/Actividad1/Dispositivo3_Imagen3.png', 'estado': 'play', 'dispositivo':  '3', 'tipo': 'imagen'},
+                              {'url': '/objetos/Actividad1/Dispositivo4_Imagen4.png', 'estado': 'play', 'dispositivo':  '4', 'tipo': 'imagen'},
+                              {'url': '/objetos/Actividad1/Dispositivo5_Imagen5.png', 'estado': 'play', 'dispositivo':  '5', 'tipo': 'imagen'}
+
+                              ],
+
+             '/activity/actividad2': [{'url':'/objetos/Actividad2/Dispositivo1_Video1.gif',  'estado': 'play', 'dispositivo':  '1', 'tipo': 'imagen'} ,
+                              {'url': '/objetos/Actividad1/Dispositivo2_Imagen2.png', 'estado': 'play', 'dispositivo':  '2', 'tipo': 'imagen'},
+                              {'url': '/objetos/Actividad1/Dispositivo3_Imagen3.png', 'estado': 'play', 'dispositivo':  '3', 'tipo': 'imagen'},
+                              {'url': '/objetos/Actividad1/Dispositivo4_Imagen4.png', 'estado': 'play', 'dispositivo':  '4', 'tipo': 'imagen'},
+                              {'url': '/objetos/Actividad1/Dispositivo5_Imagen5.png', 'estado': 'play', 'dispositivo':  '5', 'tipo': 'imagen'}
+
+                              ],
+           '/activity/actividad3':
+             [{'url': '/objetos/Actividad1/Dispositivo1_Imagen1.png',  'estado': 'play', 'dispositivo':  '1', 'tipo': 'imagen'} ,
+              {'url': '/objetos/Actividad3/Dispositivo2_Video2.gif', 'estado': 'play', 'dispositivo':  '2', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad1/Dispositivo3_Imagen3.png', 'estado': 'play', 'dispositivo':  '3', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad1/Dispositivo4_Imagen4.png', 'estado': 'play', 'dispositivo':  '4', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad1/Dispositivo5_Imagen5.png', 'estado': 'play', 'dispositivo':  '5', 'tipo': 'imagen'}
+
+              ],
+
+            '/activity/actividad4':
+             [{'url': '/objetos/Actividad1/Dispositivo1_Imagen1.png', 'estado': 'play', 'dispositivo':  '1', 'tipo': 'imagen'} ,
+              {'url': '/objetos/Actividad1/Dispositivo2_Imagen2.png', 'estado': 'play', 'dispositivo':  '2', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad4/Dispositivo3_Video3.gif', 'estado': 'play', 'dispositivo':  '3', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad1/Dispositivo4_Imagen4.png', 'estado': 'play', 'dispositivo':  '4', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad1/Dispositivo5_Imagen5.png', 'estado': 'play', 'dispositivo':  '5', 'tipo': 'imagen'}
+
+              ],
+
+
+            '/activity/actividad5':
+             [{'url': '/objetos/Actividad1/Dispositivo1_Imagen1.png', 'estado': 'play', 'dispositivo':  '1', 'tipo': 'imagen'} ,
+             {'url': '/objetos/Actividad1/Dispositivo2_Imagen2.png', 'estado': 'play', 'dispositivo':  '2', 'tipo': 'imagen'},
+             {'url': '/objetos/Actividad1/Dispositivo3_Imagen3.png', 'estado': 'play', 'dispositivo':  '3', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad5/Dispositivo4_Video4.gif', 'estado': 'play', 'dispositivo':  '4', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad1/Dispositivo5_Imagen5.png', 'estado': 'play', 'dispositivo':  '5', 'tipo': 'imagen'}
+             ],
+            '/activity/actividad6':
+             [{'url': '/objetos/Actividad1/Dispositivo1_Imagen1.png', 'estado': 'play', 'dispositivo':  '1', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad1/Dispositivo2_Imagen2.png', 'estado': 'play', 'dispositivo':  '2', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad1/Dispositivo3_Imagen3.png', 'estado': 'play', 'dispositivo':  '3', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad1/Dispositivo4_Imagen4.png', 'estado': 'play', 'dispositivo':  '4', 'tipo': 'imagen'},
+              {'url': '/objetos/Actividad6/Dispositivo5_Video5.gif', 'estado': 'play', 'dispositivo':  '5', 'tipo': 'imagen'}],
+
+             }
 
 

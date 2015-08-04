@@ -44,19 +44,41 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
 # Application definition
 
+FACEBOOK_APP_ID = "635XXX3532XXXXX"
+FACEBOOK_APP_SECRET = "XXXXXX8a1d124f0c1df5c9ZZZZZZ1be0"
+FACEBOOK_REDIRECT_URL = "http://localhost:8000/facebook/login/"
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='mariosky@gmail.com'
+EMAIL_HOST_PASSWORD='1234567'
+EMAIL_PORT=465
+EMAIL_USE_SSL=True
+ACCOUNT_ACTIVATION_DAYS=7
+REGISTRATION_AUTO_LOGIN = True
+
+#We include our own RegisterForm
+INCLUDE_REGISTER_URL=False
+
+
+MONGO_DB = "127.0.0.1"
+# Application definition
+AUTHENTICATION_BACKENDS = (
+#      'social.backends.google.GooglePlusAuth',
+  'activitytree.backends.FacebookBackend',
+      'django.contrib.auth.backends.ModelBackend',)
+
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
     'registration',
-    'activitytree'
+
+	'activitytree'
 )
 
 MIDDLEWARE_CLASSES = (

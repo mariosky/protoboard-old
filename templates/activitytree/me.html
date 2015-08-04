@@ -1,0 +1,86 @@
+__author__ = 'mario'
+{% extends "activitytree/base.html" %}
+{% load gravatar %}
+
+
+{% block content %}
+
+
+
+<row>
+
+           <div class="col-sm-3">
+
+                <img src="{% gravatar_url user.email 150 %}"  class="text-center" alt="Generic placeholder thumbnail">
+            <h4 class="text-lowercase text-left">{{ user.first_name }} {{ user.last_name }}</h4>
+           <p class="text-lowercase text-left">  <span class="text-muted">{{ user.email }}</span></p>
+
+               <hr/>
+               <h4 class="text-left">Cambia tu avatar:</h4>
+               <a class="btn btn-default btn-block" href="http://gravatar.com" role="button"><i class="fa fa-camera"></i>
+Gravatar.com</a>
+               <form>
+
+
+                   <hr/>
+
+                    <h4 class="text-left">Asocia tus cuentas:</h4>
+                <a id="login-facebook-btn" href="/facebook/get_login" class="btn btn-block btn-default"> <i class="fa fa-facebook"></i>
+        Asociar</a>
+
+
+               <a id="loginGoogle" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
+       Asociar </a>
+
+</form>
+            </div>
+
+            <div class="col-sm-9">
+
+
+            <form>
+  <div class="form-group">
+  <label for="username">Usuario</label>
+    <input type="email" class="form-control" id="username" placeholder="{{ user.username }}">
+  </div>
+  <div class="form-group">
+  <label for="username">Nombre</label>
+    <input type="email" class="form-control" id="first_name" placeholder="{{  user.first_name }}">
+  </div>
+    <div class="form-group">
+  <label for="username">Apellido</label>
+    <input type="email" class="form-control" id="last_name" placeholder="{{  user.last_name }}">
+  </div>
+  <div class="form-group">
+  <label for="exampleInputEmail1">Correo electrónico</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="{{ user.email }}">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Contraseña</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+
+
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+
+
+
+
+
+
+        </div>
+</row>
+
+
+
+
+
+{% endblock content %}
+
+{% block scripts %}
+
+
+
+{% endblock scripts %}

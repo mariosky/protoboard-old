@@ -10,8 +10,14 @@
 
 if __name__ == "__main__":
     import os
+    from django.core.wsgi import get_wsgi_application
+
     print "####### DJANGO SETTINGS"
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
+
+    os.environ['DJANGO_SETTINGS_MODULE'] = "protoboard.settings"
+    application = get_wsgi_application()
+
+
 
 
 
@@ -23,7 +29,7 @@ from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
 
 LearningActivity.objects.all().delete()
-POO = LearningActivity( name = 'Intro a la POO', slug = 'POO',
+POO = LearningActivity( name = 'Prog OO en C#', slug = 'POO',
     uri = "/activity/POO",
     parent = None,
     root   = None,
@@ -46,7 +52,7 @@ POO.save()
 description= u"""
         <p> Que no te intimiden las palabras <code>class</code> , <code>abstract</code> , <code>override</code> o te dé miedo eso del
         <strong> polimorfismo </strong> o te emociones con la <strong> herencia múltiple</strong>.</p>
-        <p> Ya deberías saber programación básica en algún lenguaje de programación.</p>"""
+        <p> Ya deberías saber programación básica en algún lenguaje de programación. </p>"""
 
 
 cursoPOO = Course(short_description=description, root=POO)
@@ -58,10 +64,7 @@ pretest = LearningActivity( name = 'Pretest', slug = 'Pretest',
 #   lom = ,
     parent = POO, root  = POO,
 
-    pre_condition_rule = """if self.num_attempts == 0 :
- self.pre_condition = 'stopForwardTraversal'
-else:
- self.pre_condition = 'disabled'""",
+    pre_condition_rule = "",
     post_condition_rule = "" ,
 
     rollup_rule  = "",
@@ -109,8 +112,7 @@ preliminar = LearningActivity( name = 'Comentario Preliminar', slug = 'Prelimina
 #   lom =
     parent = content, root   = POO,
 
-    pre_condition_rule = """if self.get_objective_measure('Pretest')  > 2:
-	                  self.pre_condition = 'skip' """,
+    pre_condition_rule = "",
     post_condition_rule = "",
 
     rollup_rule  = "",
@@ -472,26 +474,7 @@ s.assignActivityTree(p,POO)
 
 
 estudiantes = [
-('edgar',          '1234',17,13,16,12,14,16, 9),
-('osuna',       '1234',15,12,14,18,14,19, 8),
-('malu',         '1234', 7,10, 4, 8,17,14,16),
-('jose',        '1234',17, 6,16,13,14,11, 8),
-('david',         '1234',15,10,13,14,17,15,11),
-('juan',    '1234',11,13,11,10,13,18, 8),
-('cota',              '1234',13, 7,18,14,12,10,13),
-('omar',            '1234', 7, 3, 7,12,16,17, 6),
-('santana',           '1234',10, 9,13,13,13,14,13),
-('hector',  '1234', 1,11,11,11,18,13,13),
-('edie',           '1234',14, 6,16,12,12,13,12),
-('baby',      '1234',15,18,20,17,13,18,17),
-('saul',            '1234',13,11,14,11,14,14,13),
-('brenda',             '1234',17,13,20,12,14,11,16),
-('samara',         '1234',14,15,13,12,15,16,12),
-('daniel',      '1234', 9, 8,15,11,13,14,13),
-('jorge',           '1234',17,12,14,17,19,18,14),
-('mike',             '1234',15,16,17,18,18,13,11),
-('luis',            '1234',11, 7,11,10,11,12, 6),
-('anguiano.ae22@hotmail.com',       '1234',12,10,12,13,10,18,10)]
+]
 
 for e in estudiantes:
     User.objects.filter(username=e[0]).delete()
