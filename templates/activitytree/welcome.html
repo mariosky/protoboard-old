@@ -81,11 +81,11 @@ body {
             {% endif %}
             <li><a class="navbar-user" href="#">
                 {%  if user.userprofile.facebook_uid %}
-                <img src="http://graph.facebook.com/{{ user.userprofile.facebook_uid}}/picture?type=square"/>  </a>
+                <img src="http://graph.facebook.com/{{ user.userprofile.facebook_uid}}/picture?type=square"/>
                {% else %}
                 <img src="{% gravatar_url user.email 50%}">
                {% endif %}
-
+                 </a>
             </li>
             <li><a href="/logout">Log out</a></li>
 

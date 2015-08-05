@@ -12,6 +12,31 @@ import urllib
 import json
 from decimal import Decimal
 
+
+class AuthError(Exception):
+    """Base class for exceptions in this module."""
+    pass
+
+
+
+class AuthAlreadyAssociated(AuthError):
+    """Raised when a User is using an account with an email associated with another provider
+for instance a Facebook Account and a Google account with the same email.
+    Attributes:
+        action  -- action to be executed
+        message -- explanation of why the specific action is not allowed
+    """
+
+    def __init__(self, action):
+        self.action = action
+
+
+    def __str__(self):
+        return """email in use %s""" % (self.action, )
+
+
+
+
 def facebook_query_me(access_token, fields=None, metadata=False):
 
         url = 'https://graph.facebook.com/me'
@@ -71,9 +96,7 @@ class FacebookBackend:
             profile = facebook_query_me(access_token)
             if 'email' not in profile:
                 print profile
-                return None
-
-
+                return None # EMAIL_NOT_FOUND
             try:
                 #This user/email exists?
                 user = auth_models.User.objects.get(email=profile['email'])
@@ -83,8 +106,7 @@ class FacebookBackend:
                     pass
                 else:
                     #We must abort, log to your previous account
-                    print "Correo en uso"
-                    return None
+                    raise AuthAlreadyAssociated('We must abort, log to your previous account')
 
             except auth_models.User.DoesNotExist, e:
                 # We create a new user
@@ -94,7 +116,6 @@ class FacebookBackend:
                 user.save()
                 user_profile = UserProfile(facebook_uid = profile['id'],user=user)
                 user_profile.save()
-
             #Renew or create facbook session
             try:
                 FacebookSession.objects.get(user=user).delete()
@@ -107,7 +128,6 @@ class FacebookBackend:
             facebook_session.expires = expires
             facebook_session.user = user
             facebook_session.save()
-
             return user
 
         elif app == "google":
@@ -119,10 +139,9 @@ class FacebookBackend:
             profile = google_query_me(access_token)
 
             email = "emails" in profile and profile["emails"] and profile["emails"][0]["value"] or None
-            print profile
+
 
             if not email:
-                print "No "
                 return None
 
             try:
@@ -132,11 +151,10 @@ class FacebookBackend:
 
                 #if found and email is associated with the same facebook account, no problem
                 if hasattr(user, 'userprofile') and user.userprofile.google_uid == Decimal(profile['id']):
-                    print "Existe coreo y es google"
+                    pass
                 else:
                     #We must abort, log to your previous account
-                    print "Existe correo y es NO google"
-                    return None
+                    raise AuthAlreadyAssociated('We must abort, log to your previous account')
 
             except auth_models.User.DoesNotExist, e:
                 # We create a new user
@@ -144,10 +162,10 @@ class FacebookBackend:
                 user = auth_models.User(username=email, email=email, is_active=True, first_name = profile["name"]['givenName'], last_name= profile["name"]['familyName'])
                 user.set_unusable_password()
                 user.save()
-                print  profile['id']
+
                 user_profile = UserProfile(google_uid = profile['id'],user=user)
                 user_profile.save()
-                print user.userprofile.google_uid
+
 
 
             #Renew or create google  session

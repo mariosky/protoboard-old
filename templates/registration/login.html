@@ -6,7 +6,6 @@
 <form class="form-horizontal" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}"
       xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
- <p class="lead">  Por el momento solo puedes regístrate con <a href="/facebook/get_login"> Facebook </a></p>
 
 {% if errors %}
 
@@ -131,7 +130,15 @@
       contentType: 'application/json',
       success: function(result) {
         // Handle or verify the server response.
-          ///alert(result.result);
+          if (!result.success)
+          {
+              if (result.error == 'AuthAlreadyAssociated')
+              {
+                alert("El correo electrónico de la cuenta ya se encuentra asociado a un perfil. Si eres tú haz login con la otra cuenta o pide que se reinicie la contraseña");
+
+              }
+
+          }
 
           window.location.href=result.after_login;
 

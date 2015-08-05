@@ -16,7 +16,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
+from backends import AuthAlreadyAssociated
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
+
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.interaction_handler import get_nav
 
@@ -770,10 +772,10 @@ def facebook_login(request):
     print access_token_response
 
 
-
+    auth_status = None
     user = authenticate(app="facebook",**access_token_response)
-    print user,"u"
-
+    print user
+    auth_status = None
     if user:
         if user.is_active:
             login(request, user)
@@ -784,9 +786,7 @@ def facebook_login(request):
             error = 'AUTH_DISABLED'
 
     if 'error_reason' in request.GET:
-        error = 'AUTH_DENIED'
-
-
+        error = auth_status
     ### TO DO Log Error
     return HttpResponseRedirect('/')
 
@@ -811,8 +811,11 @@ def google_callback(request):
 
 
     access_token_response = json.loads(response.read())
-    user = authenticate(app="google",**access_token_response)
-
+    user = None
+    try:
+        user = authenticate(app="google",**access_token_response)
+    except AuthAlreadyAssociated:
+        return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
 
     if user:
         if user.is_active:
@@ -822,10 +825,10 @@ def google_callback(request):
 
             return HttpResponse(json.dumps({"success":True , "error": None, "after_login":"/"}), content_type='application/javascript')
         else:
-            return HttpResponse(json.dumps({"success":False, "error": 'AUTH_DISABLED', "after_login":"/"}), content_type='application/javascript')
+            return HttpResponse(json.dumps({"success":False, "error": "UserInactive", "after_login":"/"}), content_type='application/javascript')
 
     else:
-        return HttpResponse(json.dumps({"success":False, "error": 'AUTH_DISABLED', "after_login":"/"}), content_type='application/javascript')
+        return HttpResponse(json.dumps({"success":False, "error": "ProfileNotFound", "after_login":"/"}), content_type='application/javascript')
 
 
 
