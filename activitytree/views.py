@@ -773,7 +773,16 @@ def facebook_login(request):
 
 
     auth_status = None
-    user = authenticate(app="facebook",**access_token_response)
+    user = None
+    try:
+        user = authenticate(app="facebook",**access_token_response)
+    except AuthAlreadyAssociated:
+        con=RequestContext(request)
+        con['AuthAlreadyAssociated'] = True
+        return TemplateResponse(request, template='registration/login.html',context=con )
+        #return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
+
+
     print user
     auth_status = None
     if user:

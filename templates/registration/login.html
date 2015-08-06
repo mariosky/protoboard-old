@@ -3,7 +3,7 @@
 
 
 {% block content %}
-<form class="form-horizontal" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}"
+<form id='login_form' class="form-horizontal" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}"
       xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
 
@@ -11,7 +11,21 @@
 
 <div class="alert alert-danger alert-dismissable">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p> </div>
+    <p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>
+</div>
+
+
+{% endif %}
+
+
+{% if AuthAlreadyAssociated %}
+
+<div class='alert alert-danger alert-dismissable'>
+    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+    <p>El correo electrónico de tu cuenta está ligado a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>
+    <p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>
+</div>
+
 
 
 {% endif %}
@@ -134,13 +148,25 @@
           {
               if (result.error == 'AuthAlreadyAssociated')
               {
-                alert("El correo electrónico de la cuenta ya se encuentra asociado a un perfil. Si eres tú haz login con la otra cuenta o pide que se reinicie la contraseña");
-
+                $('#login_form').prepend("<div class='alert alert-danger alert-dismissable'>" +
+                 "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
+                 "<p>El correo electrónico de tu cuenta está ligado a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>  " +
+                 "<p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>"
+                  +"</div>");
+              }
+              else if(result.error == 'ProfileNotFound')
+              {
+                   $('#login_form').prepend("<p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>");
               }
 
+
+          }
+          else
+          {
+             window.location.href=result.after_login;
           }
 
-          window.location.href=result.after_login;
+
 
       },
       processData: false,

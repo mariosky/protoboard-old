@@ -111,7 +111,7 @@ class FacebookBackend:
             except auth_models.User.DoesNotExist, e:
                 # We create a new user
 
-                user = auth_models.User(username=profile['id'], email=profile['email'], is_active=True, first_name = profile['first_name'], last_name= profile['last_name'])
+                user = auth_models.User(username=profile['email'], email=profile['email'], is_active=True, first_name = profile['first_name'], last_name= profile['last_name'])
                 user.set_unusable_password()
                 user.save()
                 user_profile = UserProfile(facebook_uid = profile['id'],user=user)
