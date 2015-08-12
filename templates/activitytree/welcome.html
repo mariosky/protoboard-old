@@ -75,9 +75,9 @@ body {
            {% if user.is_authenticated %}
             <li><a href="#"></a></li>
             {% if user.first_name %}
-            <li><a href="#"> {{ user.first_name }} {{ user.last_name }}</a></li>
+            <li><a href="/me"> {{ user.first_name }} {{ user.last_name }}</a></li>
             {% else %}
-            <li><a href="#"> {{ user.username }} </a></li>
+            <li><a href="/me"> {{ user.username }} </a></li>
             {% endif %}
             <li><a class="navbar-user" href="#">
                 {%  if user.userprofile.facebook_uid %}

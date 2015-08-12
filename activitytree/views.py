@@ -16,14 +16,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
-from backends import AuthAlreadyAssociated
+from backends import AuthAlreadyAssociated, google_query_me
+
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
 
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.interaction_handler import get_nav
 
 from activitytree.activities import activities, multi_device_activities
-
+from activitytree.models import FacebookSession, GoogleSession,UserProfile
 from mongo_activities import Activity
 
 import urllib
@@ -838,6 +839,51 @@ def google_callback(request):
 
     else:
         return HttpResponse(json.dumps({"success":False, "error": "ProfileNotFound", "after_login":"/"}), content_type='application/javascript')
+
+@login_required
+def google_link(request):
+    print 'google_link', request
+    #We recieve the answer
+    # If an error
+    json_code = json.loads(request.body)
+    code = json_code['code']
+
+    #With the code and our credentials we can now get the access token
+    args = urllib.urlencode(
+             { "client_id" : settings.GOOGLE_APP_ID,
+             "redirect_uri" : settings.GOOGLE_REDIRECT_URL ,
+             "client_secret" : settings.GOOGLE_APP_SECRET,
+             "code" : code,
+             "grant_type":"authorization_code"})
+
+
+
+    # We get the access token
+    response = urllib.urlopen( "https://www.googleapis.com/oauth2/v3/token", args)
+
+
+    access_token_response = json.loads(response.read())
+    print 'code', code
+    print 'at' , access_token_response
+
+
+    profile = google_query_me(access_token_response['access_token'])
+    print 'p', profile
+    email = "emails" in profile and profile["emails"] and profile["emails"][0]["value"] or None
+
+
+    user_profile = UserProfile.objects.get(user=request.user).update(google_uid = profile['id'])
+
+
+    google_session = GoogleSession.objects.get_or_create(access_token=access_token_response, user = user)[0]
+    google_session.expires_in = access_token_response['expires_in']
+    google_session.refresh_token = access_token_response['refresh_token']
+    google_session.save()
+
+    print user_profile
+    print google_session
+
+    return HttpResponse(json.dumps({"success":True , "error": None} ), content_type='application/javascript')
 
 
 

@@ -16,22 +16,37 @@ __author__ = 'mario'
            <p class="text-lowercase text-left">  <span class="text-muted">{{ user.email }}</span></p>
 
                <hr/>
-               <h4 class="text-left">Cambia tu avatar:</h4>
+               <h4 class="text-left">Cambia tu foto de perfil:</h4>
                <a class="btn btn-default btn-block" href="http://gravatar.com" role="button"><i class="fa fa-camera"></i>
 Gravatar.com</a>
                <form>
 
 
-                   <hr/>
-
-                    <h4 class="text-left">Asocia tus cuentas:</h4>
-                <a id="login-facebook-btn" href="/facebook/get_login" class="btn btn-block btn-default"> <i class="fa fa-facebook"></i>
-        Asociar</a>
 
 
-               <a id="loginGoogle" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
-       Asociar </a>
+                    <h4 class="text-left">Tus cuentas:</h4>
 
+                   {% if user.userprofile.facebook_uid  %}
+
+    <a id="unlink-login-facebook-btn" href="/facebook/get_login" class="btn btn-block btn-default">
+        <i class="fa fa-facebook"></i> Desactivar</a>
+                    {% else %}
+    <a id="link-login-facebook-btn" href="/facebook/get_login" class="btn btn-block btn-default">
+        <i class="fa fa-facebook"></i> Activar</a>
+
+                    {% endif %}
+
+                 {% if user.userprofile.google_uid  %}
+
+               <a id="unlink-loginGoogle" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
+       Desactivar </a>
+                    {% else %}
+                 <a id="link-loginGoogle" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
+       Activar </a>
+               {% endif %}
+
+               <hr/>
+ <a  href="/password_change/" class="btn btn-block btn-danger"> Cambiar contraseña</a>
 </form>
             </div>
 
@@ -55,11 +70,6 @@ Gravatar.com</a>
   <label for="exampleInputEmail1">Correo electrónico</label>
     <input type="email" class="form-control" id="exampleInputEmail1" placeholder="{{ user.email }}">
   </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Contraseña</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-  </div>
-
 
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
@@ -81,6 +91,114 @@ Gravatar.com</a>
 
 {% block scripts %}
 
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+  </script>
+<script>
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
 
+    function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+
+
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+
+
+    function start() {
+      gapi.load('auth2', function() {
+        auth2 = gapi.auth2.init({
+          client_id: '95891402620-36t537m45mim9todkv6vno7k6lqbpqvp.apps.googleusercontent.com',
+          'scope': 'profile email'
+          // Scopes to request in addition to 'profile' and 'email'
+          //scope: 'additional_scope'
+        });
+      });
+    }
+    $( document ).ready(function() {
+    $('#link-loginGoogle').click(function() {
+    // signInCallback defined in step 6.
+    auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(function(authResult) {
+        if (authResult['code']) {
+
+    // Hide the sign-in button now that the user is authorized, for example:
+    //$('#signinButton').attr('style', 'display: none');
+    alert("auth");
+    // Send the code to the server
+    $.ajax({
+      type: 'POST',
+      url: '/GoogleLink',
+      contentType: 'application/json',
+      success: function(result) {
+        // Handle or verify the server response.
+          if (!result.success)
+          {
+              if (result.error == 'AuthAlreadyAssociated')
+              {
+                $('#login_form').prepend("<div class='alert alert-danger alert-dismissable'>" +
+                 "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
+                 "<p>El correo electrónico de tu cuenta está ligado a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>  " +
+                 "<p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>"
+                  +"</div>");
+              }
+              else if(result.error == 'ProfileNotFound')
+              {
+                   $('#login_form').prepend("<p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>");
+              }
+
+
+          }
+          else
+          {
+             alert("Success");
+          }
+
+
+
+      },
+      processData: false,
+      dataType: "json",
+      data: JSON.stringify({code:authResult['code']}),
+      error: function(jqXHR, textStatus, errorThrown) {
+                        alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
+                        }
+
+    });
+    }
+        else {
+    // There was an error.
+  }
+
+
+
+        });
+
+    });
+
+     });
+  </script>
 
 {% endblock scripts %}

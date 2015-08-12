@@ -38,6 +38,7 @@ urlpatterns = patterns('',
       (r'^facebook/login/?$','activitytree.views.facebook_login'),
 
       (r'^GoogleCallback/?$','activitytree.views.google_callback'),
+      (r'^GoogleLink/?$','activitytree.views.google_link'),
 
       (r'^logout/?$', 'activitytree.views.logout_view'),
       (r'^login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),

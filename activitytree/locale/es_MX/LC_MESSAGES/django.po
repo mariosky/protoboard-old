@@ -3,26 +3,26 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-11 21:54+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2015-08-12 20:18+0000\n"
+"PO-Revision-Date: 2015-08-12 10:31-0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_MX\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.4\n"
 
-#: protoboard/settings.py:126
+#: protoboard/settings.py:127
 msgid "English"
 msgstr ""
 
-#: protoboard/settings.py:127
+#: protoboard/settings.py:128
 msgid "Español México"
 msgstr ""
 
@@ -51,15 +51,19 @@ msgstr "registro"
 msgid ""
 "\n"
 "    You (or someone pretending to be you) have asked to register an account "
-"at\n"
-"    %(site_name)s.  If this wasn't you, please ignore this email\n"
-"    and your address will be removed from our records.\n"
+"at %(site_name)s.\n"
+"    If this wasn't you, please ignore this email and your address will be "
+"removed from our records.\n"
 "    "
-msgstr "Recibes este correo por que haz solicitado que te registremos en "
-"%(site_name)s.  Si esta solicitud NO la hiciste tu, por favor ignora el "
-"correo y tu dirección será borrada de nuestra base de datos."
+msgstr ""
+"\n"
+"    Recibes este correo por que haz solicitado que te registremos en "
+"%(site_name)s. \n"
+"    Si esta solicitud NO la hiciste tu, por favor ignora el correo y tu "
+"dirección será borrada de nuestra base de datos.\n"
+"    "
 
-#: templates/registration/activation_email.html:19
+#: templates/registration/activation_email.html:18
 #, python-format
 msgid ""
 "\n"
@@ -67,45 +71,61 @@ msgid ""
 "next\n"
 "    %(expiration_days)s days:\n"
 "    "
-msgstr "Para activar esta cuenta, por favor haz clic en el enlace antes de los "
-"siguientes %(expiration_days)s días:"
+msgstr ""
+"\n"
+" \n"
+"Para activar esta cuenta, por favor haz clic en el enlace antes de los "
+"siguientes\n"
+"%(expiration_days)s días:"
 
-#: templates/registration/activation_email.html:31
+#: templates/registration/activation_email.html:30
+#: templates/registration/password_reset_email.html:21
 #, python-format
 msgid ""
 "\n"
 "    Sincerely,\n"
 "    %(site_name)s Management\n"
 "    "
-msgstr "Atentamente, los administradores de %(site_name)s    "
+msgstr ""
+"\n"
+"Atentamente, \n"
+"Los administradores %(site_name)s\n"
+"    "
 
 #: templates/registration/activation_email.txt:3
 #, python-format
 msgid ""
-"\n"
-"You (or someone pretending to be you) have asked to register an account at\n"
-"%(site_name)s.  If this wasn't you, please ignore this email\n"
-"and your address will be removed from our records.\n"
-msgstr "Recibes este correo por que haz solicitado que te registremos en "
+"You (or someone pretending to be you) have asked to register an account at "
+"%(site_name)s.  If this wasn't you, please ignore this email and your "
+"address will be removed from our records."
+msgstr ""
+"Recibes este correo por que haz solicitado que te registremos en "
 "%(site_name)s.  Si esta solicitud NO la hiciste tu, por favor ignora el "
 "correo y tu dirección será borrada de nuestra base de datos."
 
-#: templates/registration/activation_email.txt:8
+#: templates/registration/activation_email.txt:4
 #, python-format
 msgid ""
 "\n"
 "To activate this account, please click the following link within the next\n"
 "%(expiration_days)s days:\n"
-msgstr "Para activar esta cuenta, por favor haz clic en el enlace antes de los "
-"siguientes %(expiration_days)s días:"
+msgstr ""
+"\n"
+"Para activar esta cuenta, por favor haz clic en el enlace antes de los "
+"siguientes\n"
+"%(expiration_days)s días:\n"
 
-#: templates/registration/activation_email.txt:15
+#: templates/registration/activation_email.txt:11
 #, python-format
 msgid ""
 "\n"
 "Sincerely,\n"
 "%(site_name)s Management\n"
-msgstr "Atentamente, los administradores de %(site_name)s    "
+msgstr ""
+"\n"
+"Atentamente, \n"
+"los administradores de %(site_name)s\n"
+"    \n"
 
 #: templates/registration/activation_email_subject.txt:1
 msgid "Account activation on"
@@ -171,7 +191,9 @@ msgid ""
 "check\n"
 "    your email and click the link to continue.\n"
 "    "
-msgstr "Te hemos enviado un correo con un enlace para restaurar tu contraseña. Por "
+msgstr ""
+"\n"
+"Te hemos enviado un correo con un enlace para restaurar tu contraseña. Por "
 "favorrevisa tu correo y haz clic en el enlace"
 
 #: templates/registration/password_reset_email.html:4
@@ -179,45 +201,36 @@ msgid "Greetings"
 msgstr "Hola"
 
 #: templates/registration/password_reset_email.html:6
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "You are receiving this email because you (or someone pretending to be "
-#| "you)\n"
-#| "requested that your password be reset on the %(domain)s site.  If you do "
-#| "not\n"
-#| "wish to reset your password, please ignore this message.\n"
+#, python-format
 msgid ""
 "\n"
-"You are receiving this email because you (or someone pretending to be you)\n"
-"requested that your password be reset on the %(domain)s site.  If you do "
-"not \n"
-"wish to reset your password, please ignore this message.\n"
-msgstr "Recibes este correo por que haz solicitado que te registremos en "
-"%(site_name)s.  Si esta solicitud NO la hiciste tu, por favor ignora el "
-"correo y tu dirección será borrada de nuestra base de datos."
+"You are receiving this email because you (or someone pretending to be you) "
+"requested that your password be reset on the %(domain)s site.\n"
+"If you do not wish to reset your password, please ignore this message.\n"
+msgstr ""
+"\n"
+"Recibes este correo por que haz solicitado que te registremos en "
+"%(domain)s. \n"
+"Si esta solicitud NO la hiciste tu, por favor ignora el correo y tu "
+"dirección será borrada de nuestra base de datos.\n"
 
-#: templates/registration/password_reset_email.html:12
+#: templates/registration/password_reset_email.html:11
 msgid ""
 "\n"
 "To reset your password, please click the following link, or copy and paste "
 "it\n"
 "into your web browser:\n"
-msgstr "Para restaurar tu contraseña, por favor sigue el enlace o copia y pega el "
-"enlace en tu navegador"
+msgstr ""
+"\n"
+"Para restaurar tu contraseña, por favor sigue el enlace o copia y pega el "
+"enlace\n"
+"en tu navegador\n"
 
-#: templates/registration/password_reset_email.html:19
+#: templates/registration/password_reset_email.html:18
 msgid "Your username, in case you've forgotten:"
-msgstr "Tu nombre de usuario en caso de que lo hayas olvidado o que no lo hayas "
+msgstr ""
+"Tu nombre de usuario en caso de que lo hayas olvidado o que no lo hayas "
 "especificado:"
-
-#: templates/registration/password_reset_email.html:22
-msgid "Best regards"
-msgstr "Atentamente"
-
-#: templates/registration/password_reset_email.html:23
-msgid "Management"
-msgstr "Adminstradores"
 
 #: templates/registration/password_reset_form.html:4
 #: templates/registration/password_reset_form.html:15
@@ -230,12 +243,14 @@ msgid ""
 "    Forgot your password?  Enter your email in the form below and we'll send "
 "you instructions for creating a new one.\n"
 "    "
-msgstr "¿Olvido su contraseña? Ingrese su correo electrónico y le enviaremos las "
-"instrucciones para restablecerla"
+msgstr ""
+"\n"
+"¿Olvidaste tu contraseña? Ingresa a continuación tu correo electrónico y te "
+"enviaremos las instrucciones para restablecerla"
 
 #: templates/registration/registration_closed.html:4
 msgid "Registration is closed"
-msgstr "El registro ha cerrado"
+msgstr "El registro ha sido cerrado"
 
 #: templates/registration/registration_closed.html:7
 msgid "Sorry, but registration is closed at this moment. Come back later."
@@ -258,3 +273,9 @@ msgstr "Registrate para dar de alta tu cuenta."
 #: templates/registration/registration_form.html:10
 msgid "Submit"
 msgstr "Enviar"
+
+#~ msgid "Best regards"
+#~ msgstr "Atentamente"
+
+#~ msgid "Management"
+#~ msgstr "Adminstradores"
