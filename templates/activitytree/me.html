@@ -28,10 +28,10 @@ Gravatar.com</a>
 
                    {% if user.userprofile.facebook_uid  %}
 
-    <a id="unlink-login-facebook-btn" href="/facebook/get_login" class="btn btn-block btn-default">
+    <a id="unlink-login-facebook" class="btn btn-block btn-default">
         <i class="fa fa-facebook"></i> Desactivar</a>
                     {% else %}
-    <a id="link-login-facebook-btn" href="/facebook/get_login" class="btn btn-block btn-default">
+    <a id="link-login-facebook" href="/facebook/get_login" class="btn btn-block btn-default">
         <i class="fa fa-facebook"></i> Activar</a>
 
                     {% endif %}
@@ -93,7 +93,14 @@ Gravatar.com</a>
 
 <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
   </script>
+
+
 <script>
+
+
+
+
+
             function getCookie(name) {
                 var cookieValue = null;
                 if (document.cookie && document.cookie != '') {
@@ -114,8 +121,9 @@ Gravatar.com</a>
                 // these HTTP methods do not require CSRF protection
                 return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
             }
+
             $.ajaxSetup({
-                crossDomain: false, // obviates need for sameOrigin test
+               // crossDomain: false, // obviates need for sameOrigin test
                 beforeSend: function(xhr, settings) {
                     if (!csrfSafeMethod(settings.type)) {
                         var csrftoken = getCookie('csrftoken');
@@ -138,7 +146,60 @@ Gravatar.com</a>
         });
       });
     }
-    $( document ).ready(function() {
+
+
+//
+// READY
+//
+ $( document ).ready(function() {
+
+ //$.ajaxSetup({ cache: true });
+
+ $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+    alert('getScript');
+    FB.init({
+      appId: '{ {{FACEBOOK_APP_ID}} }',
+      version: 'v2.3' // or v2.0, v2.1, v2.0
+    });
+
+    $('#loginbutton,#feedbutton').removeAttr('disabled');
+    FB.getLoginStatus( function(response) {
+        if (response.status === 'connected') {
+            // the user is logged in and has authenticated your
+            // app, and response.authResponse supplies
+            // the user's ID, a valid access token, a signed
+            // request, and the time the access token
+            // and signed request each expire
+            var uid = response.authResponse.userID;
+            var accessToken = response.authResponse.accessToken;
+            alert('connected');
+        }
+        else if (response.status === 'not_authorized') {
+        // the user is logged in to Facebook,
+        // but has not authenticated your app
+            alert('not_authorized');
+
+        } else {
+
+        alert('not_logged');
+        // the user isn't logged in to Facebook.
+        }
+        alert('unknown');
+    });
+
+  });
+
+
+   $('#unlink-login-facebook').click(function(){
+
+
+    FB.api("/me/permissions","DELETE",function(response){
+    console.log(response); //gives true on app delete success
+    alert(response);
+    });
+
+   });
+
     $('#link-loginGoogle').click(function() {
     // signInCallback defined in step 6.
     auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(function(authResult) {

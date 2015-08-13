@@ -151,6 +151,7 @@ class FacebookBackend:
 
                 #if found and email is associated with the same facebook account, no problem
                 if hasattr(user, 'userprofile') and user.userprofile.google_uid == Decimal(profile['id']):
+                    print 'same user'
                     pass
                 else:
                     #We must abort, log to your previous account
@@ -171,7 +172,7 @@ class FacebookBackend:
             #Renew or create google  session
 
             try:
-                GoogleSession.objects.get(user=user).delete()
+                GoogleSession.objects.filter(user=user).delete()
             except GoogleSession.DoesNotExist, e:
                 print e
 

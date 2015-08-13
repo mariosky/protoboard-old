@@ -16,7 +16,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
-from backends import AuthAlreadyAssociated, google_query_me
+from backends import AuthAlreadyAssociated, google_query_me, facebook_query_me
 
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
 
@@ -772,33 +772,77 @@ def facebook_login(request):
     access_token_response = urlparse.parse_qs(response.read())
     print access_token_response
 
+    if request.user.is_authenticated():
+        print "is_auth"
 
-    auth_status = None
-    user = None
+        profile = facebook_query_me(access_token_response['access_token'][0])
+
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.facebook_uid = profile['id']
+        user_profile.save()
+        print profile
+        #Renew or create facbook session
+        try:
+            FacebookSession.objects.get(user=request.user).delete()
+        except FacebookSession.DoesNotExist, e:
+            pass
+
+        facebook_session = FacebookSession.objects.get_or_create(access_token=access_token_response['access_token'][0])[0]
+
+        facebook_session.uid = profile['id']
+        facebook_session.expires = access_token_response["expires"][0]
+        facebook_session.user = request.user
+        facebook_session.save()
+        print facebook_session
+        return HttpResponseRedirect('/me')
+
+    else:
+        auth_status = None
+        user = None
+        try:
+            user = authenticate(app="facebook",**access_token_response)
+        except AuthAlreadyAssociated:
+            con=RequestContext(request)
+            con['AuthAlreadyAssociated'] = True
+            return TemplateResponse(request, template='registration/login.html',context=con )
+            #return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
+
+
+        print user
+        auth_status = None
+        if user:
+            if user.is_active:
+                login(request, user)
+                if 'after_login' in request.session:
+                    return HttpResponseRedirect(request.session['after_login'])
+                return HttpResponseRedirect('/')
+            else:
+                error = 'AUTH_DISABLED'
+
+        if 'error_reason' in request.GET:
+            error = auth_status
+        ### TO DO Log Error
+        return HttpResponseRedirect('/')
+
+def unlink_facebook(request):
+    facebook_session = FacebookSession.objects.get(user=request.user)
+    url = 'https://graph.facebook.com/me/permissions'
+    params = {'access_token':facebook_session.access_token}
+    url += '?' + urllib.urlencode(params)
+    response = ''
     try:
-        user = authenticate(app="facebook",**access_token_response)
-    except AuthAlreadyAssociated:
-        con=RequestContext(request)
-        con['AuthAlreadyAssociated'] = True
-        return TemplateResponse(request, template='registration/login.html',context=con )
-        #return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
+        response = json.load(urllib.urlopen(url))
+        if 'error' in response:
+             error = response['error']
+             raise Exception(error['type'], error['message'])
+    except:
+        return None
+    print
+    return response
 
 
-    print user
-    auth_status = None
-    if user:
-        if user.is_active:
-            login(request, user)
-            if 'after_login' in request.session:
-                return HttpResponseRedirect(request.session['after_login'])
-            return HttpResponseRedirect('/')
-        else:
-            error = 'AUTH_DISABLED'
 
-    if 'error_reason' in request.GET:
-        error = auth_status
-    ### TO DO Log Error
-    return HttpResponseRedirect('/')
+
 
 def google_callback(request):
     #We recieve the answer
@@ -872,12 +916,15 @@ def google_link(request):
     email = "emails" in profile and profile["emails"] and profile["emails"][0]["value"] or None
 
 
-    user_profile = UserProfile.objects.get(user=request.user).update(google_uid = profile['id'])
+    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile.google_uid = profile['id']
+    user_profile.save()
 
 
-    google_session = GoogleSession.objects.get_or_create(access_token=access_token_response, user = user)[0]
+
+    google_session = GoogleSession.objects.get_or_create(access_token=access_token_response, user = request.user)[0]
     google_session.expires_in = access_token_response['expires_in']
-    google_session.refresh_token = access_token_response['refresh_token']
+    google_session.refresh_token = access_token_response['id_token']
     google_session.save()
 
     print user_profile
@@ -921,7 +968,7 @@ def users(request,user_id=None,course_id=None,):
 @login_required
 def me(request):
     if request.method == 'GET':
-        return render_to_response ('activitytree/me.html',context_instance=RequestContext(request))
+        return render_to_response ('activitytree/me.html',{'FACEBOOK_APP_ID':settings.FACEBOOK_APP_ID},context_instance=RequestContext(request))
 
 
 
