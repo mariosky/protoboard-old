@@ -824,22 +824,84 @@ def facebook_login(request):
         ### TO DO Log Error
         return HttpResponseRedirect('/')
 
+
+@login_required
 def unlink_facebook(request):
     facebook_session = FacebookSession.objects.get(user=request.user)
-    url = 'https://graph.facebook.com/me/permissions'
-    params = {'access_token':facebook_session.access_token}
-    url += '?' + urllib.urlencode(params)
-    response = ''
-    try:
-        response = json.load(urllib.urlopen(url))
-        if 'error' in response:
-             error = response['error']
-             raise Exception(error['type'], error['message'])
-    except:
-        return None
-    print
-    return response
+    params =  urllib.urlencode( {'access_token':facebook_session.access_token})
 
+    import httplib
+
+
+    conn = httplib.HTTPSConnection('graph.facebook.com')
+    conn.request('DELETE', '/me/permissions', params)
+    resp = conn.getresponse()
+    content = resp.read()
+    print content
+    result = json.loads(content)
+
+    print result,type(result)
+
+    if result["success"]:
+        try:
+            FacebookSession.objects.get(user=request.user).delete()
+        except FacebookSession.DoesNotExist, e:
+            pass
+
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.facebook_uid = None
+        user_profile.save()
+
+
+
+
+
+    return HttpResponseRedirect('/me')
+
+@login_required
+def unlink_google(request):
+    google_session = GoogleSession.objects.get(user=request.user)
+
+    url = 'https://accounts.google.com/o/oauth2/revoke'
+    params = {'token':google_session.access_token}
+
+    url += '?' + urllib.urlencode(params)
+    print url
+
+    f = urllib.urlopen(url)
+    print f.code
+    print f.read()
+
+
+
+    # import httplib
+    #
+    #
+    #
+    # conn = httplib.HTTPSConnection('accounts.google.com')
+    # conn.request('GET', '/o/oauth2/revoke', params)
+    # resp = conn.getresponse()
+    # content = resp.read()
+    # print content
+    # result = json.loads(content)
+    #
+    # print result,type(result)
+    #
+    # if result["success"]:
+    #     try:
+    #         FacebookSession.objects.get(user=request.user).delete()
+    #     except FacebookSession.DoesNotExist, e:
+    #         pass
+    #
+    #     user_profile = UserProfile.objects.get(user=request.user)
+    #     user_profile.facebook_uid = None
+    #     user_profile.save()
+    #
+
+
+
+
+    return HttpResponseRedirect('/me')
 
 
 
@@ -914,15 +976,16 @@ def google_link(request):
     profile = google_query_me(access_token_response['access_token'])
     print 'p', profile
     email = "emails" in profile and profile["emails"] and profile["emails"][0]["value"] or None
+    print 'id', request.user.id
 
 
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     user_profile.google_uid = profile['id']
     user_profile.save()
 
 
 
-    google_session = GoogleSession.objects.get_or_create(access_token=access_token_response, user = request.user)[0]
+    google_session, created = GoogleSession.objects.get_or_create(access_token=access_token_response, user = request.user)
     google_session.expires_in = access_token_response['expires_in']
     google_session.refresh_token = access_token_response['id_token']
     google_session.save()

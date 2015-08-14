@@ -132,7 +132,6 @@ class FacebookBackend:
 
         elif app == "google":
 
-            print kwargs
             access_token = kwargs["access_token"]
             expires_in = kwargs["expires_in"]
             refresh_token = kwargs["id_token"]

@@ -18,17 +18,19 @@ __author__ = 'mario'
                <hr/>
                <h4 class="text-left">Cambia tu foto de perfil:</h4>
                <a class="btn btn-default btn-block" href="http://gravatar.com" role="button"><i class="fa fa-camera"></i>
-Gravatar.com</a>
+                    Gravatar.com</a>
                <form>
 
 
 
 
                     <h4 class="text-left">Tus cuentas:</h4>
+        {{ user.userprofile.facebook_uid }}
 
                    {% if user.userprofile.facebook_uid  %}
 
-    <a id="unlink-login-facebook" class="btn btn-block btn-default">
+
+    <a id="unlink-login-facebook"  href="/unlink_facebook" class="btn btn-block btn-default">
         <i class="fa fa-facebook"></i> Desactivar</a>
                     {% else %}
     <a id="link-login-facebook" href="/facebook/get_login" class="btn btn-block btn-default">
@@ -38,7 +40,7 @@ Gravatar.com</a>
 
                  {% if user.userprofile.google_uid  %}
 
-               <a id="unlink-loginGoogle" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
+               <a id="unlink-loginGoogle" href="/unlink_google" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
        Desactivar </a>
                     {% else %}
                  <a id="link-loginGoogle" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
@@ -193,10 +195,7 @@ Gravatar.com</a>
    $('#unlink-login-facebook').click(function(){
 
 
-    FB.api("/me/permissions","DELETE",function(response){
-    console.log(response); //gives true on app delete success
-    alert(response);
-    });
+
 
    });
 
