@@ -19,7 +19,11 @@ __author__ = 'mario'
                <h4 class="text-left">Cambia tu foto de perfil:</h4>
                <a class="btn btn-default btn-block" href="http://gravatar.com" role="button"><i class="fa fa-camera"></i>
                     Gravatar.com</a>
-               <form>
+
+
+
+
+    <form >
 
 
 
@@ -37,7 +41,7 @@ __author__ = 'mario'
         <i class="fa fa-facebook"></i> Activar</a>
 
                     {% endif %}
-
+ {{ user.userprofile.google_uid }}
                  {% if user.userprofile.google_uid  %}
 
                <a id="unlink-loginGoogle" href="/unlink_google" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
@@ -53,9 +57,18 @@ __author__ = 'mario'
             </div>
 
             <div class="col-sm-9">
+{% if IntegrityError %}
+
+<div class='alert alert-danger alert-dismissable'>
+    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+    <p>Tu cuenta ya está ligada a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>
+    <p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>
+</div>
+
+{% endif %}
 
 
-            <form>
+            <form  id="login_form">
   <div class="form-group">
   <label for="username">Usuario</label>
     <input type="email" class="form-control" id="username" placeholder="{{ user.username }}">
@@ -206,7 +219,7 @@ __author__ = 'mario'
 
     // Hide the sign-in button now that the user is authorized, for example:
     //$('#signinButton').attr('style', 'display: none');
-    alert("auth");
+
     // Send the code to the server
     $.ajax({
       type: 'POST',
@@ -215,8 +228,17 @@ __author__ = 'mario'
       success: function(result) {
         // Handle or verify the server response.
           if (!result.success)
-          {
+          {   alert("Error"+result.error)
               if (result.error == 'AuthAlreadyAssociated')
+              {
+                $('#login_form').prepend("<div class='alert alert-danger alert-dismissable'>" +
+                 "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
+                 "<p>El correo electrónico de tu cuenta está ligado a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>  " +
+                 "<p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>"
+                  +"</div>");
+              }
+
+              if (result.error == 'IntegrityError')
               {
                 $('#login_form').prepend("<div class='alert alert-danger alert-dismissable'>" +
                  "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
@@ -234,6 +256,7 @@ __author__ = 'mario'
           else
           {
              alert("Success");
+              window.location.href='/me';
           }
 
 

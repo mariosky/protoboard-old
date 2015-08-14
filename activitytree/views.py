@@ -26,7 +26,7 @@ from activitytree.interaction_handler import get_nav
 from activitytree.activities import activities, multi_device_activities
 from activitytree.models import FacebookSession, GoogleSession,UserProfile
 from mongo_activities import Activity
-
+from django.db import IntegrityError
 import urllib
 import urlparse
 
@@ -777,10 +777,15 @@ def facebook_login(request):
 
         profile = facebook_query_me(access_token_response['access_token'][0])
 
-        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile, created = UserProfile.objects.get_or_create(user=request.user)
         user_profile.facebook_uid = profile['id']
-        user_profile.save()
-        print profile
+        try:
+            user_profile.save()
+        except IntegrityError:
+            con=RequestContext(request)
+            con['IntegrityError'] = True
+            return TemplateResponse(request, template='activitytree/me.html',context=con )
+
         #Renew or create facbook session
         try:
             FacebookSession.objects.get(user=request.user).delete()
@@ -837,10 +842,7 @@ def unlink_facebook(request):
     conn.request('DELETE', '/me/permissions', params)
     resp = conn.getresponse()
     content = resp.read()
-    print content
     result = json.loads(content)
-
-    print result,type(result)
 
     if result["success"]:
         try:
@@ -851,10 +853,6 @@ def unlink_facebook(request):
         user_profile = UserProfile.objects.get(user=request.user)
         user_profile.facebook_uid = None
         user_profile.save()
-
-
-
-
 
     return HttpResponseRedirect('/me')
 
@@ -869,39 +867,29 @@ def unlink_google(request):
     print url
 
     f = urllib.urlopen(url)
-    print f.code
-    print f.read()
+    if f.code == 200:
+        #OK, DELETE Google Profile
+        try:
+            GoogleSession.objects.get(user=request.user).delete()
+        except GoogleSession.DoesNotExist, e:
+            pass
 
-
-
-    # import httplib
-    #
-    #
-    #
-    # conn = httplib.HTTPSConnection('accounts.google.com')
-    # conn.request('GET', '/o/oauth2/revoke', params)
-    # resp = conn.getresponse()
-    # content = resp.read()
-    # print content
-    # result = json.loads(content)
-    #
-    # print result,type(result)
-    #
-    # if result["success"]:
-    #     try:
-    #         FacebookSession.objects.get(user=request.user).delete()
-    #     except FacebookSession.DoesNotExist, e:
-    #         pass
-    #
-    #     user_profile = UserProfile.objects.get(user=request.user)
-    #     user_profile.facebook_uid = None
-    #     user_profile.save()
-    #
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.google_uid = None
+        user_profile.save()
+        return HttpResponseRedirect('/me')
+    else:
+        #TO DO: Display Error
+        return HttpResponseRedirect('/me')
 
 
 
 
-    return HttpResponseRedirect('/me')
+
+
+
+
+
 
 
 
@@ -948,7 +936,6 @@ def google_callback(request):
 
 @login_required
 def google_link(request):
-    print 'google_link', request
     #We recieve the answer
     # If an error
     json_code = json.loads(request.body)
@@ -969,19 +956,18 @@ def google_link(request):
 
 
     access_token_response = json.loads(response.read())
-    print 'code', code
-    print 'at' , access_token_response
-
 
     profile = google_query_me(access_token_response['access_token'])
-    print 'p', profile
     email = "emails" in profile and profile["emails"] and profile["emails"][0]["value"] or None
-    print 'id', request.user.id
 
 
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     user_profile.google_uid = profile['id']
-    user_profile.save()
+    try:
+        user_profile.save()
+    except IntegrityError:
+        return HttpResponse(json.dumps({"success":False , "error": 'IntegrityError'} ), content_type='application/javascript')
+
 
 
 
@@ -989,9 +975,6 @@ def google_link(request):
     google_session.expires_in = access_token_response['expires_in']
     google_session.refresh_token = access_token_response['id_token']
     google_session.save()
-
-    print user_profile
-    print google_session
 
     return HttpResponse(json.dumps({"success":True , "error": None} ), content_type='application/javascript')
 
