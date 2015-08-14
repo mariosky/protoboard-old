@@ -71,15 +71,15 @@ __author__ = 'mario'
             <form  id="login_form">
   <div class="form-group">
   <label for="username">Usuario</label>
-    <input type="email" class="form-control" id="username" placeholder="{{ user.username }}">
+    <input type="text" class="form-control" id="username" placeholder="{{ user.username }}">
   </div>
   <div class="form-group">
   <label for="username">Nombre</label>
-    <input type="email" class="form-control" id="first_name" placeholder="{{  user.first_name }}">
+    <input type="text" class="form-control" id="first_name" placeholder="{{  user.first_name }}">
   </div>
     <div class="form-group">
   <label for="username">Apellido</label>
-    <input type="email" class="form-control" id="last_name" placeholder="{{  user.last_name }}">
+    <input type="text" class="form-control" id="last_name" placeholder="{{  user.last_name }}">
   </div>
   <div class="form-group">
   <label for="exampleInputEmail1">Correo electrónico</label>
@@ -171,7 +171,7 @@ __author__ = 'mario'
  //$.ajaxSetup({ cache: true });
 
  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
-    alert('getScript');
+
     FB.init({
       appId: '{ {{FACEBOOK_APP_ID}} }',
       version: 'v2.3' // or v2.0, v2.1, v2.0

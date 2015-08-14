@@ -15,10 +15,10 @@ class LearningStyleInventory(models.Model):
     logical = models.PositiveSmallIntegerField()
     social = models.PositiveSmallIntegerField()
     solitary = models.PositiveSmallIntegerField()
-    user = models.OneToOneField(User, unique=True)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, unique=True)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     facebook_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
     google_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
 
@@ -98,7 +98,7 @@ class LearningActivity(models.Model):
 
 from decimal import Decimal
 class UserLearningActivity(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     learning_activity = models.ForeignKey(to ='LearningActivity')
     pre_condition = models.CharField(max_length=32,default = "",blank=True)
     recommendation_value = models.PositiveSmallIntegerField(null=True, default = 0)
@@ -300,7 +300,7 @@ class Course(models.Model):
 
 
 class ActivityTree(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     root_activity = models.ForeignKey(to ='LearningActivity',related_name = 'activity_tree')
     current_activity =  models.ForeignKey(to ='UserLearningActivity',related_name = 'current_in', null = True ,default=None)
     class Meta:
@@ -337,7 +337,7 @@ class FacebookSession(models.Model):
     access_token = models.TextField(unique=True)
     expires = models.IntegerField(null=True)
 
-    user = models.ForeignKey(User, null=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     uid = models.BigIntegerField(unique=True, null=True)
 
     class Meta:
@@ -374,13 +374,13 @@ class FacebookSession(models.Model):
 class GoogleSession(models.Model):
     access_token = models.TextField(unique=True)
     expires_in = models.IntegerField(null=True)
-    user = models.ForeignKey(User, null=False)
+    user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     refresh_token =  models.TextField(null=True)
 
 
 
 class LearningActivityRating(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     learning_activity = models.ForeignKey(LearningActivity)
     time=models.DateTimeField(auto_now=True)
     rating = models.PositiveSmallIntegerField()
