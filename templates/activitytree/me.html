@@ -79,19 +79,19 @@ __author__ = 'mario'
             <form  id="login_form">
   <div class="form-group">
   <label for="username">Usuario</label>
-    <input type="text" class="form-control" id="username" placeholder="{{ user.username }}">
+    <input type="text" class="form-control" id="username" name="username"  placeholder="{{ user.username }}">
   </div>
   <div class="form-group">
   <label for="username">Nombre</label>
-    <input type="text" class="form-control" id="first_name" placeholder="{{  user.first_name }}">
+    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{  user.first_name }}">
   </div>
     <div class="form-group">
   <label for="username">Apellido</label>
-    <input type="text" class="form-control" id="last_name" placeholder="{{  user.last_name }}">
+    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{  user.last_name }}">
   </div>
   <div class="form-group">
   <label for="exampleInputEmail1">Correo electrónico (solo lectura)</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="{{ user.email }}" disabled>
+    <input type="email" class="form-control" id="email" name="email" placeholder="{{ user.email }}" disabled>
   </div>
 
   <button id="form-submit" type="submit" class="btn btn-default"> Actualizar </button>
@@ -211,6 +211,38 @@ __author__ = 'mario'
 
   });
 
+
+  $( "#login_form" ).on( "submit", function( event ) {
+  event.preventDefault();
+
+      $.ajaxSetup({
+                //crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+
+
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+      $.post('/me', $( "#login_form" ).serialize(),function() {
+                  alert( "success" );
+                })
+                  .done(function() {
+                    alert( "second success" );
+                  })
+                  .fail(function() {
+                    alert( "error" );
+                  })
+                  .always(function() {
+                    alert( "finished" );
+                }
+
+      );
+
+  });
 
    $('#unlink-login-facebook').click(function(){
 
