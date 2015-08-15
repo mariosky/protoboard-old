@@ -194,7 +194,7 @@ msgid ""
 msgstr ""
 "\n"
 "Te hemos enviado un correo con un enlace para restaurar tu contraseña. Por "
-"favorrevisa tu correo y haz clic en el enlace"
+"favor revisa tu correo y haz clic en el enlace."
 
 #: templates/registration/password_reset_email.html:4
 msgid "Greetings"
@@ -224,7 +224,7 @@ msgstr ""
 "\n"
 "Para restaurar tu contraseña, por favor sigue el enlace o copia y pega el "
 "enlace\n"
-"en tu navegador\n"
+"en tu navegador:\n"
 
 #: templates/registration/password_reset_email.html:18
 msgid "Your username, in case you've forgotten:"
@@ -246,7 +246,7 @@ msgid ""
 msgstr ""
 "\n"
 "¿Olvidaste tu contraseña? Ingresa a continuación tu correo electrónico y te "
-"enviaremos las instrucciones para restablecerla"
+"enviaremos las instrucciones para restablecerla."
 
 #: templates/registration/registration_closed.html:4
 msgid "Registration is closed"
@@ -254,7 +254,7 @@ msgstr "El registro ha sido cerrado"
 
 #: templates/registration/registration_closed.html:7
 msgid "Sorry, but registration is closed at this moment. Come back later."
-msgstr "Lo sentimos, el registro está cerrado por el momento. Regresa después"
+msgstr "Lo sentimos, el registro está cerrado por el momento. Regresa después."
 
 #: templates/registration/registration_complete.html:4
 msgid "Activation email sent"
@@ -264,11 +264,11 @@ msgstr "Correo electrónico de activación enviado"
 msgid "Please check your email to complete the registration process."
 msgstr ""
 "Por favor revisa tu cuenta de correo para continuar con el proceso de "
-"registro"
+"registro."
 
 #: templates/registration/registration_form.html:4
 msgid "Register for an account"
-msgstr "Registrate para dar de alta tu cuenta."
+msgstr "Regístrate para dar de alta tu cuenta."
 
 #: templates/registration/registration_form.html:10
 msgid "Submit"

@@ -66,7 +66,15 @@ __author__ = 'mario'
 </div>
 
 {% endif %}
+{% if DifferentEMAIL %}
 
+<div class='alert alert-danger alert-dismissable'>
+    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+    <p>El correo de la cuenta que desas enlazar debe coincidir con el correo de la cuenta actual.</p>
+    <p>Para evitar conflictos entre cuentas, por el momento no es posible enlazar esta cuenta.</p>
+</div>
+
+{% endif %}
 
             <form  id="login_form">
   <div class="form-group">
@@ -82,13 +90,12 @@ __author__ = 'mario'
     <input type="text" class="form-control" id="last_name" placeholder="{{  user.last_name }}">
   </div>
   <div class="form-group">
-  <label for="exampleInputEmail1">Correo electrónico</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="{{ user.email }}">
+  <label for="exampleInputEmail1">Correo electrónico (solo lectura)</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="{{ user.email }}" disabled>
   </div>
 
-  <button type="submit" class="btn btn-default">Submit</button>
+  <button id="form-submit" type="submit" class="btn btn-default"> Actualizar </button>
 </form>
-
 
 
 
@@ -228,7 +235,7 @@ __author__ = 'mario'
       success: function(result) {
         // Handle or verify the server response.
           if (!result.success)
-          {   alert("Error"+result.error)
+          {   //alert("Error: "+result.error)
               if (result.error == 'AuthAlreadyAssociated')
               {
                 $('#login_form').prepend("<div class='alert alert-danger alert-dismissable'>" +
@@ -246,9 +253,18 @@ __author__ = 'mario'
                  "<p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>"
                   +"</div>");
               }
-              else if(result.error == 'ProfileNotFound')
+              if(result.error == 'ProfileNotFound')
               {
                    $('#login_form').prepend("<p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>");
+              }
+
+              if(result.error == 'DifferentEMAIL')
+              {
+                    $('#login_form').prepend("<div class='alert alert-danger alert-dismissable'>" +
+                 "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
+                 "<p>El correo de la cuenta que desas enlazar debe coincidir con el correo de la cuenta actual.</p></div>");
+
+
               }
 
 

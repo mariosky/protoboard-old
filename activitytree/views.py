@@ -773,9 +773,16 @@ def facebook_login(request):
     print access_token_response
 
     if request.user.is_authenticated():
-        print "is_auth"
-
+        # LINK ACCOUNT
         profile = facebook_query_me(access_token_response['access_token'][0])
+
+        # Email from Facebook must be the same as the current account
+        if 'email' not in profile or profile['email'] != request.user.email :
+            print 'DifferentEMAIL'
+            con=RequestContext(request)
+            con['DifferentEMAIL'] = True
+            return TemplateResponse(request, template='activitytree/me.html',context=con )
+
 
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
         user_profile.facebook_uid = profile['id']
@@ -883,17 +890,6 @@ def unlink_google(request):
         return HttpResponseRedirect('/me')
 
 
-
-
-
-
-
-
-
-
-
-
-
 def google_callback(request):
     #We recieve the answer
     # If an error
@@ -960,6 +956,12 @@ def google_link(request):
     profile = google_query_me(access_token_response['access_token'])
     email = "emails" in profile and profile["emails"] and profile["emails"][0]["value"] or None
 
+    # Email from Facebook must be the same as the current account
+    if email is None or email != request.user.email :
+        print 'DifferentEMAIL'
+        return HttpResponse(json.dumps({"success":False , "error": 'DifferentEMAIL'} ), content_type='application/javascript')
+
+
 
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     user_profile.google_uid = profile['id']
@@ -967,9 +969,6 @@ def google_link(request):
         user_profile.save()
     except IntegrityError:
         return HttpResponse(json.dumps({"success":False , "error": 'IntegrityError'} ), content_type='application/javascript')
-
-
-
 
     google_session, created = GoogleSession.objects.get_or_create(access_token=access_token_response, user = request.user)
     google_session.expires_in = access_token_response['expires_in']

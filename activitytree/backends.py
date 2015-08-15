@@ -97,6 +97,7 @@ class FacebookBackend:
             if 'email' not in profile:
                 print profile
                 return None # EMAIL_NOT_FOUND
+
             try:
                 #This user/email exists?
                 user = auth_models.User.objects.get(email=profile['email'])
