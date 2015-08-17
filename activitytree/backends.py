@@ -103,20 +103,23 @@ class FacebookBackend:
                 user = auth_models.User.objects.get(email=profile['email'])
 
                 #if found and email is associated with the same facebook account, no problem
-                if hasattr(user, 'userprofile') and user.userprofile.facebook_uid == Decimal(profile['id']):
-                    pass
-                else:
+                #if hasattr(user, 'userprofile') and user.userprofile.facebook_uid == Decimal(profile['id']):
+                #    pass
+                #else:
                     #We must abort, log to your previous account
-                    raise AuthAlreadyAssociated('We must abort, log to your previous account')
+                #    raise AuthAlreadyAssociated('We must abort, log to your previous account')
 
             except auth_models.User.DoesNotExist, e:
                 # We create a new user
-
                 user = auth_models.User(username=profile['email'], email=profile['email'], is_active=True, first_name = profile['first_name'], last_name= profile['last_name'])
                 user.set_unusable_password()
                 user.save()
-                user_profile = UserProfile(facebook_uid = profile['id'],user=user)
-                user_profile.save()
+
+            user_profile, created = UserProfile.objects.get_or_create(user=user)
+            user_profile.facebook_uid = profile['id']
+            user_profile.save()
+
+
             #Renew or create facbook session
             try:
                 FacebookSession.objects.get(user=user).delete()
@@ -150,12 +153,12 @@ class FacebookBackend:
                 user = auth_models.User.objects.get(email=email)
 
                 #if found and email is associated with the same facebook account, no problem
-                if hasattr(user, 'userprofile') and user.userprofile.google_uid == Decimal(profile['id']):
-                    print 'same user'
-                    pass
-                else:
+                #if hasattr(user, 'userprofile') and user.userprofile.google_uid == Decimal(profile['id']):
+                #    print 'same user'
+                #    pass
+                #else:
                     #We must abort, log to your previous account
-                    raise AuthAlreadyAssociated('We must abort, log to your previous account')
+                #    raise AuthAlreadyAssociated('We must abort, log to your previous account')
 
             except auth_models.User.DoesNotExist, e:
                 # We create a new user
@@ -166,6 +169,11 @@ class FacebookBackend:
 
                 user_profile = UserProfile(google_uid = profile['id'],user=user)
                 user_profile.save()
+
+
+            user_profile, created = UserProfile.objects.get_or_create(user=user)
+            user_profile.google_uid = profile['id']
+            user_profile.save()
 
 
 

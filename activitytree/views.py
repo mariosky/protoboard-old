@@ -793,7 +793,7 @@ def facebook_login(request):
             con['IntegrityError'] = True
             return TemplateResponse(request, template='activitytree/me.html',context=con )
 
-        #Renew or create facbook session
+        #Renew or create facebook session
         try:
             FacebookSession.objects.get(user=request.user).delete()
         except FacebookSession.DoesNotExist, e:
@@ -865,7 +865,12 @@ def unlink_facebook(request):
 
 @login_required
 def unlink_google(request):
-    google_session = GoogleSession.objects.get(user=request.user)
+    try:
+        google_session = GoogleSession.objects.get(user=request.user)
+    except GoogleSession.DoesNotExist, e:
+        #There is no account any way
+        return HttpResponseRedirect('/me')
+
 
     url = 'https://accounts.google.com/o/oauth2/revoke'
     params = {'token':google_session.access_token}
