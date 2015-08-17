@@ -1016,13 +1016,15 @@ def me(request):
         return render_to_response ('activitytree/me.html',{'FACEBOOK_APP_ID':settings.FACEBOOK_APP_ID},context_instance=RequestContext(request))
     if request.method == 'POST':
         try:
+            print(request.POST["username"])
             request.user.username = request.POST["username"]
             request.user.first_name = request.POST["first_name"]
             request.user.last_name = request.POST["last_name"]
             request.user.save()
 
         except:
-            return JsonResponse({"success":False , "error": True} )
+            print("err")
+            return JsonResponse({"error": True} )
 
             
 
