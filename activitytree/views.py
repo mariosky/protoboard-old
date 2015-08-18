@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
 from backends import AuthAlreadyAssociated, google_query_me, facebook_query_me
+from django.db.models import Avg, Count
 
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
 
@@ -201,6 +202,8 @@ def path_activity(request,path_id, uri):
 
         breadcrumbs = s.get_current_path(requested_activity)
 
+        rating_totals = LearningActivityRating.objects.filter(learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
+
         activity_content = Activity.get(requested_activity.learning_activity.uri)
 
 
@@ -220,7 +223,8 @@ def path_activity(request,path_id, uri):
                                    'video':activity_content,
                                    'breadcrumbs':breadcrumbs,
                                    'root':requested_activity.learning_activity.get_root().uri,
-                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id},
+                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
+                                    'rating_totals':rating_totals },
                                     context_instance=RequestContext(request))
 
         elif requested_activity.learning_activity.is_container:
@@ -246,7 +250,8 @@ def path_activity(request,path_id, uri):
                                    'content':content,
                                    'root':requested_activity.learning_activity.get_root().uri,
                                    'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
-                                   'breadcrumbs':breadcrumbs},
+                                   'breadcrumbs':breadcrumbs,
+                                    'rating_totals':rating_totals},
                                     context_instance=RequestContext(request))
 
     else:
@@ -339,6 +344,7 @@ def path_test(request,path_id, uri):
         _XML = get_nav(root)
         #Escape for javascript
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')        #navegation_tree = s.nav_to_html(nav)
+        rating_totals = LearningActivityRating.objects.filter(learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
         breadcrumbs = s.get_current_path(requested_activity)
 
@@ -403,6 +409,9 @@ def path_program(request,path_id, uri):
 
         breadcrumbs = s.get_current_path(requested_activity)
         program_quiz = Activity.get(requested_activity.learning_activity.uri)
+        rating_totals = LearningActivityRating.objects.filter(learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
+
+
 
         if program_quiz['lang'] == 'javascript':
             template = 'activitytree/programjs.html'
@@ -412,11 +421,11 @@ def path_program(request,path_id, uri):
         return render_to_response(template, {'program_quiz':Activity.get(requested_activity.learning_activity.uri),
                                                                     'activity_uri':requested_activity.learning_activity.uri,
                                                                     'uri_id':'%s'% requested_activity.learning_activity.id,
-
+                                                                    'uri':requested_activity.learning_activity.uri,
                                                                     'breadcrumbs':breadcrumbs,
                                                                     'root':requested_activity.learning_activity.get_root().uri,
                                                                     'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
-                                                                    'XML_NAV':XML
+                                                                    'XML_NAV':XML, 'rating_totals':rating_totals
                                                                     },
                                       context_instance=RequestContext(request))
 
@@ -1047,6 +1056,7 @@ def me(request):
 @csrf_protect
 def rate_object(request):
     if request.method == 'POST':
+        print json.loads(request.body)
         vote=json.loads(request.body)
         la = LearningActivity.objects.get(uri=vote["uri"] )
 

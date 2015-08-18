@@ -227,6 +227,9 @@ code {
         margin-bottom:0px ;
     }
 
+    #rating-message-container{
+        margin-top: 10px;
+    }
 
     .btn-social{
     margin-top: 10px;
@@ -369,8 +372,23 @@ code {
 
                 -->
             {% endblock content %}
+ <div class="col-md-6 col-md-offset-3">
+               <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <p>Califica esta actividad: <span id="rating-info"> </span>
+
+                            {% if rating_totals.rating__avg %}
+                            ({{ rating_totals.rating__avg|floatformat:2 }}/5)
+                            {% endif %}
+                            {{ rating_totals.rating__count }} voto(s).
+                        <span id="rating-message" class="label label-info"> Haz tu selección </span>
 
 
+                        </p>
+                  </div>
+               </div>
+</div>
 
 
     </div>
@@ -461,8 +479,45 @@ $(document).ready(function() {
 
 
     {% endif  %}
-    </script>
+          {% if user.is_authenticated %}
 
+$('#rating-info').raty({
+    path: '{{MEDIA_URL}}images',
+    score: 0,
+    click: function(score, evt)
+            {
+            //alert('ID: ' + this.id + "\nscore: " + score + "\nevent: " + evt);
+
+             $.ajax(
+                {
+                    url: '/rate_object',
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({"uri": "{{ uri }}", "rating": score ,"user":"{{user.id}}"  }),
+                    dataType: "json",
+                    success: function(data, textStatus, jqXHR) {
+                        $("#rating-message").removeClass("label-info").addClass("label-success");
+                        $("#rating-message").text("Gracias, tu calificación fué registrada");
+
+
+                        },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
+                        }
+                    });
+
+
+
+            }
+
+    });
+
+        {% else %}
+
+        {% endif %}
+
+
+    </script>
 
 
 
