@@ -712,6 +712,7 @@ def login_view(request,template_name='registration/login.html',  redirect_field_
     else:
         if 'next' in request.GET:
             context['next'] = request.GET['next']
+            context['hidde_login_link'] = True
             request.session['after_login'] = request.GET['next']
         return TemplateResponse(request, template_name,context ,current_app=None)
 

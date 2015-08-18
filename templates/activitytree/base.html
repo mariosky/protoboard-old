@@ -285,21 +285,28 @@ code {
             <li><a href="/me"> {{ user.username }} </a></li>
             {% endif %}
 
-            <li><a class="navbar-user" href="#">
+            <li><a class="navbar-user" href="/me">
+
+            {% comment %}
                 {%  if user.userprofile.facebook_uid %}
                 <img src="http://graph.facebook.com/{{ user.userprofile.facebook_uid}}/picture?type=square"/>
                {% else %}
                 <img src="{% gravatar_url user.email 50%}">
                {% endif %}
-                 </a>
+
+             {% endcomment %}
+
+                <img src="{% gravatar_url user.email 50%}">
+                </a>
+
             </li>
 
             <li><a href="/logout">Salir</a></li>
 
           {% else %}
-
+            {% if not hidde_login_link %}
             <li><a href="/login">Iniciar Sesión</a></li>
-
+            {% endif %}
           {% endif %}
 
 
