@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-12 20:18+0000\n"
+"POT-Creation-Date: 2015-08-18 14:39+0000\n"
 "PO-Revision-Date: 2015-08-12 10:31-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,11 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.4\n"
 
-#: protoboard/settings.py:127
+#: protoboard/settings.py:125
 msgid "English"
 msgstr ""
 
-#: protoboard/settings.py:128
+#: protoboard/settings.py:126
 msgid "Español México"
 msgstr ""
 
@@ -151,6 +151,17 @@ msgstr "¡Contraseña cambiada exitósamente!"
 #: templates/registration/password_change_form.html:10
 msgid "Change password"
 msgstr "Cambiar contraseña"
+
+#: templates/registration/password_change_form.html:14
+msgid ""
+"If you forgot your password or have not created one yet. Reset your password"
+msgstr ""
+"Si haz olvidado tu contraseña actual, o no la haz especificado puedes "
+"restaurarla"
+
+#: templates/registration/password_change_form.html:15
+msgid "here"
+msgstr "aquí"
 
 #: templates/registration/password_reset_complete.html:4
 msgid "Password reset complete"
