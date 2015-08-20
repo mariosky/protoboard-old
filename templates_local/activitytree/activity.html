@@ -1,0 +1,44 @@
+{% extends "activitytree/base.html" %}
+
+
+
+{% block content %}
+
+
+    <div class = "row">
+
+     {{content|safe}}
+
+     </div>
+
+    <div class="row">
+
+         <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
+
+
+               <ul class="pager">
+                     <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
+                    <li class="next"><span class="nav_next">  Continuar &rarr;</span></li>
+               </ul>
+
+
+        <!-- <div class="form-group">
+            <label for="r10">Comentario:</label>
+            <select id="exit" name="objective_measure" class="form-control" >
+				<option value="70"> Ninguno </option>
+				<option value="100">Si le entendí</option>
+				<option value="50">Más o menos  </option>
+				<option value="20"> Para nada </option>
+	        </select>
+
+        </div> -->
+       </form>
+
+
+    </div>
+{% endblock content %}
+{% block scripts %}
+
+        
+
+{% endblock scripts %}
