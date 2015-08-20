@@ -72,7 +72,7 @@ def google_query_me(access_token, fields=None):
             params['fields'] = fields
 
     url += '?' + urllib.urlencode(params)
-
+    print url
     response = ''
     try:
          response = json.load(urllib.urlopen(url))
