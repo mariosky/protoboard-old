@@ -93,7 +93,7 @@ class FacebookBackend:
             access_token = kwargs["access_token"][0]
             expires = kwargs["expires"][0]
 
-            profile = facebook_query_me(access_token)
+            profile = facebook_query_me(access_token,'email')
             if 'email' not in profile:
                 print  'EMAIL_NOT_FOUND' ,profile
                 return None # EMAIL_NOT_FOUND
