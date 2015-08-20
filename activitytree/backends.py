@@ -95,7 +95,7 @@ class FacebookBackend:
 
             profile = facebook_query_me(access_token)
             if 'email' not in profile:
-                print profile
+                print  'EMAIL_NOT_FOUND' ,profile
                 return None # EMAIL_NOT_FOUND
 
             try:
