@@ -166,7 +166,7 @@ __author__ = 'mario'
     function start() {
       gapi.load('auth2', function() {
         auth2 = gapi.auth2.init({
-          client_id: '95891402620-36t537m45mim9todkv6vno7k6lqbpqvp.apps.googleusercontent.com',
+          client_id: '{{ GOOGLE_APP_ID }}',
           'scope': 'profile email'
           // Scopes to request in addition to 'profile' and 'email'
           //scope: 'additional_scope'

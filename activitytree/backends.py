@@ -72,13 +72,14 @@ def google_query_me(access_token, fields=None):
             params['fields'] = fields
 
     url += '?' + urllib.urlencode(params)
-    print url
+
     response = ''
     try:
          response = json.load(urllib.urlopen(url))
 
          if 'error' in response:
              error = response['error']
+             #TO DO: log error
              raise Exception(error['type'], error['message'])
     except:
          return None

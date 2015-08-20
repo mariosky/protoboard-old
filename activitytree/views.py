@@ -723,7 +723,7 @@ def login_view(request,template_name='registration/login.html',  redirect_field_
             context['next'] = request.GET['next']
             context['hidde_login_link'] = True
             request.session['after_login'] = request.GET['next']
-            context['google_client_id'] = settings.GOOGLE_APP_ID
+            context['GOOGLE_APP_ID'] = settings.GOOGLE_APP_ID
 
         return TemplateResponse(request, template_name,context ,current_app=None)
 
@@ -1030,7 +1030,7 @@ def users(request,user_id=None,course_id=None,):
 @login_required
 def me(request):
     if request.method == 'GET':
-        return render_to_response ('activitytree/me.html',{'FACEBOOK_APP_ID':settings.FACEBOOK_APP_ID},context_instance=RequestContext(request))
+        return render_to_response ('activitytree/me.html',{'FACEBOOK_APP_ID':settings.FACEBOOK_APP_ID,'GOOGLE_APP_ID': settings.GOOGLE_APP_ID },context_instance=RequestContext(request))
     if request.method == 'POST':
         try:
             print(request.POST["username"])

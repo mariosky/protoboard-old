@@ -169,7 +169,7 @@
     function start() {
       gapi.load('auth2', function() {
         auth2 = gapi.auth2.init({
-          client_id: '{{ google_client_id }}',
+          client_id: '{{ GOOGLE_APP_ID }}',
           'scope': 'profile email'
           // Scopes to request in addition to 'profile' and 'email'
           //scope: 'additional_scope'
