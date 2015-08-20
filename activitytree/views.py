@@ -786,7 +786,7 @@ def facebook_login(request):
 
     if request.user.is_authenticated():
         # LINK ACCOUNT
-        profile = facebook_query_me(access_token_response['access_token'][0])
+        profile = facebook_query_me(access_token_response['access_token'][0],'email')
 
         # Email from Facebook must be the same as the current account
         if 'email' not in profile or profile['email'] != request.user.email :
