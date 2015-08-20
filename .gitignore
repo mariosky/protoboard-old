@@ -6,6 +6,8 @@ settings.py
 *~
 .idea
 
+templates_local/*
+
 
 # MAC
 .DS_Store
