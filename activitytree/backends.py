@@ -94,7 +94,7 @@ class FacebookBackend:
             access_token = kwargs["access_token"][0]
             expires = kwargs["expires"][0]
 
-            profile = facebook_query_me(access_token,'email')
+            profile = facebook_query_me(access_token,'email,first_name,last_name')
             if 'email' not in profile:
                 print  'EMAIL_NOT_FOUND' ,profile
                 return None # EMAIL_NOT_FOUND
@@ -110,9 +110,13 @@ class FacebookBackend:
                     #We must abort, log to your previous account
                 #    raise AuthAlreadyAssociated('We must abort, log to your previous account')
 
+
             except auth_models.User.DoesNotExist, e:
                 # We create a new user
-                user = auth_models.User(username=profile['email'], email=profile['email'], is_active=True, first_name = profile['first_name'], last_name= profile['last_name'])
+                first_name = 'N/A' or 'first_name' in profile or profile['first_name']
+                last_name = 'N/A' or 'last_name' in profile or profile['last_name']
+
+                user = auth_models.User(username=profile['email'], email=profile['email'], is_active=True, first_name = first_name, last_name= last_name)
                 user.set_unusable_password()
                 user.save()
 
