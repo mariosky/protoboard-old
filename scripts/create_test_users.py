@@ -13,6 +13,8 @@ if __name__ == "__main__":
 
 from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
+from activitytree.models import LearningStyleInventory
+
 estudiantes = [
 ('edgar',          '1234',17,13,16,12,14,16, 9),
 ('osuna',       '1234',15,12,14,18,14,19, 8),
