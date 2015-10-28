@@ -45,5 +45,4 @@ for e in estudiantes:
     lsu=LearningStyleInventory(visual=e[2],verbal=e[3],aural=e[4],physical=e[5],logical=e[6],
                           social=e[7], solitary=e[8], user = u)
     lsu.save()
-    ss = SimpleSequencing()
-    ss.assignActivityTree(u,PPP)
+
