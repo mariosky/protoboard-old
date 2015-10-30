@@ -141,7 +141,7 @@ public class ProductTest
     [Test, Description("Prueba del Constructor")]
     public void Constructor()
     {
-        Product p = new Product(1,"hola");
+        Product p = new Product(1,"Adios");
         // Constraint Syntax
         Assert.AreEqual(p.code,1);
     }
