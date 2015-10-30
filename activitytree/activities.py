@@ -8,7 +8,7 @@ activities = {
 
 
 '/activity/video/lo-que-ahora-sabemos':
-    {'title':u'Introducción',
+    {'title':u'Intro',
      'url':u"https://www.youtube.com/watch?v=GUxyQ6Mj_kc",
       'youtube_id':'GUxyQ6Mj_kc'
 
@@ -141,7 +141,7 @@ public class ProductTest
     [Test, Description("Prueba del Constructor")]
     public void Constructor()
     {
-        Product p = new Product(1,"Adios");
+        Product p = new Product(1,"hola");
         // Constraint Syntax
         Assert.AreEqual(p.code,1);
     }
