@@ -2972,9 +2972,8 @@ print json.dumps(result)
 '/activity/actividad5': u""" <h3>Redes</h3>
   <p>Actividad 5 </p> """ ,
 '/activity/actividad6': u""" <h3>Redes</h3>
-  <p>Actividad 6 </p> """ ,
-'/activity/Redes': u""" <h3>Redes</h3>
-  <p>Blah </p> """ ,
+  <p>Actividad 6 </p> """
+
 
 }
 
