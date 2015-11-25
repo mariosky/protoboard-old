@@ -24,14 +24,9 @@ Demo = LearningActivity( name = 'Protoboard 101', slug = 'Demo',
     parent = None,
     root   = None,
 
-    flow = True,
-    forward_only = False,
-    choice = True,
     choice_exit = False,
 
-    rollup_rule  = "satisfied IF All satisfied",
-    rollup_objective = True,
-    rollup_progress = True,
+    rollup_rule  = "completed IF All completed",
 
     is_container = True,
     is_visible = True,
@@ -58,11 +53,8 @@ preliminar = LearningActivity( name = 'El secuenciado simple', slug = 'Prelimina
     image = "https://s3.amazonaws.com/learning-python/IntroVideo.png",
 
     pre_condition_rule = "",
-    post_condition_rule = "",
 
     rollup_rule  = "",
-    rollup_objective = True,
-    rollup_progress = True,
 
     is_container = False,
     is_visible = True,
@@ -80,22 +72,13 @@ recursos = LearningActivity( name = 'Recursos', slug = 'Recursos',
     description = u"""Este es un contenedor con varias actividades, estará deshabilitado hasta que visites la actividad Secuenciado Simple.""",
 
     pre_condition_rule = """
-if get_attr('/activity/SecuenciadoSimple','objective_status') == 'satisfied':
+if get_attr('/activity/SecuenciadoSimple','progress_status') == 'completed':
     activity['pre_condition'] = ''
 else:
     activity['pre_condition'] = 'disabled'
 """,
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = False,
-    choice = True,
     choice_exit = False,
-
-
-    rollup_rule  = "satisfied IF All satisfied",
-    rollup_objective = True,
-    rollup_progress = True,
+    rollup_rule  = "completed IF All completed",
     is_container = True,
     is_visible = True,
     order_in_container = 1
@@ -105,13 +88,11 @@ recursos.save()
 
 video = LearningActivity( name = 'Video', slug = '',
     uri = "/activity/video/intro",
-#   lom =
     parent = recursos, root  = Demo,
     heading="Ejemplo de Video",
     description = u"""Ejemplo de video, al llegar a los 15 segundos se salta a la siguiente actividad.""",
 
     pre_condition_rule = "",
-    post_condition_rule = "",
 
     is_container = False,
     is_visible = True,
@@ -121,14 +102,13 @@ video.save()
 
 test = LearningActivity( name = 'Quiz', slug = '',
     uri = "/test/demo",
-#   lom =
     parent = recursos, root  = Demo,
     heading="Ejemplo de un Quiz",
     description = u"""Máximo 4 intentos.""",
 
     pre_condition_rule = "",
-    post_condition_rule = "",
     is_container = False,
+    choice_exit = False,
     is_visible = True,
     order_in_container = 1
     )
@@ -144,17 +124,10 @@ programas = LearningActivity( name = 'Ejercicios de Programación', slug = '',
     description = u"""Ejemplos de los distintos lenguajes de programación, con los que se pueden hacer ejercicios""",
 
     pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
     choice_exit = False,
 
 
-    rollup_rule  = "satisfied IF All satisfied",
-    rollup_objective = True,
-    rollup_progress = True,
+    rollup_rule  = "completed IF Any completed",
     is_container = True,
     is_visible = True,
     order_in_container = 2
@@ -164,13 +137,10 @@ programas.save()
 
 csharp = LearningActivity( name = 'CSharp', slug = '',
     uri = "/program/csharp/1",
-#   lom =
     parent = programas, root  = Demo,
     heading="C#",
     description = u"""C# es un lenguaje de programación orientado a objetos desarrollado y estandarizado por Microsoft como parte de su plataforma .NET""",
     choice_exit = False,
-    pre_condition_rule = "",
-    post_condition_rule = "",
     is_container = False,
     is_visible = True,
     order_in_container = 0
@@ -179,13 +149,10 @@ csharp.save()
 
 javascript = LearningActivity( name = 'Javascript', slug = '',
     uri = "/program/js/1",
-#   lom =
     parent = programas, root  = Demo,
     heading="javascript",
     description = u"""es un lenguaje de programación interpretado, dialecto del estándar ECMAScript. Se define como orientado a objetos,3 basado en prototipos, imperativo, débilmente tipado y dinámico.""",
     choice_exit = False,
-    pre_condition_rule = "",
-    post_condition_rule = "",
     is_container = False,
     is_visible = True,
     order_in_container = 1
@@ -195,13 +162,10 @@ javascript.save()
 
 Java = LearningActivity( name = 'Java', slug = '',
     uri = "/program/java/1",
-#   lom =
     parent = programas, root  = Demo,
     heading="Java",
     description = u"""Su intención es permitir que los desarrolladores de aplicaciones escriban el programa una vez y lo ejecuten en cualquier dispositivo""",
     choice_exit = False,
-    pre_condition_rule = "",
-    post_condition_rule = "",
     is_container = False,
     is_visible = True,
     order_in_container = 2
@@ -211,13 +175,10 @@ Java.save()
 
 JQuery= LearningActivity( name = 'jQuery', slug = '',
     uri = "/program/js/2",
-#   lom =
     parent = programas, root  = Demo,
     heading="jQuery",
     description = u"""jQuery es una biblioteca de JavaScript, creada inicialmente por John Resig, que permite simplificar la manera de interactuar con los documentos HTML, manipular el árbol DOM, manejar eventos, desarrollar animaciones y agregar interacción con la técnica AJAX a páginas web.""",
     choice_exit = False,
-    pre_condition_rule = "",
-    post_condition_rule = "",
     is_container = False,
     is_visible = True,
     order_in_container = 3
@@ -226,18 +187,16 @@ JQuery.save()
 
 Py = LearningActivity( name = 'Python', slug = '',
     uri = "/program/suma/3",
-#   lom =
     parent = programas, root  = Demo,
     heading="Python",
     description = u"""Es un lenguaje interpretado, usa tipado dinámico y es multiplataforma. Debes completar la actividad de JQuery para desbloquear esta actividad.""",
     choice_exit = False,
     pre_condition_rule = """
-if get_attr('/program/js/2','objective_status') == 'satisfied':
+if get_attr('/program/js/2','progress_status') == 'completed':
     activity['pre_condition'] = ''
 else:
     activity['pre_condition'] = 'disabled'
 """,
-    post_condition_rule = "",
     is_container = False,
     is_visible = True,
     order_in_container = 4

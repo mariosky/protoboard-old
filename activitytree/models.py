@@ -42,22 +42,14 @@ class LearningActivity(models.Model):
     root   = models.ForeignKey(to ='LearningActivity',null=True)
     
     pre_condition_rule  = models.TextField(blank=True)
-    post_condition_rule = models.TextField(blank=True)
 
-    flow = models.BooleanField(default=True)
-    forward_only = models.BooleanField(default=False)
-    choice = models.BooleanField(default=True)
     choice_exit = models.BooleanField(default=True)
+    rollup_rule  = models.TextField(blank=True, default="completed IF All completed")
 
-    match_rule = models.TextField(blank=True)
-    filter_rule = models.TextField(blank=True)
-    rollup_rule  = models.TextField(blank=True, default="satisfied IF All satisfied")
-    
-    rollup_objective = models.BooleanField(default=True)
     rollup_progress = models.BooleanField(default=True)
     #default value of attempt_limit (100) means no restriction in number of attempts, max attempts = 99
     attempt_limit = models.PositiveSmallIntegerField(default=100)
-    duration_limit = models.PositiveSmallIntegerField(null=True) 
+
     available_from = models.DateTimeField(null=True)
     available_until = models.DateTimeField(null=True)
     
@@ -164,21 +156,19 @@ class UserLearningActivity(models.Model):
     
     def parse_rollup_rule(self, r):
         """ Rollup Rule:
-          (notSatisfied | satisfied | completed | incomplete ) 
+          (completed | incomplete )
              IF ( (All|Any|None) | ( (AT LEAST) (number) (PERCENT | COUNT) ) ) 
-               (notSatisfied |satisfied | completed | incomplete )
+               (completed | incomplete )
         """
         rule = {}
         
-        status_values = ['notSatisfied', 'satisfied', 'completed' , 'incomplete']
+        status_values = ['completed' , 'incomplete']
         quantifiers = ['All','Any','None']
         functions = ['PERCENT','COUNT']
         rule_list = r.split()
         
         if rule_list[0] not in status_values:  
             return None #raise Exception: expecting a status value
-        elif rule_list[0] in status_values[0:2]:
-            rule['status_type'] = 'objective'
         else:
             rule['status_type'] = 'progress'
         rule['consequent_status'] = rule_list[0]
@@ -274,12 +264,8 @@ class UserLearningActivity(models.Model):
                 else:
                     return None
         
-        if rule['status_type'] == 'objective':
-            self.objective_status = consequent_status
-        elif rule['status_type'] == 'progress':
-            self.progress_status = consequent_status
-        else:
-            return None
+        self.progress_status = consequent_status
+
         super(UserLearningActivity, self).save()
         
     def rollup_rules(self):

@@ -146,7 +146,7 @@ def path_activity(request,path_id, uri):
                     requested_activity = current_activity
                     return HttpResponseRedirect(  '/%s%s'% (requested_activity.learning_activity.id, requested_activity.learning_activity.uri))
                 else:
-                    _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
+                    _set_current(request,requested_activity, root, s, progress_status=None)
             #Else is a
             # 'choice' REQUEST
             else:
@@ -168,22 +168,20 @@ def path_activity(request,path_id, uri):
 
 
             if current_activity.learning_activity.choice_exit:
-                objective_status='satisfied'
-                progress_status='complete'
+                progress_status='completed'
             else:
                 progress_status = None
-                objective_status = None
 
             # 'next' REQUEST
             if request.POST['nav_event'] == 'next':
                 # Go TO NEXT ACTIVITY
-                s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
+                s.exit( current_activity, progress_status = progress_status)
                 next_uri = s.get_next(root, current_activity)
 
             # 'prev' REQUEST
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
-                s.exit( current_activity, progress_status = progress_status, objective_status = objective_status)
+                s.exit( current_activity, progress_status = progress_status)
                 next_uri = s.get_prev(root, current_activity)
 
             #No more activities ?
@@ -319,7 +317,7 @@ def path_test(request,path_id, uri):
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
             # if choice_exit consider complete
-            _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None)
+            _set_current(request,requested_activity, root, s, progress_status=None)
 
         elif request.method == 'POST':
             if 'check' in request.POST and attempts_left :
@@ -331,11 +329,11 @@ def path_test(request,path_id, uri):
                     # Updates the current Learning Activity
                     objective_measure = float(feedback['total_correct'])/len(quiz['questions'])*100
                     if feedback['total_correct'] >= quiz['satisfied_at_least']:
-                        objective_status='satisfied'
+                        progress_status='completed'
                     else:
-                        objective_status='notSatisfied'
+                        progress_status='incomplete'
 
-                    s.update(requested_activity, objective_status = objective_status, objective_measure = objective_measure,attempt=True)
+                    s.update(requested_activity, progress_status = progress_status, attempt=True)
                     attempts_left-=1
 
 
@@ -508,7 +506,7 @@ def javascript_result(request):
 
                 s = SimpleSequencing()
                 if rpc['result'] == 'Success':
-                    s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=30,attempt=True)
+                    s.update(ula, progress_status='completed', objective_measure=30,attempt=True)
                 else:
                     s.update(ula,attempt=True)
                 #s.update(ula)
@@ -551,7 +549,7 @@ def get_result(request):
                         s = SimpleSequencing()
 
                         if string_json['result'] == 'Success':
-                            s.update(ula, progress_status='completed', objective_status='satisfied', objective_measure=30,attempt=True)
+                            s.update(ula, progress_status='completed', objective_measure=30,attempt=True)
 
                         else:
                             s.update(ula,attempt=True)
@@ -594,7 +592,7 @@ def _get_ula(request, uri):
         return None
     return requested_activity
 
-def _set_current(request,requested_activity, root, s, objective_status=None, progress_status=None):
+def _set_current(request,requested_activity, root, s, progress_status=None):
     # Sets the requested  Learning Activity as current
 
     atree = ActivityTree.objects.get(user=request.user,root_activity=root.learning_activity.get_root())
@@ -602,9 +600,9 @@ def _set_current(request,requested_activity, root, s, objective_status=None, pro
     # Exits last activty
     if atree.current_activity:
         if request.method == 'GET' and atree.current_activity.learning_activity.choice_exit:
-            objective_status='satisfied'
-            progress_status='complete'
-        s.exit( atree.current_activity, objective_status=objective_status, progress_status=progress_status)
+
+            progress_status='completed'
+        s.exit( atree.current_activity, progress_status=progress_status)
     s.set_current(requested_activity)
 
 

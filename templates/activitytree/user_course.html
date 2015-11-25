@@ -11,7 +11,6 @@ __author__ = 'mario'
      <th>  </th>
      <th>Nombre</th>
      <th>Precondición</th>
-     <th>Status del Objetivo</th>
      <th>Status del Progreso</th>
      <th>Calificación</th>
      <th>Intentos</th>
@@ -34,7 +33,6 @@ __author__ = 'mario'
     <td><small><i class="[[icon]]"></i> </td>
     <td>[[name]]</td>
     <td>[[pre_condition]]</td>
-    <td>[[objective_status ]]</td>
     <td>[[progress_status ]]</td>
     <td>[[objective_measure]]</td>
     <td>[[num_attempts]]</td>
@@ -88,7 +86,7 @@ __author__ = 'mario'
                             description:this.getAttribute("description"),
                             uri: uri_string,
                             pre_condition:this.getAttribute("pre_condition"),
-                            objective_status: this.getAttribute("objective_status"),
+                            progress_status: this.getAttribute("progress_status"),
 
                             image: this.getAttribute("image"),
 

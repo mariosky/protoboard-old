@@ -86,7 +86,7 @@ class SimpleSequencing(object):
 
 
 
-    def exit(self, ula, progress_status=None, objective_status=None, objective_measure=None, kmdynamics=None, attempt=False):
+    def exit(self, ula, progress_status=None, objective_measure=None, kmdynamics=None, attempt=False):
 
         atree = ActivityTree.objects.get(user=ula.user, root_activity=ula.learning_activity.get_root())
 
@@ -98,8 +98,6 @@ class SimpleSequencing(object):
             atree.current_activity = None
             if progress_status:
                 ula.progress_status = progress_status
-            if objective_status:
-                ula.objective_status = objective_status
             if objective_measure is not None:
                 ula.objective_measure = objective_measure
             if kmdynamics is not None:
@@ -110,18 +108,16 @@ class SimpleSequencing(object):
             ula.save()
             atree.save()
             ###
-            ### IF rollup_objective = True or rollup_progress = True
+            ### IF  rollup_progress = True
             ###
             ula.rollup_rules()
 
-    def update(self, ula, progress_status=None, objective_status=None, objective_measure=None, attempt=False):
+    def update(self, ula, progress_status=None, objective_measure=None, attempt=False):
         #if not ula.is_current:
         #    raise NotAllowed('Update', "Can only update a current activity")
         #else:
         if progress_status is not None:
             ula.progress_status = progress_status
-        if objective_status is not None :
-            ula.objective_status = objective_status
         if objective_measure is not None:
             ula.objective_measure = objective_measure
         ula.last_visited = timezone.now()
@@ -221,7 +217,7 @@ def sql(root_id,user_id):
 WITH RECURSIVE nodes_cte AS (
 SELECT 	n.id, n.parent_id, n.name, n.id::TEXT AS path,
 		n.heading, n.secondary_text, n.description, n.image, n.slug, n.uri, n.lom, n.root_id,
-		n.pre_condition_rule, n.post_condition_rule, n.flow, n.forward_only, n.choice,
+		n.pre_condition_rule,
 		n.choice_exit, n.attempt_limit, n.available_from,
 		n.available_until, n.is_container, n.is_visible, n.order_in_container
 FROM activitytree_learningactivity AS n
@@ -229,7 +225,7 @@ WHERE n.parent_id = %s
 	UNION ALL
 SELECT 	c.id, c.parent_id, c.name, c.id::TEXT AS path,
 		c.heading, c.secondary_text, c.description, c.image, c.slug, c.uri, c.lom, c.root_id,
-		c.pre_condition_rule, c.post_condition_rule, c.flow, c.forward_only, c.choice,
+		c.pre_condition_rule,
 		c.choice_exit, c.attempt_limit, c.available_from,
 		c.available_until, c.is_container, c.is_visible, c.order_in_container
 FROM nodes_cte AS p, activitytree_learningactivity AS c
@@ -238,7 +234,7 @@ WHERE c.parent_id = p.id
 (
 SELECT  la.id, parent_id, name, ''as path,
 		heading, secondary_text, description, image, slug, uri, lom, root_id,
-		pre_condition_rule, post_condition_rule, flow, forward_only, choice,
+		pre_condition_rule,
 		choice_exit, attempt_limit, available_from,
 		available_until, is_container, is_visible, order_in_container,
 		pre_condition, recommendation_value, progress_status, objective_status,
@@ -253,7 +249,7 @@ WHERE la.id = %s
 UNION ALL
 SELECT  nd.id, parent_id, name,path,
 		heading, secondary_text, description, image, slug, uri, lom, root_id,
-		pre_condition_rule, post_condition_rule, flow, forward_only, choice,
+		pre_condition_rule,
 		choice_exit, attempt_limit, available_from,
 		available_until, is_container, is_visible, order_in_container,
 		pre_condition, recommendation_value, progress_status, objective_status,

@@ -20,7 +20,7 @@ print con
 cur = con.cursor()
 
 cur.execute("""CREATE OR REPLACE VIEW activitytree_ula_vw AS
- SELECT ul.user_id, ul.learning_activity_id, ul.pre_condition, ul.progress_status, ul.objective_status, ul.objective_measure, la.parent_id, la.rollup_objective, la.rollup_progress, la.name
+ SELECT ul.user_id, ul.learning_activity_id, ul.pre_condition, ul.progress_status, ul.objective_status, ul.objective_measure, la.parent_id, la.rollup_progress,  la.name
    FROM activitytree_learningactivity la
    JOIN activitytree_userlearningactivity ul ON la.id = ul.learning_activity_id;""")
 

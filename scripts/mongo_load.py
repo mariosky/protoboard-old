@@ -58,7 +58,7 @@ activities = [
      a tenido el alumno en un curso en particular. Por ejemplo la regla:
         <pre>
 pre_condition_rule = \"\"\"
-if get_attr('/activity/SecuenciadoSimple','objective_status') == 'satisfied':
+if get_attr('/activity/SecuenciadoSimple','progress_status') == 'completed':
     activity['pre_condition'] = 'hidden'
 else:
     activity['pre_condition'] = ''
