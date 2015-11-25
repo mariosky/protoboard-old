@@ -62,7 +62,6 @@ preliminar = LearningActivity( name = 'El secuenciado simple', slug = 'Prelimina
     )
 preliminar.save()
 
-
 recursos = LearningActivity( name = 'Recursos', slug = 'Recursos',
     uri = "/activity/Recursos",
 #   lom =
