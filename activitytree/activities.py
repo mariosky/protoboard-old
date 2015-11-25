@@ -8,7 +8,7 @@ activities = {
 
 
 '/activity/video/lo-que-ahora-sabemos':
-    {'title':u'Introducción',
+    {'title':u'Intro',
      'url':u"https://www.youtube.com/watch?v=GUxyQ6Mj_kc",
       'youtube_id':'GUxyQ6Mj_kc'
 
