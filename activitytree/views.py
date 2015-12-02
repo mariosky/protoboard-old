@@ -38,7 +38,7 @@ from django.conf import settings
 
 import redis
 
-ip_couch = "http://10.10.184.236:5984"
+ip_couch = "http://127.0.0.1:5984"
 redis_service = redis.Redis("127.0.0.1")
 
 

@@ -19,6 +19,7 @@ from activitytree.interaction_handler import SimpleSequencing
 
 
 LearningActivity.objects.all().delete()
+
 Demo = LearningActivity( name = 'Protoboard 101', slug = 'Demo',
     uri = "/activity/demo",
     parent = None,
@@ -44,7 +45,9 @@ cursoDemo.save()
 
 
 
-preliminar = LearningActivity( name = 'El secuenciado simple', slug = 'Preliminar',
+preliminar = LearningActivity(
+    name = 'El secuenciado simple',
+    slug = 'Preliminar',
     uri = "/activity/SecuenciadoSimple",
 #   lom =
     parent = Demo, root   = Demo,
