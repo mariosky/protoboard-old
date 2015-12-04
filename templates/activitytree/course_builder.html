@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>protoboard Studio</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+
+  <link rel="stylesheet" href="/styles/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/fuelux.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" type="text/css" >
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker3.min.css">
+  <link rel="stylesheet" href="/styles/activity_tree.css">
+
+
+
+  <!-- endbuild -->
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+
+  <!-- mustache templates -->
+
+
+
+  <!-- end mustache templates -->
+</head>
+
+<body>
+<div class="container">
+
+
+
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"  aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="/"> protoboard.org </a>
+
+
+        <!-- <a class="navbar-brand" href="/">protoboard.org</a> -->
+      </div>
+
+      <div  id="navbar" class=" collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+
+
+          <li><a href="{{root}}">Curso</a></li>
+          <li><a href="/dashboard{{ root_id }}">Dashboard</a></li>
+          <li><p id="user_points" class="navbar-text"></p></li>
+
+
+
+          <li><a href="/logout">Salir</a></li>
+
+          <li><a href="/login">Iniciar Sesión</a></li>
+
+
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+
+
+
+  <div id="main_container" class="container-fluid">
+    <h3 id="course-title">Bases de Datos Distribuidas</h3>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><button id="newContainerBtn" type="button" class="btn btn-default navbar-btn">New Container</button></li>
+            <li><button id="newActivityBtn" type="button" class="btn btn-default navbar-btn">New Activity</button></li>
+            <li><button  id="saveChangesBtn" type="button" class="btn btn-default navbar-btn">Save</button></li>
+            <li><button type="settingsBtn" class="btn btn-default navbar-btn">Settings</button></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+
+
+    <ul class="sTree2 listsClass" id="sTree2">
+
+
+
+    </ul>
+
+    <section>
+      <p><strong>JQuery sortable lists</strong> also supports export methods. Look at the console log to see the result of buttons below.</p>
+      <span id="toArrBtn" class="btn">To array</span>
+      <span id="toHierBtn" class="btn">To hierarchy</span>
+      <span id="toStrBtn" class="btn">To string</span>
+    </section>
+
+
+
+  </div>
+</div>
+
+
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<script id="container_template" type="x-tmpl-mustache">
+
+        <li id="{{ container_id  }}"  data-module="container">
+
+
+          <div>
+                  <i class="fa fa-folder"></i>  <span class="h5 container_name"> {{container_name}} </span>
+
+                    <div class="btn-group navbar-right" role="group" aria-label="..." >
+                      <button type="button" class="btn btn-default  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
+
+                    </div>
+
+                  <div class="btn-group navbar-right" role="group" aria-label="..." >
+                      <button type="button" class="btn btn-default  clickable   containerPrecondition">Precondition</button>
+                      <button type="button" class="btn btn-default  clickable   containerRollup">Rollup</button>
+
+
+                    </div>
+
+                    <div class="btn-group navbar-right" role="group" aria-label="..." >
+                      <button type="button" class="btn btn-default clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> </button>
+                      <button type="button" class="btn btn-default clickable   containerFromUntil"><i class="fa fa-calendar  clickable  containerFromUnti"></i></button>
+
+                    </div>
+      </div>
+
+
+
+ </li>
+
+</script>
+
+
+<script id="activity_template" type="x-tmpl-mustache">
+
+        <li id="{{ activity_id  }}"  data-module="activity" class="activity">
+          <div>
+            <i class="fa fa-file"></i> <span class="h5 container_name">{{activity_name}} </span>
+
+          <div class="btn-group navbar-right" role="group" aria-label="..." >
+            <button type="button" class="btn btn-default  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
+          </div>
+
+            <div class="btn-group navbar-right" role="group" aria-label="..." >
+                <button type="button" class="btn btn-default  clickable   activityEditBtn">Activity</button>
+                <button type="button" class="btn btn-default  clickable   containerPrecondition">Precondition</button>
+                <button type="button" class="btn btn-default  clickable   containerRollup">Rollup</button>
+          </div>
+
+          <div class="btn-group navbar-right" role="group" aria-label="..." >
+            <button type="button" class="btn btn-default clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> </button>
+            <button type="button" class="btn btn-default clickable   containerFromUntil"><i class="fa fa-calendar  clickable  containerFromUnti"></i></button>
+          </div>
+        </div>
+ </li>
+
+</script>
+
+
+
+
+<!-- build:js(.) scripts/plugins.js -->
+
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/bootstrap.min.js"></script>
+<script src="scripts/jquery-sortable-lists.min.js"></script>
+<script src="scripts/mustache.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
+
+
+<!-- endbuild -->
+
+<!-- build:js scripts/main.js -->
+<script src="scripts/main.js"></script>
+<!-- endbuild -->
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+
+
+  function generateUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
+  }
+
+</script>
+
+
+
+<script type="text/javascript">
+  $(function()
+  {
+    var options = {
+      placeholderCss: {'background-color': '#ff8'},
+      hintCss: {'background-color':'#bbf'},
+      isAllowed: function(cEl, hint, target)
+      {
+        // Be carefull if you test some ul/ol elements here.
+        // Sometimes ul/ols are dynamically generated and so they have not some attributes as natural ul/ols.
+        // Be careful also if the hint is not visible. It has only display none so it is at the previouse place where it was before(excluding first moves before showing).
+        if(hint.parents('li').first().data('module') === 'activity')
+        {
+          hint.css('background-color', '#ff9999');
+          return false;
+        }
+        else
+        {
+          hint.css('background-color', '#99ff99');
+          return true;
+        }
+      },
+      opener: {
+        active: true,
+        close: './images/Remove2.png',
+        open: './images/Add2.png',
+        openerCss: {
+          'display': 'inline-block',
+          'width': '18px',
+          'height': '18px',
+          'float': 'left',
+          'margin-left': '-35px',
+          'margin-right': '5px',
+          'background-position': 'center center',
+          'background-repeat': 'no-repeat'
+        },
+        openerClass: ''
+      },
+      ignoreClass: 'clickable'
+    };
+
+    $('#sTree2, #sTree').sortableLists(options);
+
+    learning_activities = [];
+    var LearningActivity = function (uri, is_container)
+    {
+      this.name = "Container Name";
+      this.heading = "";
+      this.secondary_text = "";
+      this.description = "";
+      this.image =  "";
+      this.slug = "";
+      this.uri =  uri;
+      this.lom = null;
+      this.pre_condition_rule  =  null;
+      this.choice_exit = true;
+      this.rollup_rule = "completed IF All completed";
+
+      this.attempt_limit = 100;
+      this.rollup_progress = true;
+      this.available_from =  null;
+      this.available_until = null;
+      this.is_container = is_container;
+      this.is_visible = true;
+    };
+
+    // CREATE MODALS FROM TEMPLATES
+
+
+
+    $('#toArrBtn').on('click', function(){ console.log($('#sTree2').sortableListsToArray()); });
+    $('#toHierBtn').on('click', function()
+    {
+
+         tree =  $('#sTree2').sortableListsToHierarchy();
+
+
+
+         function traverse(jsonObj) {
+           if( typeof jsonObj == "object" ) {
+              $.each(jsonObj, function(k,v) {
+
+                if (typeof k == "number" && typeof v == "object")
+                {
+                  traverse(v);
+                }
+                if ( k == "id")
+                {
+                  jsonObj.learning_activity = learning_activities[v];
+
+                }
+
+                if ( k == "children" && typeof v == "object")
+                {
+                  traverse(v);
+
+                }
+              });
+              }
+              else
+              {
+                return;
+                // jsonOb is a number or string
+              }
+           }
+
+          traverse(tree);
+
+
+
+            console.log(JSON.stringify(tree));
+
+
+
+
+
+
+
+    });
+
+
+    $('#toStrBtn').on('click', function() {
+
+    var json_string = '[{"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": true, "description": "<p> Este es un curso de ejemplo para mostrar la funcionalidad de <code>protoboard</code>.\\n        Se muestran los tipos de ejercicios y recursos que se pueden utilizar para crear cursos de programaci\\u00f3n. </p>", "attempt_limit": 100, "image": "", "rollup_progress": true, "uri": "/activity/demo", "secondary_text": "", "heading": "", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "Protoboard 101"}, "children": [{"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "Protoboard utiliza reglas para el secuenciado de actividades de aprendizaje. Aqu\\u00ed se explica de que se trata. De hecho hay una regla que estipula que no puedes visitar la actividad siguiente hasta ver esta.", "attempt_limit": 100, "image": "https://s3.amazonaws.com/learning-python/IntroVideo.png", "rollup_progress": true, "uri": "/activity/SecuenciadoSimple", "secondary_text": "", "heading": "1. Secuenciado simple", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "El secuenciado simple"}, "children": [], "id": "7b8bfd64-f69e-406d-a60f-d5df6abd5a25", "order": 0}, {"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": true, "description": "Este es un contenedor con varias actividades, estar\\u00e1 deshabilitado hasta que visites la actividad Secuenciado Simple.", "attempt_limit": 100, "image": "", "rollup_progress": true, "uri": "/activity/Recursos", "secondary_text": "Contenedor", "heading": "2. Recursos", "pre_condition_rule": "if get_attr(\'/activity/SecuenciadoSimple\',\'progress_status\') == \'completed\':\\n    activity[\'pre_condition\'] = \'\'\\nelse:\\n    activity[\'pre_condition\'] = \'disabled\'\\n", "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "Recursos"}, "children": [{"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "Ejemplo de video, al llegar a los 15 segundos se salta a la siguiente actividad.", "attempt_limit": "100", "image": "", "rollup_progress": true, "uri": "/activity/video/intro", "secondary_text": "", "heading": "Ejemplo de Video", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "Video"}, "children": [], "id": "75779703-613d-4978-87dd-08746f7ada7b", "order": 0}, {"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "M\\u00e1ximo 4 intentos.", "attempt_limit": "4", "image": "", "rollup_progress": true, "uri": "/test/demo", "secondary_text": "", "heading": "Ejemplo de un Quiz", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": false, "lom": null, "slug": "", "name": "Quiz"}, "children": [], "id": "b97d66fe-937a-4e92-81be-37cb4bb521ed", "order": 1}], "id": "3f395aa0-68e8-4a97-87f5-609cc407171a", "order": 1}, {"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": true, "description": "Ejemplos de los distintos lenguajes de programaci\\u00f3n, con los que se pueden hacer ejercicios", "attempt_limit": 100, "image": "", "rollup_progress": true, "uri": "/activity/97e3a6a1-380f-44e9-ba2c-42fc719d6973", "secondary_text": "Contenedor", "heading": "3. Ejercicios", "pre_condition_rule": null, "rollup_rule": "completed IF Any completed", "choice_exit": true, "lom": null, "slug": "", "name": "Ejercicios de Programaci\\u00f3n"}, "children": [{"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "Es un lenguaje de programaci\\u00f3n interpretado, dialecto del est\\u00e1ndar ECMAScript. Se define como orientado a objetos,3 basado en prototipos, imperativo, d\\u00e9bilmente tipado y din\\u00e1mico", "attempt_limit": "3", "image": "", "rollup_progress": true, "uri": "/program/js/1", "secondary_text": "", "heading": "JavaScript", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": false, "lom": null, "slug": "", "name": "JavaScript"}, "children": [], "id": "3b0b8f13-a27c-4842-9e64-5d52fa18075d", "order": 0}, {"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "Su intenci\\u00f3n es permitir que los desarrolladores de aplicaciones escriban el programa una vez y lo ejecuten en cualquier dispositivo", "attempt_limit": 100, "image": "", "rollup_progress": true, "uri": "/program/java/1", "secondary_text": "", "heading": "Java", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "Java"}, "children": [], "id": "3125d726-75d4-4f09-8e13-a3cbc3e029b5", "order": 1}], "id": "97e3a6a1-380f-44e9-ba2c-42fc719d6973", "order": 2}], "id": "4ef42fb0-8733-4e3e-8ce5-e69c83bdf489", "order": 0}]';
+    var tree = JSON.parse(json_string);
+
+     // console.log(tree[0]['learning_activity']);
+
+      console.log(tree);
+
+
+     function traverse(jsonObj,parent_id) {
+
+
+        if( typeof jsonObj == "object" ) {
+
+
+          $.each(jsonObj, function(k,v) {
+
+            if (typeof k == "number" && typeof v == "object")
+            {
+              traverse(v, parent_id);
+            }
+            if ( k == "learning_activity")
+            {
+              var activity_id = generateUUID();
+              jsonObj.id = activity_id;
+
+              learning_activities[activity_id]=v;
+
+
+              if (v.is_container == true){
+                  var container_template = $('#container_template').html();
+                  Mustache.parse(container_template);
+                  rendered = Mustache.render(container_template, { container_id:activity_id, container_name:v.name});
+
+
+                  if (parent_id === undefined) {
+                      $("#sTree2").append(rendered);
+
+                  }
+                  else
+                  {
+                    console.log(parent_id);
+
+                    if ($("#" +parent_id).children("ul").length)
+                    {
+                      $("#" +parent_id).children("ul").append(rendered);
+
+                    }
+                    else
+                    {
+                     $("#" +parent_id).append("<ul></ul>");
+                     $("#" +parent_id).children("ul").append(rendered);
+
+                    }
+
+                  }
+
+
+
+
+                  if (jsonObj.children.length )
+                  {
+
+                  traverse(jsonObj.children,jsonObj.id);
+
+                  }
+
+
+                }
+                else{
+
+                  var activity_template = $('#activity_template').html();
+                  Mustache.parse(activity_template);
+                  rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name: v.name});
+
+                if (parent_id === undefined) {
+                  $("#sTree2").append(rendered);
+
+                }
+                else
+                {
+                  console.log(parent_id);
+
+                  if ($("#" +parent_id).children("ul").length)
+                  {
+                    $("#" +parent_id).children("ul").append(rendered);
+
+                  }
+                  else
+                  {
+                    $("#" +parent_id).append("<ul></ul>");
+                    $("#" +parent_id).children("ul").append(rendered);
+
+                  }
+
+                }
+
+
+
+              }
+
+
+
+
+
+            }
+
+
+          });
+        }
+        else
+        {
+          return;
+          // jsonOb is a number or string
+        }
+      }
+
+      traverse(tree);
+
+
+
+    });
+
+    $('.descPicture').on('click', function(e) { $(this).toggleClass('descPictureClose'); });
+    //$('.clickable').on('click', function(e)	{ alert('Click works fine! IgnoreClass stops onDragStart event.'); });
+
+    /* Scrolling anchors */
+    $('#toPictureAnch').on('click', function(e) { scrollToAnch('pictureAnch'); });
+    $('#toBaseElementAnch').on('click', function(e) { scrollToAnch('baseElementAnch'); });
+    $('#toBaseElementAnch2').on('click', function(e) { scrollToAnch('baseElementAnch'); });
+    $('#toCssPatternAnch').on('click', function(e) { scrollToAnch('cssPatternAnch'); });
+
+    function scrollToAnch(id)
+    {
+      $('html, body').animate({
+        scrollTop: $("#" + id).offset().top
+      }, 750);
+      return false;
+    }
+
+
+
+    $('#newContainerBtn').on('click', function(){
+      var container_id = generateUUID();
+      var container_template = $('#container_template').html();
+      Mustache.parse(container_template);
+
+      var container = new LearningActivity( '/activity/'+container_id ,true );
+      learning_activities[container_id]=container;
+
+      rendered = Mustache.render(container_template, { container_id:container_id, container_name:container.name});
+      $("#sTree2").append(rendered);
+    });
+
+
+
+
+    $('#newActivityBtn').on('click', function(){
+
+      var activity_template = $('#activity_template').html();
+      Mustache.parse(activity_template);
+      var activity_id = generateUUID();
+      var activity = new LearningActivity( "/activity/"+activity_id, false );
+      learning_activities[activity_id]=activity;
+
+      rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name:"Activity Name"});
+      $("#sTree2").append(rendered);
+    });
+  });
+
+
+
+    $('body').on('click', '.deleteBtn', function(){
+      $( this).parentsUntil('li').parent().remove();
+    });
+
+
+  $('body').on('click', '.activityEditBtn', function(){
+
+    var container_id  = $( this).parentsUntil('li').parent().attr("id");
+
+    var learning_activity = learning_activities[container_id];
+
+    $('#activityURI').val(container_id);
+    $('#maxAttempts').val(learning_activity.attempt_limit);
+
+    $('#activityRollupProgressCb').val(learning_activity.secondary_text);
+    $('#activityExitCb').val(learning_activity.heading);
+    $('#modalActivity').modal();
+
+  });
+
+  $('body').on('click','#saveActivityBtn',function (e) {
+    var container_id  = $('#activityURI').val();
+    learning_activities[container_id].attempt_limit = $('#maxAttempts').val();
+
+
+
+    if ( $('#activityRollupProgressCb').prop("checked") == true)
+    {
+      learning_activities[container_id].is_visible = true;
+    }
+    else
+    {
+      learning_activities[container_id].is_visible = false;
+    }
+
+    if ( $('#activityExitCb').prop("checked") == true)
+    {
+      learning_activities[container_id].choice_exit = true;
+    }
+    else
+    {
+      learning_activities[container_id].choice_exit = false;
+    }
+
+
+
+    $('#modalActivity').modal('hide');
+
+
+  });
+
+
+
+    $('body').on('click', '.containerEditBtn', function(){
+
+      var container_id  = $( this).parentsUntil('li').parent().attr("id");
+
+      var learning_activity = learning_activities[container_id];
+
+      if (learning_activity.is_container == true)
+      {
+        $("#modalContainer").find(".modal-title").text("Edit Container");
+      }
+      else{
+        $("#modalContainer").find(".modal-title").text("Edit Activity");
+
+      }
+
+      $('#containerName').val(learning_activity.name);
+      $('#containerSecondaryText').val(learning_activity.secondary_text);
+      $('#containerHeading').val(learning_activity.heading);
+      $('#containerDescription').val(learning_activity.description);
+      $('#containerImage').val(learning_activity.image);
+      $('#containerSlug').val(learning_activity.slug);
+      $('#containerId').val(container_id);
+      $('#changeURI').val(learning_activity.uri);
+
+
+      $('#container_image').attr("src",learning_activity.uri);
+
+      if (learning_activity.is_visible)
+      {
+
+        $('#containerIsVisible').prop("checked",true);
+
+      }
+      else{
+        $('#containerIsVisible').prop("checked",false);
+      }
+
+      $('#modalContainer').modal();
+
+    });
+
+    $('body').on('click','#saveContainerEditBtn',function (e) {
+
+      var container_id  = $('#containerId').val();
+      learning_activities[container_id].name = $('#containerName').val();
+      learning_activities[container_id].secondary_text =  $('#containerSecondaryText').val();
+      learning_activities[container_id].heading = $('#containerHeading').val();
+      learning_activities[container_id].description=$('#containerDescription').val();
+      learning_activities[container_id].image=$('#containerImage').val();
+      learning_activities[container_id].slug=$('#containerSlug').val();
+      learning_activities[container_id].uri =  $('#changeURI').val();
+
+      var escaped_container_id = "#" + container_id.replace( "/", "\\/" );
+
+      $(escaped_container_id).find('.container_name').first().text(learning_activities[container_id].name);
+
+
+
+      if ( $('#containerIsVisible').prop("checked") == true)
+      {
+        learning_activities[container_id].is_visible = true;
+      }
+      else
+      {
+        learning_activities[container_id].is_visible = false;
+      }
+
+
+
+      $('#modalContainer').modal('hide');
+
+    });
+
+
+
+
+
+
+  $('body').on('click', '.containerFromUntil', function(){
+
+
+    var container_id  = $( this).parentsUntil('li').parent().attr("id");
+    var learning_activity = learning_activities[container_id];
+
+
+    $('#available-from').val(learning_activity.available_from);
+    $('#available-until').val(learning_activity.available_until);
+    $('#FromUntilURI').val(container_id);
+
+
+    $('#available-from').datepicker({
+      autoclose: true
+    });
+    $('#available-until').datepicker({
+      autoclose: true
+    });
+
+    if (learning_activity.is_container == true)
+    {
+      $("#modalFromUntil").find(".modal-title").text("Edit Container");
+    }
+    else{
+      $("#modalFromUntil").find(".modal-title").text("Edit Activity");
+
+    }
+
+
+    $('#modalFromUntil').modal();
+
+
+  });
+
+
+  $('body').on('click','#saveFromUntilBtn',function (e) {
+
+    var container_id  = $('#FromUntilURI').val();
+    learning_activities[container_id].available_from = $('#containerName').val();
+    learning_activities[container_id].available_until =  $('#containerSecondaryText').val();
+
+    $('#modalFromUntil').modal('hide');
+
+
+  });
+
+
+  $('body').on('click', '.containerPrecondition', function(){
+
+    var container_id  = $( this).parentsUntil('li').parent().attr("id");
+    var learning_activity = learning_activities[container_id];
+    $('#containerPrecondition').val(learning_activity.pre_condition_rule );
+    $('#PreconditionURI').val(container_id);
+
+
+    if (learning_activity.is_container == true)
+    {
+      $("#modalPrecondition").find(".modal-title").text("Edit Container");
+    }
+    else{
+      $("#modalPrecondition").find(".modal-title").text("Edit Activity");
+
+    }
+
+
+    $('#modalPrecondition').modal();
+
+  });
+
+
+  $('body').on('click','#savePreconditionBtn',function (e) {
+    var container_id  = $('#PreconditionURI').val();
+    learning_activities[container_id].pre_condition_rule = $('#containerPrecondition').val();
+
+    $('#modalPrecondition').modal('hide');
+
+
+  });
+
+
+  $('body').on('click', '.containerRollup', function(){
+
+
+    var container_id  = $( this).parentsUntil('li').parent().attr("id");
+    var learning_activity = learning_activities[container_id];
+    $('#containerRollupRule').val(learning_activity.rollup_rule );
+    $('#rollupURI').val(container_id);
+
+    if (learning_activity.is_container == true)
+    {
+      $("#modalRollup").find(".modal-title").text("Edit Container");
+    }
+    else{
+      $("#modalRollup").find(".modal-title").text("Edit Activity");
+
+    }
+
+    if (learning_activity.rollup_progress)
+    {
+
+      $('#rollupProgressCb').prop("checked",true);
+
+    }
+    else{
+
+      $('#rollupProgressCb').prop("checked",false);
+    }
+
+
+    $('#modalRollup').modal()
+
+
+  });
+
+
+  $('body').on('click','#saveRollupBtn',function (e) {
+
+    var container_id  = $('#rollupURI').val();
+    learning_activities[container_id].rollup_rule = $('#containerRollupRule').val();
+
+    if ( $('#rollupProgressCb').prop("checked") == true)
+    {
+      learning_activities[container_id].rollup_progress = true;
+    }
+    else
+    {
+      learning_activities[container_id].rollup_progress = false;
+    }
+        $('#modalRollup').modal('hide');
+
+
+  });
+
+
+</script>
+
+
+<div class="modal fade" id="modalContainer">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Container</h4>
+      </div>
+
+
+      <div class="modal-body">
+        <div class="form-group">
+          <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="changeURI">URL</label>
+          <input type="text" class="form-control" id="changeURI" placeholder="" required pattern="https?://.+" >
+        </div>
+
+        <div class="form-group">
+          <label for="containerName">Display Name</label>
+          <input type="text" class="form-control" id="containerName" placeholder="Container Name">
+        </div>
+        <div class="form-group">
+          <label for="containerSlug">Slug</label>
+          <input type="url" class="form-control" id="containerSlug" placeholder="" required pattern="https?://.+">
+        </div>
+
+        <div class="form-group">
+          <label for="containerHeading">Header</label>
+          <input type="url" class="form-control" id="containerHeading" placeholder="" required pattern="https?://.+">
+        </div>
+        <div class="form-group">
+          <label for="containerSecondaryText">Secondary Text</label>
+          <input type="url" class="form-control" id="containerSecondaryText" placeholder="" required pattern="https?://.+">
+        </div>
+        <div class="form-group">
+          <label for="containerDescription">Description</label>
+          <textarea class="form-control" id="containerDescription" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="containerImage">Image URL</label>
+          <input type="url" class="form-control" id="containerImage" placeholder="" required pattern="https?://.+">
+
+        </div>
+        <div class="row">
+
+          <img id="container_image" src="http://img.src.ca/2014/07/03/635x357/140703_pg6ew_mlarge_obession_performance_sn635.jpg" alt="..." class="img-rounded fixed-small center-block">
+
+        </div>
+
+
+
+
+
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input id="containerIsVisible" type="checkbox"> Visible </label>
+          </div>
+        </div>
+
+      </div><!-- /.modal-body -->
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="saveContainerEditBtn" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modalPrecondition">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Container</h4>
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="form-group">
+
+          <input type="url" class="form-control hidden" id="PreconditionURI" placeholder="" required pattern="https?://.+" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="containerPrecondition">Precondition Rule</label>
+          <textarea class="form-control" id="containerPrecondition" rows="3"></textarea>
+        </div>
+
+
+      </div><!-- /.modal-body -->
+
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="savePreconditionBtn" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+
+
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modalFromUntil">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Container</h4>
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="form-group">
+
+          <input type="url" class="form-control hidden" id="FromUntilURI" placeholder="" required pattern="https?://.+" disabled>
+        </div>
+
+
+        <div class="form-group">
+          <label for="available-from">Available from</label>
+          <div id ="available-from" class="input-group date">
+            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+          <label for="available-until">Available until</label>
+          <div id ="available-until" class="input-group date">
+            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+        </div>
+
+      </div><!-- /.modal-body -->
+
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="saveFromUntilBtn" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+
+
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modalRollup">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Container</h4>
+      </div>
+
+
+      <div class="modal-body">
+        <div class="form-group">
+
+          <input type="url" class="form-control hidden" id="rollupURI" placeholder="" required pattern="https?://.+" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="containerRollupRule">Rollup Rule</label>
+          <textarea class="form-control" id="containerRollupRule" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input id="rollupProgressCb" type="checkbox"> Rollup Progress </label>
+          </div>
+        </div>
+
+      </div><!-- /.modal-body -->
+
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="saveRollupBtn" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+
+
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" id="modalActivity">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Activity</h4>
+      </div>
+
+
+      <div class="modal-body">
+        <div class="form-group">
+
+          <input type="url" class="form-control hidden" id="activityURI" placeholder="" required pattern="https?://.+" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="maxAttempts">Attempt Limit</label>
+          <input type="url" class="form-control" id="maxAttempts" placeholder="" required pattern="https?://.+" >
+        </div>
+
+
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input id="activityRollupProgressCb" type="checkbox"> Rollup Progress </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input id="activityExitCb" type="checkbox"> Choice Exit   </label>
+          </div>
+        </div>
+
+
+      </div><!-- /.modal-body -->
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="saveActivityBtn" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+
+
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+</body>
+</html>

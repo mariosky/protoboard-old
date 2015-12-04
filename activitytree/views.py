@@ -60,6 +60,18 @@ def welcome(request):
                  },
                 context_instance=RequestContext(request))
 
+
+
+def course(request,course_id):
+    return render_to_response('activitytree/course_builder.html',
+            {'user_name':None,'courses':None
+                #,'plus_scope':plus_scope,'plus_id':plus_id
+                 },
+                context_instance=RequestContext(request))
+
+
+
+
 def dashboard(request,path_id):
     if request.user.is_authenticated():
         if request.method == 'GET':

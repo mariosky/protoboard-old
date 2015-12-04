@@ -32,6 +32,8 @@ urlpatterns = patterns('',
       (r'^me$','activitytree.views.me'),
       (r'^users/(?P<user_id>[0-9]*)(\/*)(?P<course_id>[0-9]*)$','activitytree.views.users'),
 
+      (r'^course-builder/(?P<course_id>([\w+](\/*)(-*))+)$','activitytree.views.course'),
+
 
       (r'^unlink_facebook/?$', 'activitytree.views.unlink_facebook'),
       (r'^unlink_google/?$', 'activitytree.views.unlink_google'),
