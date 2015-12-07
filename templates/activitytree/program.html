@@ -429,9 +429,20 @@ $(document).ready(function() {
 
 </script>
 
-   <script src="{{ MEDIA_URL }}js/ace.js" type="text/javascript" charset="utf-8"></script>
-   <script src="{{ MEDIA_URL }}js/theme-chrome.js" type="text/javascript" charset="utf-8"></script>
-   <script src="{{ MEDIA_URL }}js/mode-{{ program_quiz.lang }}.js" type="text/javascript" charset="utf-8"></script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/{{ program_quiz.lang }}.js" type="text/javascript" charset="utf-8"></script>
+
+
+    {% comment  %}
+      <script src="{{ MEDIA_URL }}js/ace.js" type="text/javascript" charset="utf-8"></script>
+      <script src="{{ MEDIA_URL }}js/theme-chrome.js" type="text/javascript" charset="utf-8"></script>
+      <script src="{{ MEDIA_URL }}js/mode-{{ program_quiz.lang }}.js" type="text/javascript" charset="utf-8"></script>
+
+   {% endcomment %}
    <script type="text/javascript" charset="utf-8">
         editor = ace.edit("editor");
         editor.setTheme("ace/theme/chrome");

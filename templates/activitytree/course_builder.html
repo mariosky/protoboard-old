@@ -1,89 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>protoboard Studio</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-
-  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
-  <!-- build:css(.) styles/vendor.css -->
-  <!-- bower:css -->
-  <!-- endbower -->
-  <!-- endbuild -->
-  <!-- build:css(.tmp) styles/main.css -->
-
-  <link rel="stylesheet" href="/styles/bootstrap.min.css">
-  <link rel="stylesheet" href="/styles/fuelux.min.css">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" type="text/css" >
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker3.min.css">
-  <link rel="stylesheet" href="/styles/activity_tree.css">
+{% extends "activitytree/base.html" %}
 
 
 
-  <!-- endbuild -->
-  <!-- build:js scripts/vendor/modernizr.js -->
-  <script src="/bower_components/modernizr/modernizr.js"></script>
-  <!-- endbuild -->
+{% block content %}
 
-  <!-- mustache templates -->
-
-
-
-  <!-- end mustache templates -->
-</head>
-
-<body>
-<div class="container">
-
-
-
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"  aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-
-        <a class="navbar-brand" href="/"> protoboard.org </a>
-
-
-        <!-- <a class="navbar-brand" href="/">protoboard.org</a> -->
-      </div>
-
-      <div  id="navbar" class=" collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right">
-
-
-          <li><a href="{{root}}">Curso</a></li>
-          <li><a href="/dashboard{{ root_id }}">Dashboard</a></li>
-          <li><p id="user_points" class="navbar-text"></p></li>
-
-
-
-          <li><a href="/logout">Salir</a></li>
-
-          <li><a href="/login">Iniciar Sesión</a></li>
-
-
-        </ul>
-
-      </div>
-    </div>
-  </nav>
-
-
-
-
-  <div id="main_container" class="container-fluid">
-    <h3 id="course-title">Bases de Datos Distribuidas</h3>
+        <h3 id="course-title">Bases de Datos Distribuidas</h3>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
 
@@ -137,16 +58,10 @@
 
 
 
-  </div>
-</div>
+{% endblock content %}
 
+{% block scripts %}
 
-
-<!-- build:js(.) scripts/vendor.js -->
-<!-- bower:js -->
-<script src="/bower_components/jquery/dist/jquery.js"></script>
-<!-- endbower -->
-<!-- endbuild -->
 
 <script id="container_template" type="x-tmpl-mustache">
 
@@ -210,21 +125,6 @@
 
 
 
-<!-- build:js(.) scripts/plugins.js -->
-
-<script src="scripts/jquery.min.js"></script>
-<script src="scripts/bootstrap.min.js"></script>
-<script src="scripts/jquery-sortable-lists.min.js"></script>
-<script src="scripts/mustache.min.js"></script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
-
-
-<!-- endbuild -->
-
-<!-- build:js scripts/main.js -->
-<script src="scripts/main.js"></script>
 <!-- endbuild -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -1061,5 +961,18 @@
 </div><!-- /.modal -->
 
 
-</body>
-</html>
+
+
+{% endblock scripts %}
+
+
+
+
+
+
+
+
+
+
+
+
