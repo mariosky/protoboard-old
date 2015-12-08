@@ -34,7 +34,7 @@ import urlparse
 from eval_code.RedisCola import Cola, Task
 import json
 from django.conf import settings
-
+from courses import  create_course_from_json
 
 import redis
 
@@ -500,6 +500,21 @@ def execute_queue(request):
 
         result= {"result":"added" , "error": None, "id": task_id}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
+
+
+
+@csrf_protect
+def post_course(request):
+    if request.method == 'POST':
+        rpc=json.loads(request.body)
+        create_course_from_json( rpc['params'][0])
+
+    result= {"result":"added" , "error": None, "id": 1}
+    return HttpResponse(json.dumps(result), content_type='application/javascript')
+
+
+
+
 
 @csrf_protect
 def javascript_result(request):

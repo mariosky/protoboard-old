@@ -25,6 +25,7 @@ urlpatterns = patterns('',
       (r'^(?P<uri>program/([\w+](\/*)(-*))+)$','activitytree.views.program'),
 
       (r'^execute_queue$','activitytree.views.execute_queue'),
+      (r'^post_course$','activitytree.views.post_course'),
       (r'^javascript_result$','activitytree.views.javascript_result'),
       (r'^get_activities$','activitytree.views.get_activities'),
 

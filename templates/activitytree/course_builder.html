@@ -65,11 +65,11 @@
 
 <script id="container_template" type="x-tmpl-mustache">
 
-        <li id="{{ container_id  }}"  data-module="container">
+        <li id="[[ container_id  ]]"  data-module="container">
 
 
           <div>
-                  <i class="fa fa-folder"></i>  <span class="h5 container_name"> {{container_name}} </span>
+                  <i class="fa fa-folder"></i>  <span class="h5 container_name"> [[container_name]] </span>
 
                     <div class="btn-group navbar-right" role="group" aria-label="..." >
                       <button type="button" class="btn btn-default  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
@@ -99,9 +99,9 @@
 
 <script id="activity_template" type="x-tmpl-mustache">
 
-        <li id="{{ activity_id  }}"  data-module="activity" class="activity">
+        <li id="[[ activity_id  ]]"  data-module="activity" class="activity">
           <div>
-            <i class="fa fa-file"></i> <span class="h5 container_name">{{activity_name}} </span>
+            <i class="fa fa-file"></i> <span class="h5 container_name">[[activity_name]] </span>
 
           <div class="btn-group navbar-right" role="group" aria-label="..." >
             <button type="button" class="btn btn-default  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
@@ -221,7 +221,27 @@
 
 
 
-    $('#toArrBtn').on('click', function(){ console.log($('#sTree2').sortableListsToArray()); });
+    $('#toArrBtn').on('click', function(){
+        var tree = tree_to_json( '#sTree2');
+
+        $.ajax(   {
+                    url: '/post_course',
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ post }}", "params": [tree],
+                    "id": 1 }),
+                    dataType: "json",
+                    success: function(data, textStatus, jqXHR) {
+                            console.log("Success");
+                        },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        }
+                    });
+
+
+
+
+    });
     $('#toHierBtn').on('click', function()
     {
 
@@ -271,6 +291,50 @@
 
     });
 
+
+  function tree_to_json(id_selector){
+
+       tree =  $(id_selector).sortableListsToHierarchy();
+
+
+
+         function traverse(jsonObj) {
+           if( typeof jsonObj == "object" ) {
+              $.each(jsonObj, function(k,v) {
+
+                if (typeof k == "number" && typeof v == "object")
+                {
+                  traverse(v);
+                }
+                if ( k == "id")
+                {
+                  jsonObj.learning_activity = learning_activities[v];
+
+                }
+
+                if ( k == "children" && typeof v == "object")
+                {
+                  traverse(v);
+
+                }
+              });
+              }
+              else
+              {
+                return;
+                // jsonOb is a number or string
+              }
+           }
+
+          traverse(tree);
+
+
+
+          return JSON.stringify(tree);
+
+
+
+  }
 
     $('#toStrBtn').on('click', function() {
 

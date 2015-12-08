@@ -191,7 +191,6 @@ class SimpleSequencing(object):
 
 import psycopg2
 from psycopg2.extras import DictCursor
-import datetime
 import xml.etree.ElementTree as ET
 from django.conf import settings
 
@@ -274,6 +273,61 @@ ORDER BY path ASC
         RECORDS[record["id"]] = dict(record)
 
 
+
+
+def sql_activity_tree(root_id):
+    cur = con.cursor(cursor_factory=DictCursor)
+    query= """
+WITH RECURSIVE nodes_cte AS (
+SELECT 	n.id, n.parent_id, n.name, n.id::TEXT AS path,
+		n.heading, n.secondary_text, n.description, n.image, n.slug, n.uri, n.lom, n.root_id,
+		n.pre_condition_rule,
+		n.choice_exit, n.attempt_limit, n.available_from,
+		n.available_until, n.is_container, n.is_visible, n.order_in_container
+FROM activitytree_learningactivity AS n
+WHERE n.id = %s
+	UNION ALL
+SELECT 	c.id, c.parent_id, c.name, path || '|'|| c.id::TEXT  AS path ,
+		c.heading, c.secondary_text, c.description, c.image, c.slug, c.uri, c.lom, c.root_id,
+		c.pre_condition_rule,
+		c.choice_exit, c.attempt_limit, c.available_from,
+		c.available_until, c.is_container, c.is_visible, c.order_in_container
+FROM nodes_cte AS p, activitytree_learningactivity AS c
+WHERE c.parent_id = p.id
+)
+
+SELECT *
+FROM nodes_cte
+
+ORDER BY path ASC;"""
+
+    cur.execute(query,(root_id,))
+
+
+    recs = cur.fetchall()
+    r = {}
+    for record in recs:
+        r[record["id"]] = dict(record)
+
+    return r
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def _get_nav(id,xml_tree=None):
     if RECORDS[id]["parent_id"] is None:
         xml_tree = ET.Element("item")
@@ -305,7 +359,6 @@ def _get_nav(id,xml_tree=None):
 
 def get_attr(uri, attr):
     for k,v in RECORDS.items():
-        #print uri,v["uri"],attr,v[attr],RECORDS.items()
         if uri == v["uri"]:
             return v[attr]
     return None

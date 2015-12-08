@@ -27,12 +27,6 @@ curso = json.loads(j)[0]
 
 
 def traverse(activity, parent=None, root=None):
-
-
-    print activity['learning_activity']['name'],parent
-
-
-
     learning_activity = LearningActivity(
         parent = parent or None,
         root   = root or None,
