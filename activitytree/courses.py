@@ -63,4 +63,26 @@ def _traverse(activity, parent=None, root=None):
         pass
 
 
-print sql_activity_tree( 31   )
+
+
+def activity_tree(_tree, parent, nodes):
+    #find children
+
+    children = [v for k,v in nodes.items() if parent == v["parent_id"] or v["parent_id"]  is None ]
+    print [key['id'] for key in  children]
+
+    if children:
+        for child in children:
+            _tree['id']=child["id"]
+            _tree['order']=child["order_in_container"]
+            _tree['learning_activity']=child
+            _tree['children']=activity_tree(_tree,child["id"],nodes)
+        return _tree
+
+
+
+
+
+tree = sql_activity_tree( 31   )
+
+print activity_tree({},None,tree)
