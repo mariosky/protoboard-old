@@ -1,10 +1,89 @@
-{% extends "activitytree/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>protoboard Studio</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+
+  <link rel="stylesheet" href="styles/bootstrap.min.css">
+  <link rel="stylesheet" href="styles/fuelux.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" type="text/css" >
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker3.min.css">
+  <link rel="stylesheet" href="styles/activity_tree.css">
 
 
 
-{% block content %}
+  <!-- endbuild -->
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
 
-        <h3 id="course-title">Bases de Datos Distribuidas</h3>
+  <!-- mustache templates -->
+
+
+
+  <!-- end mustache templates -->
+</head>
+
+<body>
+<div class="container">
+
+
+
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"  aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="/"> protoboard.org </a>
+
+
+        <!-- <a class="navbar-brand" href="/">protoboard.org</a> -->
+      </div>
+
+      <div  id="navbar" class=" collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+
+
+          <li><a href="{{root}}">Curso</a></li>
+          <li><a href="/dashboard{{ root_id }}">Dashboard</a></li>
+          <li><p id="user_points" class="navbar-text"></p></li>
+
+
+
+          <li><a href="/logout">Salir</a></li>
+
+          <li><a href="/login">Iniciar Sesión</a></li>
+
+
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+
+
+
+  <div id="main_container" class="container-fluid">
+    <h3 id="course-title">Bases de Datos Distribuidas</h3>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
 
@@ -58,18 +137,24 @@
 
 
 
-{% endblock content %}
+  </div>
+</div>
 
-{% block scripts %}
 
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
 
 <script id="container_template" type="x-tmpl-mustache">
 
-        <li id="[[ container_id  ]]"  data-module="container">
+        <li id="{{ container_id  }}"  data-module="container">
 
 
           <div>
-                  <i class="fa fa-folder"></i>  <span class="h5 container_name"> [[container_name]] </span>
+                  <i class="fa fa-folder"></i>  <span class="h5 container_name"> {{container_name}} </span>
 
                     <div class="btn-group navbar-right" role="group" aria-label="..." >
                       <button type="button" class="btn btn-default  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
@@ -99,9 +184,9 @@
 
 <script id="activity_template" type="x-tmpl-mustache">
 
-        <li id="[[ activity_id  ]]"  data-module="activity" class="activity">
+        <li id="{{ activity_id  }}"  data-module="activity" class="activity">
           <div>
-            <i class="fa fa-file"></i> <span class="h5 container_name">[[activity_name]] </span>
+            <i class="fa fa-file"></i> <span class="h5 container_name">{{activity_name}} </span>
 
           <div class="btn-group navbar-right" role="group" aria-label="..." >
             <button type="button" class="btn btn-default  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
@@ -125,6 +210,21 @@
 
 
 
+<!-- build:js(.) scripts/plugins.js -->
+
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/bootstrap.min.js"></script>
+<script src="scripts/jquery-sortable-lists.min.js"></script>
+<script src="scripts/mustache.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
+
+
+<!-- endbuild -->
+
+<!-- build:js scripts/main.js -->
+<script src="scripts/main.js"></script>
 <!-- endbuild -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -221,37 +321,7 @@
 
 
 
-    $('#toArrBtn').on('click', function(){
-        var tree = tree_to_json( '#sTree2');
-        $.ajaxSetup({
-                crossDomain: false, // obviates need for sameOrigin test
-                beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type)) {
-                        var csrftoken = getCookie('csrftoken');
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-
-
-        $.ajax(   {
-                    url: '/post_course',
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({"jsonrpc": "2.0", "method": "post_course", "params": [tree],
-                    "id": 1 }),
-                    dataType: "json",
-                    success: function(data, textStatus, jqXHR) {
-                            console.log("Success");
-                        },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        }
-                    });
-
-
-
-
-    });
+    $('#toArrBtn').on('click', function(){ console.log($('#sTree2').sortableListsToArray()); });
     $('#toHierBtn').on('click', function()
     {
 
@@ -302,78 +372,14 @@
     });
 
 
-  function tree_to_json(id_selector){
-
-       tree =  $(id_selector).sortableListsToHierarchy();
-
-
-
-         function traverse(jsonObj) {
-           if( typeof jsonObj == "object" ) {
-              $.each(jsonObj, function(k,v) {
-
-                if (typeof k == "number" && typeof v == "object")
-                {
-                  traverse(v);
-                }
-                if ( k == "id")
-                {
-                  jsonObj.learning_activity = learning_activities[v];
-
-                }
-
-                if ( k == "children" && typeof v == "object")
-                {
-                  traverse(v);
-
-                }
-              });
-              }
-              else
-              {
-                return;
-                // jsonOb is a number or string
-              }
-           }
-
-          traverse(tree);
-
-
-
-          return JSON.stringify(tree);
-
-
-
-  }
-
     $('#toStrBtn').on('click', function() {
 
-              $.ajax(   {
-                    url: '/get_course',
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({"jsonrpc": "2.0", "method": "get_course", "params": [31],
-                    "id": 1 }),
-                    dataType: "json",
-                    success: function(data, textStatus, jqXHR) {
-                            console.log(data);
+    var json_string = '[{"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": true, "description": "<p> Este es un curso de ejemplo para mostrar la funcionalidad de <code>protoboard</code>.\\n        Se muestran los tipos de ejercicios y recursos que se pueden utilizar para crear cursos de programaci\\u00f3n. </p>", "attempt_limit": 100, "image": "", "rollup_progress": true, "uri": "/activity/demo", "secondary_text": "", "heading": "", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "Protoboard 101"}, "children": [{"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "Protoboard utiliza reglas para el secuenciado de actividades de aprendizaje. Aqu\\u00ed se explica de que se trata. De hecho hay una regla que estipula que no puedes visitar la actividad siguiente hasta ver esta.", "attempt_limit": 100, "image": "https://s3.amazonaws.com/learning-python/IntroVideo.png", "rollup_progress": true, "uri": "/activity/SecuenciadoSimple", "secondary_text": "", "heading": "1. Secuenciado simple", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "El secuenciado simple"}, "children": [], "id": "7b8bfd64-f69e-406d-a60f-d5df6abd5a25", "order": 0}, {"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": true, "description": "Este es un contenedor con varias actividades, estar\\u00e1 deshabilitado hasta que visites la actividad Secuenciado Simple.", "attempt_limit": 100, "image": "", "rollup_progress": true, "uri": "/activity/Recursos", "secondary_text": "Contenedor", "heading": "2. Recursos", "pre_condition_rule": "if get_attr(\'/activity/SecuenciadoSimple\',\'progress_status\') == \'completed\':\\n    activity[\'pre_condition\'] = \'\'\\nelse:\\n    activity[\'pre_condition\'] = \'disabled\'\\n", "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "Recursos"}, "children": [{"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "Ejemplo de video, al llegar a los 15 segundos se salta a la siguiente actividad.", "attempt_limit": "100", "image": "", "rollup_progress": true, "uri": "/activity/video/intro", "secondary_text": "", "heading": "Ejemplo de Video", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "Video"}, "children": [], "id": "75779703-613d-4978-87dd-08746f7ada7b", "order": 0}, {"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "M\\u00e1ximo 4 intentos.", "attempt_limit": "4", "image": "", "rollup_progress": true, "uri": "/test/demo", "secondary_text": "", "heading": "Ejemplo de un Quiz", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": false, "lom": null, "slug": "", "name": "Quiz"}, "children": [], "id": "b97d66fe-937a-4e92-81be-37cb4bb521ed", "order": 1}], "id": "3f395aa0-68e8-4a97-87f5-609cc407171a", "order": 1}, {"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": true, "description": "Ejemplos de los distintos lenguajes de programaci\\u00f3n, con los que se pueden hacer ejercicios", "attempt_limit": 100, "image": "", "rollup_progress": true, "uri": "/activity/97e3a6a1-380f-44e9-ba2c-42fc719d6973", "secondary_text": "Contenedor", "heading": "3. Ejercicios", "pre_condition_rule": null, "rollup_rule": "completed IF Any completed", "choice_exit": true, "lom": null, "slug": "", "name": "Ejercicios de Programaci\\u00f3n"}, "children": [{"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "Es un lenguaje de programaci\\u00f3n interpretado, dialecto del est\\u00e1ndar ECMAScript. Se define como orientado a objetos,3 basado en prototipos, imperativo, d\\u00e9bilmente tipado y din\\u00e1mico", "attempt_limit": "3", "image": "", "rollup_progress": true, "uri": "/program/js/1", "secondary_text": "", "heading": "JavaScript", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": false, "lom": null, "slug": "", "name": "JavaScript"}, "children": [], "id": "3b0b8f13-a27c-4842-9e64-5d52fa18075d", "order": 0}, {"learning_activity": {"is_visible": true, "available_from": null, "available_until": null, "is_container": false, "description": "Su intenci\\u00f3n es permitir que los desarrolladores de aplicaciones escriban el programa una vez y lo ejecuten en cualquier dispositivo", "attempt_limit": 100, "image": "", "rollup_progress": true, "uri": "/program/java/1", "secondary_text": "", "heading": "Java", "pre_condition_rule": null, "rollup_rule": "completed IF All completed", "choice_exit": true, "lom": null, "slug": "", "name": "Java"}, "children": [], "id": "3125d726-75d4-4f09-8e13-a3cbc3e029b5", "order": 1}], "id": "97e3a6a1-380f-44e9-ba2c-42fc719d6973", "order": 2}], "id": "4ef42fb0-8733-4e3e-8ce5-e69c83bdf489", "order": 0}]';
+    var tree = JSON.parse(json_string);
 
-                            // var tree = JSON.parse(data);
+     // console.log(tree[0]['learning_activity']);
 
-                            traverse(data);
-
-
-
-
-
-
-                        },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        }
-                    });
-
-
-
+      console.log(tree);
 
 
      function traverse(jsonObj,parent_id) {
@@ -484,7 +490,7 @@
         }
       }
 
-      //traverse(tree);
+      traverse(tree);
 
 
 
@@ -1055,18 +1061,5 @@
 </div><!-- /.modal -->
 
 
-
-
-{% endblock scripts %}
-
-
-
-
-
-
-
-
-
-
-
-
+</body>
+</html>
