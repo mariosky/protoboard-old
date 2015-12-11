@@ -25,7 +25,8 @@ urlpatterns = patterns('',
       (r'^(?P<uri>program/([\w+](\/*)(-*))+)$','activitytree.views.program'),
 
       (r'^execute_queue$','activitytree.views.execute_queue'),
-      (r'^post_course$','activitytree.views.post_course'),
+      (r'^post_course$','activitytree.views.course_view'),
+      (r'^get_course$','activitytree.views.course_view'),
       (r'^javascript_result$','activitytree.views.javascript_result'),
       (r'^get_activities$','activitytree.views.get_activities'),
 
@@ -34,6 +35,7 @@ urlpatterns = patterns('',
       (r'^users/(?P<user_id>[0-9]*)(\/*)(?P<course_id>[0-9]*)$','activitytree.views.users'),
 
       (r'^course-builder/(?P<course_id>([\w+](\/*)(-*))+)$','activitytree.views.course'),
+
 
 
       (r'^unlink_facebook/?$', 'activitytree.views.unlink_facebook'),

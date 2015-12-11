@@ -34,7 +34,7 @@ import urlparse
 from eval_code.RedisCola import Cola, Task
 import json
 from django.conf import settings
-from courses import  create_course_from_json
+from courses import  create_course_from_json, get_activity_tree
 
 import redis
 
@@ -504,13 +504,22 @@ def execute_queue(request):
 
 
 @csrf_protect
-def post_course(request):
+def course_view(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
-        create_course_from_json( rpc['params'][0])
 
-    result= {"result":"added" , "error": None, "id": 1}
-    return HttpResponse(json.dumps(result), content_type='application/javascript')
+        if rpc["method"]=='post_course':
+            create_course_from_json( rpc['params'][0])
+
+            result= {"result":"added" , "error": None, "id": 1}
+            return HttpResponse(json.dumps(result), content_type='application/javascript')
+
+        elif rpc["method"]=='get_course':
+            rpc=json.loads(request.body)
+            course = get_activity_tree( rpc['params'][0])
+
+            result= {"result":"added" , "error": None, "id": 1}
+            return HttpResponse(json.dumps(course), content_type='application/javascript')
 
 
 

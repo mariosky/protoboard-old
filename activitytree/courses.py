@@ -86,10 +86,7 @@ def activity_tree(parent, nodes):
 
 
 
-
-
-tree = sql_activity_tree( 31   )
-result = activity_tree(None,tree)
-
-
-print json.dumps(result)
+def get_activity_tree(id):
+    tree = sql_activity_tree(id)
+    result = activity_tree(None,tree)
+    return result
