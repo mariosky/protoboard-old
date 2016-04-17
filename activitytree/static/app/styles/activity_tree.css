@@ -159,6 +159,41 @@ code {
 
 
 
+
+
+/*
+ * Courses
+ */
+
+.course-listing-nav{
+   margin-bottom: 20px;
+}
+
+.course-listing{
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+
+ul.course-listing-bar {
+      list-style: none;
+        display: block;
+        box-sizing: border-box;
+       padding-left: 0px;
+
+}
+
+ul.course-listing-bar li {
+    display: inline-block;
+    margin-right: 8px;
+    padding-right: 8px;
+    line-height: 16px;
+    zoom: 1;
+}
+
+
+
 /*
  * Main content
  */
