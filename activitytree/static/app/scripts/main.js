@@ -95,9 +95,55 @@ var renderPaginator = function ( page, total, max_visible, on_click) {
                     });
 
     $("#paginator").html(rendered);
-    console.log(pages);
-    console.log(rendered);
+   // console.log(pages);
+   // console.log(rendered);
     $('.page-item').on('click',on_click);
+}
+
+
+
+
+function load_query(input_element_id, query){
+    var query = query || {};
+    var name = $(input_element_id).val();
+    var exp_tags = /S*#(?:\[[^\]]+\]|\S+)/;
+    if (exp_tags.test(name)){
+        var texto = name.split(/\s+/g);
+        tags = [];
+        title = [];
+        for(var i=0;i<texto.length;i++){
+            if(texto[i].match(exp_tags)){
+                tags.push(texto[i].replace('#',''))
+            }
+            else{
+                title.push(texto[i])
+            }
+        }
+        title = title.join(" ");
+        if (title != "" && tags.length != 0){
+            query['title'] = {'title': {'$regex': title, '$options': 'i'}};
+            query['tags'] = {'tags': {'$all': tags}};
+        }
+        else if (tags.length != 0 && title == ""){
+            query['tags'] = {'tags': {'$all': tags}};
+            delete query['title']
+        }
+        else if (tags.length == 0 && title != ""){
+            query['title'] = {'title': {'$regex': title, '$options': 'i'}};
+            delete query['tags']
+        }
+        else{
+            delete query['title'];
+            delete query['tags']
+        }
+    }
+    else
+    {
+        query['title'] = {'title': {'$regex': $("#txtname").val(), '$options': 'i'}};
+        delete query['tags'];
+    }
+
+    return query;
 }
 
 
@@ -145,6 +191,37 @@ function query_builder(query)
     }
 
 
+            //function that categorizes data received (from url) and sends it to query_builder with correct parameters
+    function loadURI( input_element_id) {
+        var _query = "";
+
+
+        var tag_string = getParameterByName("tag");
+
+        if (tag_string){
+            _query = _query + get_tag_list( tag_string );
+        }
+
+        var query_string = getParameterByName("query");
+
+        if (query_string){
+            var term_list = query_string.split(",");
+            _query = _query +" "+ term_list.join(" ");
+        }
+
+
+        $(input_element_id).val(_query);
+
+
+        }
+
+        function get_tag_list( tag_string )
+        {
+            var tag_list = tag_string.split(",");
+            return "#"+tag_list.join(" #");
+
+
+        }
 
 
 
