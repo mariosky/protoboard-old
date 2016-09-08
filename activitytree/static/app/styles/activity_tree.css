@@ -40,15 +40,8 @@ ul.sTree2 li, ul#sortableListsBase li { padding-left:40px; margin:5px; border:1p
 
 /*#sTree2 li, #sortableListsBase li, #sTree2 ul, #sortableListsBase ul,  #sTree2 div, #sortableListsBase div { border-radius: 3px; }
 */
-body {
-  /* Margin bottom by footer height */
- /* margin-bottom: 60px;*/
-   padding-top: 20px;
-}
 
-body > .container {
-  padding: 60px 15px 0;
-}
+
 
 
 
@@ -94,10 +87,6 @@ html {
 }
 
 
-  #page  {
-	padding: 0;
-	margin: 0;
-    }
 
   #main_container
   {
