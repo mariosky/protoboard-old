@@ -34,9 +34,9 @@ ul#sTree2, li#sTree2 { margin:0; padding:0; }
 
 
 ul.sTree, #sTree2 ul,  #sortableListsBase ul{ padding:0px; background-color:#f5f5f5; }
-ul.sTree2 li, ul#sortableListsBase li { padding-left:40px; margin:5px; border:1px solid #c1dce9; background-color:#e6f1f6; }
+ul.sTree2 li, ul#sortableListsBase li { padding-left:40px; margin:5px;border:1px solid #c1dce9;background-color:#e6f1f6; }
 
-#sTree2 li div, #sortableListsBase li div { padding:10px; background-color:#fff; border:1px solid #c1dce9; }
+#sTree2 li div, #sortableListsBase li div { padding:3px; background-color:#fff; /* border:1px solid #c1dce9;*/  }
 
 /*#sTree2 li, #sortableListsBase li, #sTree2 ul, #sortableListsBase ul,  #sTree2 div, #sortableListsBase div { border-radius: 3px; }
 */
