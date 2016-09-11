@@ -256,3 +256,27 @@ function getParameterByName(name, url) {
                 // these HTTP methods do not require CSRF protection
                 return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
             }
+
+
+function generateUUID() {
+          var d = new Date().getTime();
+          var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+              var r = (d + Math.random() * 16) % 16 | 0;
+              d = Math.floor(d / 16);
+              return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+          });
+          return uuid;
+      }
+
+
+  function indexdata(data){
+      var indexed = {};
+      $.map(data, function(n, i){
+          if (n['name']=='tags'){
+              n['value'] = n['value'].split(',')
+          }
+          indexed[n['name']] = n['value'];
+      });
+
+      return indexed
+  }
