@@ -1,6 +1,15 @@
 
 
 
+h4.question{
+    margin-top:3rem ;
+}
+
+input.btn.question-submit{
+
+    margin-top:4rem
+}
+
 #navlist .col-sm-12{
   margin-top: .25rem;
   margin-bottom: .25rem;
