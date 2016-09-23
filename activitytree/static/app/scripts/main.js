@@ -101,7 +101,15 @@ var renderPaginator = function ( page, total, max_visible, on_click) {
 }
 
 
+//Text truncate utility function
+//http://stackoverflow.com/a/1199420
 
+function truncate( n, useWordBoundary ){
+    var isTooLong = this.length > n,
+        s_ = isTooLong ? this.substr(0,n-1) : this;
+        s_ = (useWordBoundary && isTooLong) ? s_.substr(0,s_.lastIndexOf(' ')) : s_;
+    return  isTooLong ? s_ + '...' : s_;
+};
 
 function load_query(input_element_id, query){
     var query = query || {};
