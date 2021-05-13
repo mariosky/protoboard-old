@@ -19,7 +19,7 @@ REDIS_HOST = 'REDIS_HOST' in os.environ and os.environ['REDIS_HOST'] or '127.0.0
 REDIS_PORT = 'REDIS_PORT' in os.environ and os.environ['REDIS_PORT'] or 6379
 PASSWORD =  env('REDIS_PASSWORD')
 
-
+print(REDIS_HOST,REDIS_PORT,PASSWORD)
 
 
 
