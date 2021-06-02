@@ -20,6 +20,6 @@ redis==3.5.3
 requests==2.25.1
 six==1.15.0
 sqlparse==0.4.1
-urllib3==1.26.4
+urllib3==1.26.5
 webencodings==0.5.1
 websocket-client==0.58.0
